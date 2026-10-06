@@ -57,16 +57,15 @@
 | 쿠팡 링크 | 커스텀 필드 그대로 | 플러그인 불필요. `rel="sponsored nofollow noopener"` 유지 |
 | 캐싱 | WP Super Cache 등 | 도감 상태는 클라이언트라 페이지 캐시와 충돌 없음 |
 
-## 5. 이식 순서
+## 5. 이식 5단계
 
-1. 테마 뼈대: `tokens.css` + `components.css` + `#rough` 필터 → 빈 테마에서 칩·패널·CTA가 프로토타입과 같게 보이는지 확인
-2. 택소노미 `world` 6개 term + 메타 → `taxonomy-world.php` (S3)
-3. CPT `figure` 36건 입력(프로토타입 `figures.js`에서 CSV 변환) → `single-figure.php` (S4)
-4. `front-page.php` (S2) — 뽑기·체크인은 `store.js` 그대로
-5. `page-collection.php` (S5), `page-my.php` (S7)
-6. CPT `ranking_entry` 110건 → `taxonomy-ranking_board.php` (S6)
-7. 온보딩·공유 카드 (S1, S8)
-8. 기존 블로그 글 6편 → `post`로 가져오기(Markdown → Gutenberg)
+구현은 `wp-theme/` 에 있다. 진행 상태는 `wp-theme/README.md`.
+
+1. **뼈대** — 토큰·컴포넌트·`#rough` 필터·콘텐츠 모델(world/figure/ranking)·CSV 가져오기 ✅
+2. **월드 + 피규어 상세** — `taxonomy-world.php`(S3), `single-figure.php` + `figure-detail.php` 파트(S4), `app.js` 시트 로더 ✅
+3. **홈 + 도감 + 마이** — `front-page.php` 실제 홈(S2: 체크인·뽑기·내 월드·피드), `page-collection.php`(S5), `page-my.php`(S7)
+4. **랭킹 + 온보딩 + 공유** — `taxonomy-ranking_board.php`(S6), `page-onboarding.php`(S1), `page-share.php`(S8)
+5. **콘텐츠·배포·검증** — 블로그 글 6편(Markdown → post), OG·sitemap, 캐시 설정, 실제 설치 QA, GitHub Pages → 워드프레스 리다이렉트
 
 ## 6. 지켜야 할 것
 

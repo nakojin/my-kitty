@@ -15,6 +15,15 @@
 .pagination .page-numbers { border: 1px solid var(--line); padding: 5px 11px; color: var(--muted); transform: skew(-8deg); }
 .pagination .page-numbers.current { border-color: var(--theme); color: var(--theme); }
 
+/* 세그먼트 탭·칩이 <a> 라서 */
+.segtabs a { padding: 10px 0; margin-right: 18px; font-weight: 800; color: var(--muted); border-bottom: 3px solid transparent; }
+.segtabs a.on { color: var(--fg); border-color: var(--theme); }
+a.chip { text-decoration: none; }
+
+/* 단일 피규어 페이지: 시트 본문 레이아웃을 페이지에서 재사용 */
+.single-figure .body { padding: 10px 14px 14px; }
+.single-figure .foot { position: sticky; bottom: 0; padding: 10px 14px; border-top: 1px solid var(--line); display: flex; gap: 8px; background: var(--bg); margin-top: auto; }
+
 /* 탭바가 <a> 라서 */
 .tabbar a { font-size: 11px; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
 .tabbar a .ico { font-size: 18px; line-height: 1; }

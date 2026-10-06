@@ -38,9 +38,22 @@ wp eval-file wp-theme/import/import.php
 
 **WP All Import**(무료)로 `figures.csv` → 포스트 타입 `figure`, 컬럼을 같은 이름의 커스텀 필드에 매핑하고 `world` 컬럼은 taxonomy `world` 에. `rankings.csv` 도 같은 방식(`ranking_entry`, `board` → taxonomy `ranking_board`).
 
-## 2단계 이후 (예정)
+## 이식 5단계
 
-2. `taxonomy-world.php` (월드 S3) → 3. `single-figure.php` + 시트 로더 (S4) → 4. `front-page.php` 실제 홈 (S2) → 5. 도감·마이 페이지 → 6. `taxonomy-ranking_board.php` → 7. 온보딩·공유 카드 → 8. 블로그 글 6편 가져오기.
+| 단계 | 내용 | 상태 |
+|---|---|---|
+| 1 | 뼈대 — 토큰·컴포넌트·콘텐츠 모델·CSV 가져오기 | ✅ |
+| 2 | **월드 + 피규어 상세** — `taxonomy-world.php`(탭·필터), `single-figure.php`, `template-parts/figure-detail.php`, `assets/js/app.js`(바텀시트 로더·도감 상태 칠하기) | ✅ |
+| 3 | 홈 + 도감 + 마이 — `front-page.php` 실제 홈(체크인·뽑기), `page-collection.php`, `page-my.php` | 예정 |
+| 4 | 랭킹 + 온보딩 + 공유 카드 — `taxonomy-ranking_board.php`, `page-onboarding.php`, `page-share.php` | 예정 |
+| 5 | 콘텐츠·배포·검증 — 블로그 글 6편 가져오기, OG·sitemap, 캐시, 실제 설치 QA | 예정 |
+
+### 2단계 동작 방식
+
+- `/world/kny/` → 월드 페이지. `?tab=cur|chars|all`, `?rarity=rare`, `?char=탄지로` 로 필터.
+- 피규어 카드(`a.poster[data-sheet]`) 클릭 → `app.js` 가 `/figure/{slug}/?partial=1` 을 fetch 해 바텀시트에 끼움. 새 탭·직접 접근은 전체 페이지(`single-figure.php`).
+- 도감 상태(보유/위시), 완성도 %, 캐릭터 링 색은 **클라이언트(`store.js`)** 가 칠한다. 서버 HTML 은 로그인 여부와 무관하게 캐시 가능.
+- 쿠팡 CTA 는 `mykitty_coupang_cta()` 하나로만 출력.
 
 ## 지켜야 할 것
 

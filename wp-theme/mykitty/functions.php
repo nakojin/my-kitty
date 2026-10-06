@@ -30,6 +30,7 @@ add_action( 'wp_enqueue_scripts', function () {
 
 	// 상태(도감·XP·스트릭)는 프로토타입 store.js 를 그대로 사용한다.
 	wp_enqueue_script( 'mykitty-store', MYKITTY_URI . '/assets/js/store.js', [], MYKITTY_VERSION, true );
+	wp_enqueue_script( 'mykitty-app', MYKITTY_URI . '/assets/js/app.js', [ 'mykitty-store' ], MYKITTY_VERSION, true );
 	wp_localize_script( 'mykitty-store', 'MK_ENV', [
 		'rest'   => esc_url_raw( rest_url( 'mk/v1/' ) ),
 		'nonce'  => wp_create_nonce( 'wp_rest' ),
@@ -53,6 +54,9 @@ add_action( 'wp_head', function () {
 add_action( 'wp_body_open', function () {
 	echo '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="3" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></svg>' . "\n";
 } );
+
+// ?partial=1 로 시트 본문만 요청할 때는 캐시 플러그인이 다른 키로 저장하도록 쿼리 변수를 공개한다.
+add_filter( 'query_vars', fn( $vars ) => array_merge( $vars, [ 'partial' ] ) );
 
 // 쿠팡 파트너스 링크는 항상 sponsored nofollow.
 add_filter( 'the_content', function ( $content ) {
