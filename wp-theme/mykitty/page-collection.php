@@ -1,11 +1,11 @@
 <?php
 /**
  * Template Name: 도감
- * 도감 (S5). /collection/?world=kny . 서버: 선택 월드의 피규어 전부. 클라이언트: 상태 칠하기·필터·완성도.
+ * 도감 (S5). /collection/?w=kny . 서버: 선택 월드의 피규어 전부. 클라이언트: 상태 칠하기·필터·완성도.
  */
 get_header();
 $worlds = get_terms( [ 'taxonomy' => 'world', 'hide_empty' => false, 'meta_key' => 'world_no', 'orderby' => 'meta_value_num' ] );
-$slug   = sanitize_key( $_GET['world'] ?? '' );
+$slug   = sanitize_key( $_GET['w'] ?? '' );
 $world  = $slug ? get_term_by( 'slug', $slug, 'world' ) : null;
 if ( ! $world && $worlds && ! is_wp_error( $worlds ) ) { $world = $worlds[0]; }
 $figs   = $world ? get_posts( [ 'post_type' => 'figure', 'posts_per_page' => -1, 'tax_query' => [ [ 'taxonomy' => 'world', 'field' => 'term_id', 'terms' => $world->term_id ] ], 'orderby' => 'menu_order title', 'order' => 'ASC' ] ) : [];
@@ -21,7 +21,7 @@ $ids    = array_map( fn( $p ) => $p->post_name, $figs );
 	<!-- 월드 칩: 사용자가 고른 월드만 보이게 app.js 가 data-my-world 로 숨김/표시 -->
 	<div class="chips" data-world-chips>
 		<?php foreach ( (array) $worlds as $w ) : if ( is_wp_error( $w ) ) continue; ?>
-			<a class="chip <?php echo $world && $w->term_id === $world->term_id ? 'on' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'world', $w->slug, get_permalink() ) ); ?>" data-my-world="<?php echo esc_attr( $w->slug ); ?>"><span><?php echo esc_html( $w->name ); ?></span></a>
+			<a class="chip <?php echo $world && $w->term_id === $world->term_id ? 'on' : ''; ?>" href="<?php echo esc_url( add_query_arg( 'w', $w->slug, get_permalink() ) ); ?>" data-my-world="<?php echo esc_attr( $w->slug ); ?>"><span><?php echo esc_html( $w->name ); ?></span></a>
 		<?php endforeach; ?>
 	</div>
 

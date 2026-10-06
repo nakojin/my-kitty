@@ -52,9 +52,12 @@
     const main = MK.world(s.worlds[0]) || MK_WORLDS[0];
     const canGacha = MK.canGacha();
     const result = s.gachaResult ? MK.figure(s.gachaResult) : null;
-    const checked = s.lastCheckin === new Date().toISOString().slice(0, 10);
+    const checked = MK.checkedToday();
+    const streak = MK.effectiveStreak();
     const days = ['월', '화', '수', '목', '금', '토', '일'];
     const todayIdx = (new Date().getDay() + 6) % 7;
+    // 요일 칩: 실제 연속 체크인한 날만 켠다 (오늘 체크인했으면 오늘 포함)
+    const lit = (i) => { const back = checked ? todayIdx - i : todayIdx - 1 - i; return back >= 0 && back < streak; };
     const feed = MK_FIGURES.filter(f => f.rarity === 'rare').slice(0, 3);
     return `<div class="view" data-theme-world="${main.id}">
       <div class="hero">
@@ -62,10 +65,10 @@
         <div class="splat" style="width:120px;height:120px;right:-40px;top:-40px"></div>
         <div class="splat ink" style="width:8px;height:8px;right:84px;top:30px"></div>
         <div style="display:flex;justify-content:space-between;align-items:flex-end">
-          <div><div class="label" style="color:var(--fg);opacity:.7">🔥 연속 체크인</div><div class="display" style="font-size:34px">${s.streak}일째</div></div>
+          <div><div class="label" style="color:var(--fg);opacity:.7">🔥 연속 체크인</div><div class="display" style="font-size:34px">${streak}일째</div></div>
           <div style="text-align:right"><div class="label" style="color:var(--fg);opacity:.7">LEVEL</div><div class="display" style="font-size:26px;color:var(--theme)">${MK.level()}</div></div>
         </div>
-        <div class="chips" style="margin-top:10px">${days.map((d, i) => chip(d, checked ? i <= todayIdx : i < todayIdx)).join('')}
+        <div class="chips" style="margin-top:10px">${days.map((d, i) => chip(d, lit(i))).join('')}
           <button class="chip ${checked ? '' : 'on'}" id="checkin" ${checked ? 'disabled' : ''}><span>${checked ? '오늘 완료 ✓' : '체크인 +10XP'}</span></button></div>
       </div>
       <div class="pad" style="display:flex;flex-direction:column;gap:14px">
@@ -78,7 +81,7 @@
             <div class="label">오늘의 뽑기 · ${canGacha ? '1/1' : '0/1'}</div>
             ${canGacha
               ? `<div class="t" style="font-size:15px;margin:2px 0 8px">오늘의 추천 피규어가<br>기다리고 있어</div><button class="cta theme" id="gacha-go" style="width:auto;padding:8px 16px;font-size:12px"><span>탭해서 공개</span></button>`
-              : `<div class="t" style="font-size:14px;margin:2px 0 4px">${h(result?.name || '')}</div><div class="muted small">${result ? MK.rarity(result.rarity).label + ' · ' + h(result.price) : ''}</div><button class="cta sub" data-go="detail:${result?.id}" style="width:auto;padding:7px 14px;font-size:12px;margin-top:8px"><span>상세 보기</span></button>`}
+              : `<div class="t" style="font-size:14px;margin:2px 0 4px">${h(result?.name || '')}</div><div class="muted small">${result ? MK.rarity(result.rarity).label + ' · ' + h(result.price) : ''}</div>${result ? `<button class="cta sub" data-go="detail:${result.id}" style="width:auto;padding:7px 14px;font-size:12px;margin-top:8px"><span>상세 보기</span></button>` : ''}`}
           </div>
         </div>
 
@@ -98,9 +101,10 @@
   };
 
   /* S3 월드 */
-  V.world = (id, tab = 'cur') => {
+  V.world = (id, tab = 'cur', ch = '', rar = '') => {
     const w = MK.world(id); if (!w) return V.home();
-    const figs = MK_FIGURES.filter(f => f.world === id);
+    const allFigs = MK_FIGURES.filter(f => f.world === id);
+    const figs = allFigs.filter(f => (!ch || f.char === ch) && (!rar || f.rarity === rar));
     const c = MK.counts(id);
     const byChar = w.chars.map(ch => ({ ch, n: figs.filter(f => f.char === ch).length, own: figs.filter(f => f.char === ch && MK.state.coll[f.id] === 'own').length }));
     return `<div class="view" data-theme-world="${id}">
@@ -122,7 +126,8 @@
           <div><div class="label" style="margin-bottom:6px">입문 추천 · 일반</div><div class="grid3">${figs.filter(f => f.rarity === 'common').slice(0, 3).map(posterFig).join('')}</div></div>
           <div><div class="label" style="margin-bottom:6px">소장용 · 레어 이상</div><div class="grid3">${figs.filter(f => f.rarity !== 'common').slice(0, 3).map(posterFig).join('')}</div></div>`
         : tab === 'chars' ? `<div class="grid3" style="gap:14px 8px">${byChar.map((x, i) => `<button data-go="world:${id}:all:${encodeURIComponent(x.ch)}" style="text-align:center"><div class="charring ${x.own ? (i === 1 ? 't2' : 't') : 'off'}">${h(x.ch)}</div><div class="muted" style="font-size:10px;margin-top:4px">${x.n}종 · ${x.own} 보유</div></button>`).join('')}</div>`
-        : `<div class="chips">${chip('전체', true)}${['common', 'rare', 'epic', 'legendary'].map(r => rchip(r)).join('')}</div><div class="grid3">${figs.map(posterFig).join('')}</div>`}
+        : `<div class="chips">${chip('전체', !ch && !rar, `data-go="world:${id}:all"`)}${['common', 'rare', 'epic', 'legendary'].map(r => `<button class="chip r-${r} ${rar === r ? 'on' : ''}" data-go="world:${id}:all::${r}"><span>${MK.rarity(r).label}</span></button>`).join('')}${ch ? chip(ch + ' ✕', true, `data-go="world:${id}:all"`) : ''}</div>
+           <div class="grid3">${figs.map(posterFig).join('') || '<div class="muted small" style="grid-column:1/-1;padding:20px;text-align:center">해당하는 피규어가 없어요</div>'}</div>`}
       </div></div>`;
   };
 
@@ -151,7 +156,8 @@
 
   /* S5 도감 */
   V.collection = (worldId, filter = 'all') => {
-    const s = MK.state; const wid = worldId || s.worlds[0] || 'kny'; const w = MK.world(wid);
+    const s = MK.state;
+    const w = MK.world(worldId) || MK.world(s.worlds[0]) || MK_WORLDS[0]; const wid = w.id;
     const figs = MK_FIGURES.filter(f => f.world === wid).filter(f => filter === 'all' ? true : filter === 'own' ? s.coll[f.id] === 'own' : filter === 'wish' ? s.coll[f.id] === 'wish' : !s.coll[f.id]);
     const c = MK.counts(wid);
     return `<div class="view pad" data-theme-world="${wid}" style="display:flex;flex-direction:column;gap:12px;position:relative">
@@ -181,6 +187,8 @@
   /* S6 랭킹 (신시대 + 레전드) */
   V.ranking = (section = 'newera', sub = 'kr') => {
     const isNew = section === 'newera';
+    if (isNew && !MK_NEWERA[sub]) sub = 'kr';
+    if (!isNew && !['all', ...MK_LEGEND.decades].includes(sub)) sub = 'all';
     const list = isNew ? MK_NEWERA[sub] : (sub === 'all' ? MK_LEGEND.list : MK_LEGEND.list.filter(e => e.d === sub));
     const region = isNew ? MK_NEWERA.regions.find(r => r.id === sub) : null;
     return `<div class="view" style="--theme:${isNew ? '#2fd36f' : '#ffcc33'};--theme2:${isNew ? '#ff7a1a' : '#f2f0ea'};--on-theme:#000;--g:${isNew ? '35%' : '30%'}">
@@ -209,7 +217,7 @@
       { id: 'checkin', l: '데일리 체크인', xp: '+10 XP' }, { id: 'gacha', l: '오늘의 뽑기 열기', xp: '+10 XP' },
       { id: 'coll', l: '도감에 1개 담기', xp: '+20 XP' }, { id: 'half', l: '월드 하나 50% 달성', xp: '뱃지' },
     ];
-    const today = new Date().toISOString().slice(0, 10);
+    const today = MK.today();
     const done = (q) => q.id === 'half' ? s.badges.includes('half') : s.quests[q.id] === today;
     return `<div class="view pad" style="display:flex;flex-direction:column;gap:14px;position:relative">
       <div class="splat ink" style="width:70px;height:70px;left:-30px;top:60px;opacity:.12"></div>
@@ -219,7 +227,7 @@
           <div style="display:flex;align-items:baseline;gap:8px"><span class="display" style="font-size:30px;color:var(--theme)">Lv ${MK.level()}</span><span class="muted small">다음 레벨까지 ${MK.XP_PER_LEVEL - MK.xpInLevel()} XP</span></div>
           <div class="xp" style="margin-top:4px"><i style="--w:${MK.xpInLevel() / MK.XP_PER_LEVEL * 100}%"></i></div></div></div>
       <div class="grid3">
-        <div class="panel" style="text-align:center"><div class="display" style="font-size:22px">${s.streak}</div><div class="label">연속 체크인</div></div>
+        <div class="panel" style="text-align:center"><div class="display" style="font-size:22px">${MK.effectiveStreak()}</div><div class="label">연속 체크인</div></div>
         <div class="panel" style="text-align:center"><div class="display" style="font-size:22px">${c.own}</div><div class="label">보유 피규어</div></div>
         <div class="panel" style="text-align:center"><div class="display" style="font-size:22px">${s.worlds.length}</div><div class="label">월드</div></div></div>
       <div><div style="display:flex;justify-content:space-between"><div class="label">뱃지 <span class="muted">${s.badges.length}/${MK.BADGES.length}</span></div></div>
@@ -232,7 +240,8 @@
 
   /* S8 공유 카드 */
   V.share = (bg = 0) => {
-    const s = MK.state; const wid = s.worlds[0] || 'kny'; const w = MK.world(wid);
+    const s = MK.state; const w = MK.world(s.worlds[0]) || MK_WORLDS[0]; const wid = w.id;
+    bg = [0, 1, 2, 3].includes(bg) ? bg : 0;
     const own = MK_FIGURES.filter(f => f.world === wid && s.coll[f.id] === 'own').slice(0, 5);
     const bgs = [{ n: '테마', v: `linear-gradient(180deg, color-mix(in srgb, ${w.theme} 45%, #000), #0d0d0f)` }, { n: '보조', v: `linear-gradient(180deg, color-mix(in srgb, ${w.theme2} 45%, #000), #0d0d0f)` }, { n: '종이', v: '#f2f0ea' }, { n: '먹', v: '#141416' }];
     const paper = bg === 2;

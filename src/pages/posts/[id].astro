@@ -18,6 +18,7 @@ const { Content } = await render(post);
     <time datetime={post.data.date.toISOString()}>
       {post.data.date.toLocaleDateString('ko-KR')}
     </time>
+    <p class="post-disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
     <Content />
     {post.data.products.map((p, i) => (
       <ProductCard rank={i + 1} {...p} />
@@ -26,5 +27,7 @@ const { Content } = await render(post);
 </Base>
 
 <style>
-  time { color: #888; font-size: 0.875rem; }
+  time { color: var(--muted); font-size: 0.875rem; }
+  /* 공정위 지침: 본문과 같은 크기·색으로 본문 시작부에 고지 */
+  .post-disclosure { font-size: 1rem; color: var(--fg); background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 0.75rem 1rem; margin: 1rem 0 1.5rem; }
 </style>

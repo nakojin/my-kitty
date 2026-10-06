@@ -1,7 +1,7 @@
 <?php
 /** 피규어 포스터 카드. args: id. 도감 상태(보유/위시)는 클라이언트(store.js)가 data-figure 로 칠한다. */
 $id     = (int) ( $args['id'] ?? get_the_ID() );
-$rarity = get_post_meta( $id, 'rarity', true ) ?: 'common';
+$rarity = mykitty_rarity_key( get_post_meta( $id, 'rarity', true ) );
 $map    = mykitty_rarity_map();
 $img    = get_post_meta( $id, 'product_image', true ) ?: ( get_the_post_thumbnail_url( $id, 'mk-poster' ) ?: '' );
 $slug   = get_post_field( 'post_name', $id );

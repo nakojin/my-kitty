@@ -2,19 +2,23 @@
 // 워드프레스 이식 시: 로그인 사용자는 user_meta, 비로그인은 그대로 localStorage.
 (function () {
   const KEY = 'mk.proto.v1';
-  const today = () => new Date().toISOString().slice(0, 10);
+  // 로컬 날짜(YYYY-MM-DD). toISOString 은 UTC 라 한국에서는 오전 9시에 날짜가 바뀌므로 쓰지 않는다.
+  const today = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const yesterday = () => { const y = new Date(); y.setDate(y.getDate() - 1); return today(y); };
 
   const defaults = () => ({
     onboarded: false,
     nick: '',
     worlds: [],                 // 선택한 월드 id
     coll: {},                   // figureId -> 'own' | 'wish'
+    xpColl: {},                 // figureId -> 1  (도감 XP 는 피규어당 1회)
     xp: 0,
     streak: 0,
     lastCheckin: '',
     lastGacha: '',
     gachaResult: '',
     badges: [],
+    badgesMeta: {},
     quests: {},                 // questId -> date
   });
 
@@ -22,7 +26,8 @@
   try { state = Object.assign(defaults(), JSON.parse(localStorage.getItem(KEY) || '{}')); }
   catch { state = defaults(); }
 
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+  // 저장할 때마다 'mk:save' 이벤트를 쏜다. 워드프레스 앱은 이걸 듣고 서버에 동기화한다.
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} document.dispatchEvent(new CustomEvent('mk:save')); };
 
   const XP_PER_LEVEL = 200;
   const level = () => Math.floor(state.xp / XP_PER_LEVEL) + 1;
@@ -33,29 +38,28 @@
     { id: 'streak-7', name: '7일', test: s => s.streak >= 7 },
     { id: 'starter', name: '입문자', test: s => Object.values(s.coll).filter(v => v === 'own').length >= 3 },
     { id: 'kny-10', name: '귀멸 10', test: s => Object.keys(s.coll).filter(id => id.startsWith('kny') && s.coll[id] === 'own').length >= 10 },
-    { id: 'half', name: '완주 50%', test: s => window.MK_WORLDS.some(w => MK.completion(w.id) >= 50) },
-    { id: 'gacha-3', name: '뽑기 3일', test: s => s.badgesMeta?.gacha >= 3 },
+    { id: 'half', name: '완주 50%', test: () => window.MK_WORLDS.some(w => MK.completion(w.id) >= 50) },
+    { id: 'gacha-3', name: '뽑기 3일', test: s => (s.badgesMeta.gacha || 0) >= 3 },
   ];
+  let pendingBadges = [];   // 새로 딴 뱃지. UI 가 takeBadges() 로 꺼내 알린다.
 
   const MK = {
     get state() { return state; },
-    save,
-    reset() { state = defaults(); save(); },
+    save, today,
+    reset() { state = defaults(); save(); pendingBadges = []; },
     level, xpInLevel, XP_PER_LEVEL,
 
-    addXp(n, why) {
-      const before = level();
-      state.xp += n; save();
-      MK.checkBadges();
-      return { leveled: level() > before, why };
-    },
+    addXp(n) { state.xp += n; save(); MK.checkBadges(); },
+
+    // 어제·오늘 체크인했을 때만 유효한 스트릭. 며칠 비우면 0 으로 보인다(다음 체크인 때 1 로 리셋).
+    effectiveStreak() { return (state.lastCheckin === today() || state.lastCheckin === yesterday()) ? state.streak : 0; },
+    checkedToday() { return state.lastCheckin === today(); },
     checkin() {
       if (state.lastCheckin === today()) return false;
-      const y = new Date(); y.setDate(y.getDate() - 1);
-      state.streak = state.lastCheckin === y.toISOString().slice(0, 10) ? state.streak + 1 : 1;
+      state.streak = state.lastCheckin === yesterday() ? state.streak + 1 : 1;
       state.lastCheckin = today();
       state.quests.checkin = today(); save();
-      MK.addXp(10, '체크인');
+      MK.addXp(10);
       return true;
     },
     canGacha() { return state.lastGacha !== today(); },
@@ -63,17 +67,18 @@
       // 선택한 월드 안에서, 아직 도감에 없는 피규어 중 입문 가격대(common) 우선
       const pool = window.MK_FIGURES.filter(f => state.worlds.includes(f.world) && !state.coll[f.id]);
       const common = pool.filter(f => f.rarity === 'common');
-      const pick = (common.length ? common : pool.length ? pool : window.MK_FIGURES)[Math.floor(Math.random() * (common.length || pool.length || window.MK_FIGURES.length))];
+      const from = common.length ? common : pool.length ? pool : window.MK_FIGURES;
+      if (!from.length) return null;
+      const pick = from[Math.floor(Math.random() * from.length)];
       state.lastGacha = today(); state.gachaResult = pick.id; state.quests.gacha = today();
-      state.badgesMeta = state.badgesMeta || {}; state.badgesMeta.gacha = (state.badgesMeta.gacha || 0) + 1;
-      save(); MK.addXp(10, '뽑기');
+      state.badgesMeta.gacha = (state.badgesMeta.gacha || 0) + 1;
+      save(); MK.addXp(10);
       return pick;
     },
     setColl(id, v) {
-      const had = !!state.coll[id];
       if (v) state.coll[id] = v; else delete state.coll[id];
       save();
-      if (!had && v) { state.quests.coll = today(); save(); MK.addXp(20, '도감'); }
+      if (v && !state.xpColl[id]) { state.xpColl[id] = 1; state.quests.coll = today(); save(); MK.addXp(20); }
       MK.checkBadges();
     },
     completion(worldId) {
@@ -89,18 +94,19 @@
       return c;
     },
     checkBadges() {
-      let newly = [];
+      const newly = [];
       BADGES.forEach(b => { if (!state.badges.includes(b.id) && b.test(state)) { state.badges.push(b.id); newly.push(b); } });
-      if (newly.length) save();
+      if (newly.length) { pendingBadges.push(...newly); save(); }
       return newly;
     },
+    takeBadges() { const p = pendingBadges; pendingBadges = []; return p; },
     BADGES,
     world(id) { return window.MK_WORLDS.find(w => w.id === id); },
     figure(id) { return window.MK_FIGURES.find(f => f.id === id); },
     rarity(k) { return window.MK_RARITY[k]; },
     applyTheme(el, world) {
       const w = typeof world === 'string' ? MK.world(world) : world;
-      if (!w) return;
+      if (!w || !el) return;
       el.style.setProperty('--theme', w.theme); el.style.setProperty('--theme2', w.theme2);
       el.style.setProperty('--on-theme', w.on); el.style.setProperty('--g', w.g + '%');
     },

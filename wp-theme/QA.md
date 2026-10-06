@@ -5,7 +5,7 @@
 ## 0. 설치
 - [ ] `wp-theme/mykitty` 업로드·활성화 → 관리자 메뉴에 **피규어**, **랭킹 항목** 생김
 - [ ] 설정 → 고유주소 "글 이름" 저장
-- [ ] `wp eval-file wp-theme/import/import.php` → worlds 9 / figures 107 / rankings 110 / posts 6 성공 메시지
+- [ ] `wp eval-file wp-theme/import/import.php --user=<관리자>` → worlds 9 / figures 107 / rankings 110 / posts 6 성공 메시지
 - [ ] 설정 → 읽기: 홈 = "홈" 페이지, 글 페이지 = "피규어 추천 글" (활성화 시 자동 설정됨)
 
 ## 1. 뼈대

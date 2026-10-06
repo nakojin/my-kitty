@@ -14,6 +14,17 @@ function mykitty_rarity_map(): array {
 	];
 }
 
+/** get_term_link 가 WP_Error 를 돌려줄 때 빈 문자열로. PHP 8 에서 esc_url(WP_Error) 는 TypeError 다. */
+function mykitty_term_url( $term, string $taxonomy = '' ): string {
+	$u = get_term_link( $term, $taxonomy );
+	return is_wp_error( $u ) ? '' : $u;
+}
+
+/** 레어리티 키 정규화. 알 수 없는 값은 common. */
+function mykitty_rarity_key( $raw ): string {
+	return isset( mykitty_rarity_map()[ $raw ] ) ? $raw : 'common';
+}
+
 /** 월드 term → 인라인 CSS 변수. 월드 페이지·카드·헤더에 붙인다. */
 function mykitty_world_style( WP_Term|int|null $term ): string {
 	$term = $term instanceof WP_Term ? $term : get_term( (int) $term, 'world' );
@@ -77,7 +88,7 @@ function mykitty_worlds_for_js(): array {
 			'g'      => (int) get_term_meta( $id, 'g', true ),
 			'img'    => get_term_meta( $id, 'hero_slot', true ),
 			'chars'  => array_values( array_filter( array_map( 'trim', explode( ',', (string) get_term_meta( $id, 'characters', true ) ) ) ) ),
-			'url'    => get_term_link( $t ),
+			'url'    => mykitty_term_url( $t ),
 		];
 	}
 	usort( $out, fn( $a, $b ) => $a['no'] <=> $b['no'] );
@@ -98,7 +109,7 @@ function mykitty_figures_for_js(): array {
 			'line'       => get_post_meta( $p->ID, 'line', true ),
 			'size'       => get_post_meta( $p->ID, 'size', true ),
 			'price'      => get_post_meta( $p->ID, 'price', true ),
-			'rarity'     => get_post_meta( $p->ID, 'rarity', true ) ?: 'common',
+			'rarity'     => mykitty_rarity_key( get_post_meta( $p->ID, 'rarity', true ) ),
 			'why'        => get_post_meta( $p->ID, 'why', true ),
 			'coupangUrl' => get_post_meta( $p->ID, 'coupang_url', true ),
 			'img'        => get_post_meta( $p->ID, 'product_image', true ) ?: ( get_the_post_thumbnail_url( $p->ID, 'mk-poster' ) ?: '' ),

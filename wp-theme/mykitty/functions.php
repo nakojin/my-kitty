@@ -10,6 +10,11 @@ define( 'MYKITTY_VERSION', '0.1.0' );
 define( 'MYKITTY_DIR', get_template_directory() );
 define( 'MYKITTY_URI', get_template_directory_uri() );
 
+// PHP 8.0 호환 (array_is_list 는 8.1+)
+if ( ! function_exists( 'array_is_list' ) ) {
+	function array_is_list( array $a ): bool { return $a === [] || array_keys( $a ) === range( 0, count( $a ) - 1 ); }
+}
+
 require MYKITTY_DIR . '/inc/post-types.php';
 require MYKITTY_DIR . '/inc/template-tags.php';
 require MYKITTY_DIR . '/inc/pages.php';
@@ -72,7 +77,7 @@ add_filter( 'the_content', function ( $content ) {
 	return preg_replace_callback(
 		'#<a\s+([^>]*href="https?://(?:link\.)?coupang\.com[^"]*"[^>]*)>#i',
 		function ( $m ) {
-			$attrs = preg_replace( '/\srel="[^"]*"/i', '', $m[1] );
+			$attrs = preg_replace( '/\s(?:rel|target)="[^"]*"/i', '', $m[1] );
 			return '<a ' . $attrs . ' rel="sponsored nofollow noopener" target="_blank">';
 		},
 		$content

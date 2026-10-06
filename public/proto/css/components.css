@@ -74,7 +74,7 @@ img { max-width: 100%; display: block; }
 .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .poster { aspect-ratio: 3/4; position: relative; overflow: hidden; background: var(--ph); border: 1px solid #3a3a40; transform: skew(-4deg); transition: transform var(--t-fast), border-color var(--t-fast); }
 .poster:active { transform: skew(-4deg) scale(.97); }
-.poster .img-slot { position: absolute; inset: 0; border: 0; }
+.poster .img-slot { position: absolute; inset: 0; border: 0; z-index: 0; } /* 캡션·태그가 이미지 위에 오도록 스태킹 컨텍스트 격리 */
 .poster .cap { position: absolute; left: 7px; right: 7px; bottom: 7px; font-weight: 800; font-size: 11px; line-height: 1.25; transform: skew(4deg); text-shadow: 0 1px 2px #000; }
 .poster .tag { position: absolute; top: 6px; left: 6px; font-size: 9px; padding: 1px 6px; background: #000c; color: var(--muted); transform: skew(4deg); }
 .poster.on { border: 2px solid var(--theme); box-shadow: 0 0 0 2px #000, 0 0 0 4px color-mix(in srgb, var(--theme) 50%, transparent); }

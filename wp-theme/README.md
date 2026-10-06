@@ -31,7 +31,7 @@ CSV 3개는 프로토타입 `public/proto/data/*.js` 에서 생성한 것이라 
 ### WP-CLI 가 있으면
 
 ```bash
-wp eval-file wp-theme/import/import.php
+wp eval-file wp-theme/import/import.php --user=<관리자 로그인>
 ```
 
 ### 플러그인으로

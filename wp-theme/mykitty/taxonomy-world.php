@@ -12,12 +12,12 @@ $rarity = sanitize_key( $_GET['rarity'] ?? '' );
 $char   = sanitize_text_field( wp_unslash( $_GET['char'] ?? '' ) );
 $chars  = array_values( array_filter( array_map( 'trim', explode( ',', (string) get_term_meta( $wid, 'characters', true ) ) ) ) );
 $no     = (int) get_term_meta( $wid, 'world_no', true );
-$base   = get_term_link( $world );
+$base   = mykitty_term_url( $world );
 $rmap   = mykitty_rarity_map();
 
 // 이 월드의 피규어 전부 (클라이언트 집계와 캐릭터 카운트에 재사용)
 $all = get_posts( [ 'post_type' => 'figure', 'posts_per_page' => -1, 'tax_query' => [ [ 'taxonomy' => 'world', 'field' => 'term_id', 'terms' => $wid ] ], 'orderby' => 'menu_order title', 'order' => 'ASC' ] );
-$by_rarity = fn( string $r ) => array_values( array_filter( $all, fn( $p ) => ( get_post_meta( $p->ID, 'rarity', true ) ?: 'common' ) === $r ) );
+$by_rarity = fn( string $r ) => array_values( array_filter( $all, fn( $p ) => mykitty_rarity_key( get_post_meta( $p->ID, 'rarity', true ) ) === $r ) );
 $curation  = (int) get_term_meta( $wid, 'curation_post', true );
 ?>
 <div class="view" style="<?php echo mykitty_world_style( $world ); ?>">
@@ -88,7 +88,7 @@ $curation  = (int) get_term_meta( $wid, 'curation_post', true );
 			</div>
 			<?php
 			$list = array_values( array_filter( $all, function ( $p ) use ( $rarity, $char ) {
-				if ( $rarity && ( get_post_meta( $p->ID, 'rarity', true ) ?: 'common' ) !== $rarity ) { return false; }
+				if ( $rarity && mykitty_rarity_key( get_post_meta( $p->ID, 'rarity', true ) ) !== $rarity ) { return false; }
 				if ( $char && get_post_meta( $p->ID, 'character', true ) !== $char ) { return false; }
 				return true;
 			} ) );

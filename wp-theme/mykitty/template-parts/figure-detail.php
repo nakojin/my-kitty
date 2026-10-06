@@ -6,7 +6,7 @@
 $id     = (int) ( $args['id'] ?? get_the_ID() );
 $world  = mykitty_figure_world( $id );
 $slug   = get_post_field( 'post_name', $id );
-$rarity = get_post_meta( $id, 'rarity', true ) ?: 'common';
+$rarity = mykitty_rarity_key( get_post_meta( $id, 'rarity', true ) );
 $r      = mykitty_rarity_map()[ $rarity ] ?? mykitty_rarity_map()['common'];
 $img    = get_post_meta( $id, 'product_image', true ) ?: ( get_the_post_thumbnail_url( $id, 'large' ) ?: '' );
 $line   = get_post_meta( $id, 'line', true );
@@ -27,7 +27,7 @@ $coupang = get_post_meta( $id, 'coupang_url', true );
 			<?php mykitty_chip( $r['label'], false, 'r-' . $rarity ); ?>
 			<?php if ( $s = get_post_meta( $id, 'size', true ) ) { mykitty_chip( $s ); } ?>
 			<?php if ( $p = get_post_meta( $id, 'price', true ) ) { mykitty_chip( $p ); } ?>
-			<?php if ( $world ) { mykitty_chip( $world->name, false, '', get_term_link( $world ) ); } ?>
+			<?php if ( $world ) { mykitty_chip( $world->name, false, '', mykitty_term_url( $world ) ); } ?>
 		</div>
 	</div>
 

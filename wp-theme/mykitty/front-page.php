@@ -44,7 +44,7 @@ $days = [ '월', '화', '수', '목', '금', '토', '일' ];
 
 		<?php if ( $top3 ) : ?>
 		<section>
-			<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><div class="label">신시대 랭킹</div><a class="small" style="color:var(--theme)" href="<?php echo esc_url( get_term_link( 'newera-kr', 'ranking_board' ) ); ?>">전체 ›</a></div>
+			<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><div class="label">신시대 랭킹</div><a class="small" style="color:var(--theme)" href="<?php echo esc_url( mykitty_term_url( 'newera-kr', 'ranking_board' ) ); ?>">전체 ›</a></div>
 			<?php foreach ( $top3 as $p ) { mykitty_rank_row( $p->ID, true ); } ?>
 		</section>
 		<?php endif; ?>
@@ -52,7 +52,7 @@ $days = [ '월', '화', '수', '목', '금', '토', '일' ];
 		<?php if ( $feed ) : ?>
 		<section>
 			<div class="label" style="margin-bottom:4px">재입고 · 신상</div>
-			<?php foreach ( $feed as $i => $p ) : $slug = $p->post_name; $r = mykitty_rarity_map()[ get_post_meta( $p->ID, 'rarity', true ) ?: 'common' ]; ?>
+			<?php foreach ( $feed as $i => $p ) : $slug = $p->post_name; $r = mykitty_rarity_map()[ mykitty_rarity_key( get_post_meta( $p->ID, 'rarity', true ) ) ]; ?>
 			<a class="row" href="<?php echo esc_url( get_permalink( $p ) ); ?>" data-sheet>
 				<div class="thumb"><?php mykitty_img_slot( 'COUPANG-' . $slug, 'product', get_post_meta( $p->ID, 'product_image', true ), ' ' ); ?></div>
 				<div class="body"><div class="t"><?php echo esc_html( $p->post_title ); ?></div><div class="muted small"><?php echo esc_html( $r['label'] . ' · ' . get_post_meta( $p->ID, 'price', true ) ); ?></div></div>

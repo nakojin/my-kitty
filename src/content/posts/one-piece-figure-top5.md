@@ -1,7 +1,7 @@
 ---
 title: "원피스 피규어 추천 TOP 5 — 루피, 조로, 샹크스, 에이스 (2026)"
 description: "원피스 피규어는 종류가 너무 많아 고르기 어렵습니다. 쿠팡에서 바로 살 수 있는 반프레스토 인기 라인 중심으로 실패 없는 5종을 골랐습니다."
-date: 2026-10-09
+date: 2026-10-04
 products:
   - name: "반프레스토 원피스 Grandista(그랜디스타) 몽키 D. 루피"
     price: "4~6만 원대"
@@ -26,10 +26,10 @@ products:
 
 **반프레스토 라인만 알아도 절반은 끝**
 원피스 피규어의 대부분은 반프레스토 프라이즈입니다. 가격 순으로 정리하면:
-- *DXF The Grandline Men / Lady*: 기본 라인. 2~4만 원대. 캐릭터 수 최다.
-- *Battle Record Collection*: 전투 포즈 특화. 3~4만 원대.
-- *Grandista*: 27cm 대형 사이즈. 4~6만 원대.
-- *Master Stars Piece(MSP)*: 최상위 프라이즈. 5~7만 원대.
+- *DXF The Grandline Men / Lady*: 기본 라인. 2–4만 원대. 캐릭터 수 최다.
+- *Battle Record Collection*: 전투 포즈 특화. 3–4만 원대.
+- *Grandista*: 27cm 대형 사이즈. 4–6만 원대.
+- *Master Stars Piece(MSP)*: 최상위 프라이즈. 5–7만 원대.
 
 **스케일 피규어는 P.O.P 하나만 기억하세요**
 메가하우스의 *Portrait.Of.Pirates*가 원피스 스케일 피규어의 사실상 표준입니다. 15만 원 이상이지만 품질은 차원이 다르고, 중고 거래도 활발해 되팔기 쉽습니다.

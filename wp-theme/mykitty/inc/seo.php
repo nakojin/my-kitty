@@ -28,7 +28,7 @@ add_action( 'wp_head', function () {
 	if ( is_admin() || is_404() ) { return; }
 	$title = wp_get_document_title();
 	$desc  = mykitty_og_description();
-	$url   = is_singular() ? get_permalink() : ( is_tax() ? get_term_link( get_queried_object() ) : home_url( add_query_arg( [] ) ) );
+	$url   = is_singular() ? get_permalink() : ( is_tax() ? mykitty_term_url( get_queried_object() ) : ( is_home() && get_option( 'page_for_posts' ) ? get_permalink( get_option( 'page_for_posts' ) ) : home_url( '/' ) ) );
 	$img   = mykitty_og_image();
 	echo "\n<meta name=\"description\" content=\"" . esc_attr( $desc ) . "\">\n";
 	echo '<link rel="canonical" href="' . esc_url( $url ) . "\">\n";

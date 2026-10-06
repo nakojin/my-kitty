@@ -6,7 +6,7 @@
   const ENV = window.MK_ENV || {};
   const sheetWrap = $('#sheet'), sheetInner = $('#sheet-inner');
   if (!window.MK) return;
-  const today = () => new Date().toISOString().slice(0, 10);
+  const today = () => MK.today();
   const h = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   /* ── 공통: 상태 칠하기 ── */
@@ -29,18 +29,19 @@
       btn.querySelector('span').textContent = s === 'own' ? '✓ 보유 중' : s === 'wish' ? '♡ 위시' : '♡ 도감 담기';
     });
     $$('[data-level]', root).forEach(el => el.textContent = MK.level());
-    $$('[data-streak]', root).forEach(el => el.textContent = MK.state.streak);
+    $$('[data-streak]', root).forEach(el => el.textContent = MK.effectiveStreak());
   }
 
   /* ── 토스트 ── */
-  let toastTimer;
+  let toastTimer, toastRemove;
   function toast(msg) {
     let t = $('#toast');
     if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; ($('#device') || document.body).appendChild(t); }
+    clearTimeout(toastTimer); clearTimeout(toastRemove);
     t.className = 'toast'; t.innerHTML = `<span>${msg}</span>`;
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.classList.add('gone'); setTimeout(() => t.remove(), 350); }, 1800);
+    toastTimer = setTimeout(() => { t.classList.add('gone'); toastRemove = setTimeout(() => t.remove(), 350); }, 1800);
   }
-  const announceBadges = () => MK.checkBadges().forEach((b, i) => setTimeout(() => toast(`🏅 뱃지 획득 — ${b.name}`), 900 + i * 600));
+  const announceBadges = () => MK.takeBadges().forEach((b, i) => setTimeout(() => toast(`🏅 뱃지 획득 — ${b.name}`), 900 + i * 600));
 
   /* ── 바텀시트 ── */
   async function openSheet(url) {
@@ -82,7 +83,8 @@
       } else { syncUp(); }
     } catch {}
   }
-  const _save = MK.save; MK.save = function () { _save.call(MK); syncUp(); };
+  // store.js 는 저장할 때마다 mk:save 를 쏜다 (내부 save() 호출 포함). 그걸 듣고 서버에 올린다.
+  document.addEventListener('mk:save', syncUp);
 
   /* ── 화면: 홈 ── */
   function renderHome() {
@@ -92,8 +94,9 @@
     const main = MK.world(s.worlds[0]) || window.MK_WORLDS[0];
     if (main) { MK.applyTheme($('[data-main-world]'), main); const hs = $('[data-hero-slot]'); if (hs) { hs.dataset.slot = main.img; hs.innerHTML = `<img src="${ENV.imgBase}${main.img}.webp" alt="" onerror="this.remove()">`; } }
 
-    const checked = s.lastCheckin === today(); const idx = (new Date().getDay() + 6) % 7;
-    $$('[data-day]').forEach(el => el.classList.toggle('on', checked ? +el.dataset.day <= idx : +el.dataset.day < idx));
+    const checked = MK.checkedToday(); const idx = (new Date().getDay() + 6) % 7; const st = MK.effectiveStreak();
+    $$('[data-day]').forEach(el => { const back = checked ? idx - +el.dataset.day : idx - 1 - +el.dataset.day; el.classList.toggle('on', back >= 0 && back < st); });
+    $$('[data-streak]').forEach(el => el.textContent = st);
     const ci = $('[data-checkin]'); if (ci) { ci.disabled = checked; ci.classList.toggle('on', !checked); ci.querySelector('span').textContent = checked ? '오늘 완료 ✓' : '체크인 +10XP'; }
 
     const can = MK.canGacha(); const g = $('[data-gacha]'); const txt = $('[data-gacha-text]'); const result = s.gachaResult ? MK.figure(s.gachaResult) : null;
@@ -112,11 +115,12 @@
     $('[data-checkin]')?.addEventListener('click', () => { if (MK.checkin()) { toast('🔥 체크인 완료 +10 XP'); renderHome(); paint(); announceBadges(); } });
     const doGacha = () => {
       if (!MK.canGacha()) return;
-      const pick = MK.gacha(); const g = $('[data-gacha]');
+      const pick = MK.gacha(); if (!pick) { toast('뽑을 피규어가 없어요'); return; }
+      const g = $('[data-gacha]');
       g.classList.remove('idle');
       $('[data-gacha-back]').innerHTML = `<div class="img-slot product" data-slot="COUPANG-${pick.id}">${pick.img ? `<img src="${h(pick.img)}" alt="">` : ''}</div><div class="cap" style="font-size:10px">${h(pick.char)}</div>`;
       g.classList.add('flipped');
-      setTimeout(() => { toast(`✨ ${pick.name}`); renderHome(); setTimeout(() => pick.url && openSheet(pick.url), 700); }, 950);
+      setTimeout(() => { toast(`✨ ${h(pick.name)}`); renderHome(); setTimeout(() => pick.url && openSheet(pick.url), 700); }, 950);
     };
     $('[data-gacha]')?.addEventListener('click', doGacha); $('[data-gacha-go]')?.addEventListener('click', doGacha);
   }
@@ -253,7 +257,7 @@
     const coll = e.target.closest('[data-coll]');
     if (coll) {
       const id = coll.dataset.coll; const cur = MK.state.coll[id]; const next = !cur ? 'wish' : cur === 'wish' ? 'own' : null;
-      MK.setColl(id, next); toast(next === 'wish' ? '♡ 위시에 담았어요' : next === 'own' ? '✓ 보유로 등록! +20 XP' : '도감에서 뺐어요');
+      const first = !MK.state.xpColl[id]; MK.setColl(id, next); toast(next === 'wish' ? '♡ 위시에 담았어요' + (first ? ' +20 XP' : '') : next === 'own' ? '✓ 보유로 등록!' : '도감에서 뺐어요');
       paint(); renderScreen(); announceBadges(); return;
     }
     if (e.target.closest('#sheet .dim')) closeSheet(false);

@@ -7,6 +7,7 @@
 defined( 'ABSPATH' ) || exit;
 
 add_action( 'after_switch_theme', function () {
+	mykitty_register_content_model();
 	$pages = [
 		'collection'      => [ '도감', 'page-collection.php', '' ],
 		'my'              => [ '마이', 'page-my.php', '' ],
@@ -23,15 +24,15 @@ add_action( 'after_switch_theme', function () {
 	// 홈을 front-page.php 로 (최신 글 목록은 /posts/ 로 이동)
 	if ( ! get_page_by_path( 'posts' ) ) {
 		$blog = wp_insert_post( [ 'post_type' => 'page', 'post_status' => 'publish', 'post_name' => 'posts', 'post_title' => '피규어 추천 글' ] );
-		update_option( 'page_for_posts', $blog );
+		if ( $blog && ! is_wp_error( $blog ) ) { update_option( 'page_for_posts', $blog ); }
 	}
 	update_option( 'show_on_front', 'page' );
 	if ( ! get_option( 'page_on_front' ) ) {
 		$home = wp_insert_post( [ 'post_type' => 'page', 'post_status' => 'publish', 'post_name' => 'home', 'post_title' => '홈' ] );
-		update_option( 'page_on_front', $home );
+		if ( $home && ! is_wp_error( $home ) ) { update_option( 'page_on_front', $home ); }
 	}
 	flush_rewrite_rules();
-} );
+}, 10 );
 
 function mykitty_default_about_content(): string {
 	return <<<HTML

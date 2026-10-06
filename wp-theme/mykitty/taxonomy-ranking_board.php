@@ -14,14 +14,14 @@ $args    = [ 'post_type' => 'ranking_entry', 'posts_per_page' => -1, 'meta_key' 
 if ( ! $is_new && $decade ) { $args['meta_query'] = [ [ 'key' => 'decade', 'value' => $decade ] ]; }
 $entries = get_posts( $args );
 $theme   = $is_new ? '--theme:#2fd36f;--theme2:#ff7a1a;--on-theme:#000;--g:35%' : '--theme:#ffcc33;--theme2:#f2f0ea;--on-theme:#000;--g:30%';
-$legend_url = get_term_link( 'legend', 'ranking_board' );
+$legend_url = mykitty_term_url( 'legend', 'ranking_board' );
 ?>
 <div class="view" data-screen="ranking" style="<?php echo $theme; ?>">
 	<div class="hero" style="padding-bottom:0">
 		<?php mykitty_img_slot( $is_new ? 'IMG-RANK-NEWERA' : 'IMG-RANK-LEGEND', '', '', ' ' ); ?>
 		<div class="splat" style="width:120px;height:120px;right:-44px;top:-44px"></div>
 		<nav class="segtabs" style="margin:0;padding:0;border:0">
-			<a class="<?php echo $is_new ? 'on' : ''; ?>" href="<?php echo esc_url( get_term_link( 'newera-kr', 'ranking_board' ) ); ?>" style="font-size:15px">신시대</a>
+			<a class="<?php echo $is_new ? 'on' : ''; ?>" href="<?php echo esc_url( mykitty_term_url( 'newera-kr', 'ranking_board' ) ); ?>" style="font-size:15px">신시대</a>
 			<a class="<?php echo $is_new ? '' : 'on'; ?>" href="<?php echo esc_url( $legend_url ); ?>" style="font-size:15px">레전드</a>
 		</nav>
 		<h1 class="display" style="font-size:34px;margin:12px 0 0"><?php echo $is_new ? '신시대' : '레전드'; ?> <span class="brush" style="font-size:18px">TOP <?php echo $is_new ? 20 : 30; ?></span></h1>
@@ -30,7 +30,7 @@ $legend_url = get_term_link( 'legend', 'ranking_board' );
 
 	<div class="pad" style="display:flex;flex-direction:column;gap:10px">
 		<div class="chips">
-			<?php if ( $is_new ) : foreach ( $regions as $k => [ $label ] ) { mykitty_chip( $label, $k === $region, '', get_term_link( 'newera-' . $k, 'ranking_board' ) ); }
+			<?php if ( $is_new ) : foreach ( $regions as $k => [ $label ] ) { mykitty_chip( $label, $k === $region, '', mykitty_term_url( 'newera-' . $k, 'ranking_board' ) ); }
 			else : foreach ( [ '' => '전체', '80s' => '1980s', '90s' => '1990s', '00s' => '2000s', '10s' => '2010s' ] as $k => $label ) { mykitty_chip( $label, $decade === $k, '', $k ? add_query_arg( 'decade', $k, $legend_url ) : $legend_url ); }
 			endif; ?>
 		</div>

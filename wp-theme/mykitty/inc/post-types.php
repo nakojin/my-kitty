@@ -10,7 +10,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-add_action( 'init', function () {
+/**
+ * CPT·택소노미 등록. init 에서 호출되지만, after_switch_theme 은 init 보다 먼저 발화하므로
+ * 시딩 전에 직접 한 번 더 호출한다 (여러 번 불러도 안전).
+ */
+function mykitty_register_content_model(): void {
+	static $done = false;
+	if ( $done ) { return; }
+	$done = true;
 
 	register_taxonomy( 'world', [ 'figure', 'post', 'ranking_entry' ], [
 		'labels'            => [ 'name' => '월드', 'singular_name' => '월드', 'add_new_item' => '월드 추가' ],
@@ -18,6 +25,7 @@ add_action( 'init', function () {
 		'hierarchical'      => false,
 		'show_in_rest'      => true,
 		'show_admin_column' => true,
+		'query_var'         => 'mk_world',   // 'world' 는 /collection/?w= 등과 충돌하지 않게 피한다
 		'rewrite'           => [ 'slug' => 'world' ],
 	] );
 
@@ -74,10 +82,12 @@ add_action( 'init', function () {
 	foreach ( [ 'rank' => 'integer', 'year' => 'integer', 'kind' => 'string', 'decade' => 'string', 'note' => 'string', 'fig' => 'integer' ] as $key => $type ) {
 		register_post_meta( 'ranking_entry', $key, [ 'type' => $type, 'single' => true, 'show_in_rest' => true, 'sanitize_callback' => 'sanitize_text_field' ] );
 	}
-} );
+}
+add_action( 'init', 'mykitty_register_content_model' );
 
-// 테마 활성화 시 기본 term 생성 (월드 9개, 랭킹 보드 5개).
+// 테마 활성화 시 기본 term 생성 (월드 9개, 랭킹 보드 5개). pages.php 의 페이지 생성보다 먼저(priority 5).
 add_action( 'after_switch_theme', function () {
+	mykitty_register_content_model();
 	$worlds = [
 		[ 'kny', '귀멸의 칼날', '#2fd36f', '#ff7a1a', '#000', 40, 1, '탄지로,네즈코,렌고쿠,젠이츠,이노스케,기유' ],
 		[ 'jjk', '주술회전', '#4f6df5', '#b06cff', '#fff', 40, 2, '고죠,이타도리,스쿠나,메구미,노바라,토지' ],
@@ -101,4 +111,4 @@ add_action( 'after_switch_theme', function () {
 	foreach ( [ 'newera-kr' => '신시대 · 한국', 'newera-jp' => '신시대 · 일본', 'newera-cn' => '신시대 · 중국', 'newera-asia' => '신시대 · 아시아', 'legend' => '레전드' ] as $slug => $name ) {
 		if ( ! term_exists( $slug, 'ranking_board' ) ) { wp_insert_term( $name, 'ranking_board', [ 'slug' => $slug ] ); }
 	}
-} );
+}, 5 );

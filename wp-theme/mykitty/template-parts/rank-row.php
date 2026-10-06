@@ -11,7 +11,7 @@ $worlds  = get_the_terms( $id, 'world' );
 $world   = $worlds && ! is_wp_error( $worlds ) ? $worlds[0] : null;
 $tag     = $world ? 'a' : 'div';
 ?>
-<<?php echo $tag; ?> class="rank<?php echo $rank <= 3 ? ' top3' : ''; ?>"<?php if ( $world ) : ?> href="<?php echo esc_url( get_term_link( $world ) ); ?>"<?php endif; ?>>
+<<?php echo $tag; ?> class="rank<?php echo $rank <= 3 ? ' top3' : ''; ?>"<?php if ( $world ) : ?> href="<?php echo esc_url( mykitty_term_url( $world ) ); ?>"<?php endif; ?>>
 	<div class="no"><?php echo $rank; ?></div>
 	<div class="body">
 		<div class="t"><?php echo esc_html( get_the_title( $id ) ); ?></div>
