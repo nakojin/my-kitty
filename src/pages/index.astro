@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<Base title="홈" description="애니메이션 피규어 추천과 리뷰">
+  <h1>애니메이션 피규어 추천</h1>
+  <ul class="posts">
+    {posts.map((post) => (
+      <li>
+        <a href={`/posts/${post.id}/`}>{post.data.title}</a>
+        <p>{post.data.description}</p>
+        <time datetime={post.data.date.toISOString()}>
+          {post.data.date.toLocaleDateString('ko-KR')}
+        </time>
+      </li>
+    ))}
+  </ul>
+</Base>
+
+<style>
+  .posts { list-style: none; padding: 0; }
+  .posts li { padding: 1rem 0; border-bottom: 1px solid #eee; }
+  .posts a { font-size: 1.125rem; font-weight: 600; color: inherit; }
+  .posts p { margin: 0.25rem 0; color: #555; }
+  time { font-size: 0.875rem; color: #888; }
+</style>

@@ -1,0 +1,15 @@
+{
+  "name": "my-kitty",
+  "version": "0.1.0",
+  "description": "애니메이션 피규어 추천 — 쿠팡 파트너스 제휴 사이트",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^7.3.5"
+  }
+}

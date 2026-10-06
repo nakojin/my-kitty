@@ -1,0 +1,26 @@
+---
+interface Props {
+  href: string;
+  label?: string;
+}
+const { href, label = '쿠팡에서 최저가 확인하기' } = Astro.props;
+---
+
+<a class="coupang" href={href} target="_blank" rel="sponsored nofollow noopener">
+  {label}
+</a>
+
+<style>
+  .coupang {
+    display: block;
+    text-align: center;
+    padding: 0.875rem 1rem;
+    margin: 1.5rem 0;
+    background: #e5322d;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  .coupang:hover { background: #c9281f; }
+</style>
