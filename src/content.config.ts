@@ -7,8 +7,17 @@ const posts = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    // 쿠팡 파트너스에서 발급받은 상품 링크
-    coupangUrl: z.string().url().optional(),
+    // 글에서 추천하는 상품 목록. coupangUrl은 파트너스 링크 발급 후 채웁니다.
+    products: z
+      .array(
+        z.object({
+          name: z.string(),
+          price: z.string().optional(),
+          note: z.string().optional(),
+          coupangUrl: z.string().url().optional(),
+        }),
+      )
+      .default([]),
   }),
 });
 

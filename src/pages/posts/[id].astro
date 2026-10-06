@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import CoupangButton from '../../components/CoupangButton.astro';
+import ProductCard from '../../components/ProductCard.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -19,7 +19,9 @@ const { Content } = await render(post);
       {post.data.date.toLocaleDateString('ko-KR')}
     </time>
     <Content />
-    {post.data.coupangUrl && <CoupangButton href={post.data.coupangUrl} />}
+    {post.data.products.map((p, i) => (
+      <ProductCard rank={i + 1} {...p} />
+    ))}
   </article>
 </Base>
 
