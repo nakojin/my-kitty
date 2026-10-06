@@ -1,6 +1,8 @@
 import { defineConfig } from 'astro/config';
 
+// GitHub Pages: https://nakojin.github.io/my-kitty/
+// 커스텀 도메인을 연결하면 site를 바꾸고 base를 지우세요.
 export default defineConfig({
-  // 배포 주소가 정해지면 바꿔 주세요 (sitemap, 공유 링크에 사용)
-  site: 'https://example.com',
+  site: 'https://nakojin.github.io',
+  base: '/my-kitty',
 });

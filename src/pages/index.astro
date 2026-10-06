@@ -12,7 +12,7 @@ const posts = (await getCollection('posts')).sort(
   <ul class="posts">
     {posts.map((post) => (
       <li>
-        <a href={`/posts/${post.id}/`}>{post.data.title}</a>
+        <a href={`${import.meta.env.BASE_URL}/posts/${post.id}/`}>{post.data.title}</a>
         <p>{post.data.description}</p>
         <time datetime={post.data.date.toISOString()}>
           {post.data.date.toLocaleDateString('ko-KR')}

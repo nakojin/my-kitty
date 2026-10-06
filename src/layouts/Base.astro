@@ -17,7 +17,7 @@ const siteName = '마이키티 피규어';
   </head>
   <body>
     <header>
-      <a href="/" class="logo">{siteName}</a>
+      <a href={`${import.meta.env.BASE_URL}/`} class="logo">{siteName}</a>
     </header>
     <main>
       <slot />
