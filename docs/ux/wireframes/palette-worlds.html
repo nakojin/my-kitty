@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>마이키티 — 6작품 월드 팔레트</title>
+<style>
+  :root { --bg:#0d0d0f; --panel:#17171a; --line:#333; --fg:#f2f0ea; --muted:#8e8b84; --cta:#e5322d; --ph: repeating-linear-gradient(45deg,#26262a 0 6px,#202024 6px 12px); }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#070708; color:var(--fg); font:13px/1.4 system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif; padding:24px; }
+  h1 { font-size:16px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin-bottom:20px; max-width:1100px; }
+  .row { display:grid; grid-template-columns:repeat(3,300px); gap:20px; }
+  .world { --theme:#2fd36f; --theme2:#ff7a1a; --on:#000; --g:40%; width:300px; }
+  .world > h2 { font-size:12px; color:var(--muted); margin:0 0 8px; font-weight:600; display:flex; justify-content:space-between; }
+  .phone { height:470px; background:var(--bg); border:2px solid var(--line); border-radius:22px; overflow:hidden; display:flex; flex-direction:column; }
+  .hdr { position:relative; padding:18px 14px 12px; background:linear-gradient(180deg,color-mix(in srgb,var(--theme) var(--g),#000),var(--bg)); overflow:hidden; }
+  .display { font-weight:900; letter-spacing:-.02em; line-height:.95; transform:skew(-6deg) rotate(-1.5deg); display:inline-block; }
+  .label { font-size:10px; letter-spacing:.08em; opacity:.7; }
+  .stroke { height:9px; background:var(--fg); filter:url(#rough); transform:skew(-20deg) rotate(-1deg); opacity:.9; width:130px; margin-top:8px; }
+  .splat { position:absolute; border-radius:50%; background:var(--theme2); filter:url(#rough); opacity:.7; }
+  .splat.dot { opacity:.9; }
+  .body { padding:10px 12px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .chips { display:flex; gap:6px; }
+  .chip { border:1px solid var(--line); padding:3px 9px; font-size:11px; color:var(--muted); transform:skew(-8deg); }
+  .chip > span { display:inline-block; transform:skew(8deg); }
+  .chip.on { border-color:var(--theme); color:var(--theme); background:color-mix(in srgb,var(--theme) 12%,transparent); }
+  .rings { display:flex; gap:12px; justify-content:space-around; }
+  .ring { width:58px; height:58px; border-radius:50%; background:var(--ph); border:3px solid var(--fg); filter:url(#rough); display:grid; place-items:center; font-size:9px; color:var(--muted); }
+  .ring.t { border-color:var(--theme); } .ring.t2 { border-color:var(--theme2); } .ring.off { border-color:#555; }
+  .panel { background:var(--panel); border:1px solid var(--line); padding:10px; transform:skew(-6deg); display:flex; justify-content:space-between; align-items:center; }
+  .panel > * { transform:skew(6deg); }
+  .brush { position:relative; display:inline-block; padding:2px 10px; color:var(--on); font-weight:900; }
+  .brush::before { content:""; position:absolute; inset:-2px -5px; background:var(--theme); filter:url(#rough); transform:skew(-10deg) rotate(-1deg); z-index:-1; }
+  .cta { background:var(--cta); color:#fff; font-weight:800; text-align:center; padding:11px; transform:skew(-8deg); margin-top:auto; }
+  .cta > span { display:inline-block; transform:skew(8deg); }
+  .sw { display:flex; gap:6px; align-items:center; }
+  .sw i { width:14px; height:14px; display:inline-block; transform:skew(-8deg); }
+  .disclosure { font-size:8px; color:#666; text-align:center; padding:4px 10px; border-top:1px solid #222; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><filter id="rough" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="3" seed="7"/><feDisplacementMap in="SourceGraphic" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
+
+<h1>마이키티 — 6작품 월드 팔레트 (S3 헤더 기준)</h1>
+<div class="sub">작품마다 <b>주색 1 + 보조색 1</b>만 바뀐다. 배경·패널·글자·붓칠(종이색)·<b>쿠팡 CTA 빨강</b>은 모든 월드에서 동일. 빨강 계열 작품(원피스·스파이 패밀리)은 CTA와 겹치지 않도록 보조색을 조정했다.</div>
+
+<div class="row">
+
+  <section class="world" style="--theme:#2fd36f;--theme2:#ff7a1a;--on:#000;--g:40%">
+    <h2><span>귀멸의 칼날</span><span class="sw"><i style="background:#2fd36f"></i>#2fd36f <i style="background:#ff7a1a"></i>#ff7a1a</span></h2>
+    <div class="phone">
+      <div class="hdr"><div class="splat" style="width:110px;height:110px;right:-40px;top:-40px"></div><div class="splat dot" style="width:8px;height:8px;right:80px;top:28px"></div>
+        <div class="label">WORLD 01</div><div class="display" style="font-size:30px">귀멸의<br>칼날</div><div class="stroke"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px"><span style="color:var(--muted)">30종 · 9명</span><span class="display" style="font-size:18px">도감 <span style="color:var(--theme)">40%</span></span></div></div>
+      <div class="body">
+        <div class="chips"><span class="chip on"><span>큐레이션</span></span><span class="chip"><span>캐릭터</span></span><span class="chip"><span>전체</span></span></div>
+        <div class="rings"><div class="ring t">탄지로</div><div class="ring t2">네즈코</div><div class="ring off">젠이츠</div></div>
+        <div class="panel"><span>입문 추천</span><span class="brush">TOP 5</span></div>
+        <div class="cta"><span>쿠팡에서 보기</span></div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+    </div>
+  </section>
+
+  <section class="world" style="--theme:#4f6df5;--theme2:#b06cff;--on:#fff;--g:40%">
+    <h2><span>주술회전</span><span class="sw"><i style="background:#4f6df5"></i>#4f6df5 <i style="background:#b06cff"></i>#b06cff</span></h2>
+    <div class="phone">
+      <div class="hdr"><div class="splat" style="width:110px;height:110px;right:-40px;top:-40px"></div><div class="splat dot" style="width:8px;height:8px;right:80px;top:28px"></div>
+        <div class="label">WORLD 02</div><div class="display" style="font-size:30px">주술<br>회전</div><div class="stroke"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px"><span style="color:var(--muted)">24종 · 8명</span><span class="display" style="font-size:18px">도감 <span style="color:var(--theme)">15%</span></span></div></div>
+      <div class="body">
+        <div class="chips"><span class="chip on"><span>큐레이션</span></span><span class="chip"><span>캐릭터</span></span><span class="chip"><span>전체</span></span></div>
+        <div class="rings"><div class="ring t">고죠</div><div class="ring t2">스쿠나</div><div class="ring off">메구미</div></div>
+        <div class="panel"><span>입문 추천</span><span class="brush">TOP 5</span></div>
+        <div class="cta"><span>쿠팡에서 보기</span></div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+    </div>
+  </section>
+
+  <section class="world" style="--theme:#ff6a00;--theme2:#f2f0ea;--on:#000;--g:45%">
+    <h2><span>체인소맨</span><span class="sw"><i style="background:#ff6a00"></i>#ff6a00 <i style="background:#f2f0ea"></i>#f2f0ea</span></h2>
+    <div class="phone">
+      <div class="hdr"><div class="splat" style="width:110px;height:110px;right:-40px;top:-40px;opacity:.5"></div><div class="splat dot" style="width:8px;height:8px;right:80px;top:28px"></div><div class="splat dot" style="width:5px;height:5px;right:100px;top:50px"></div>
+        <div class="label">WORLD 03</div><div class="display" style="font-size:30px">체인소<br>맨</div><div class="stroke"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px"><span style="color:var(--muted)">14종 · 6명</span><span class="display" style="font-size:18px">도감 <span style="color:var(--theme)">0%</span></span></div></div>
+      <div class="body">
+        <div class="chips"><span class="chip on"><span>큐레이션</span></span><span class="chip"><span>캐릭터</span></span><span class="chip"><span>전체</span></span></div>
+        <div class="rings"><div class="ring t">덴지</div><div class="ring t2">파워</div><div class="ring off">레제</div></div>
+        <div class="panel"><span>입문 추천</span><span class="brush">TOP 5</span></div>
+        <div class="cta"><span>쿠팡에서 보기</span></div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+    </div>
+  </section>
+
+  <section class="world" style="--theme:#ffcc33;--theme2:#2eb3ff;--on:#000;--g:35%">
+    <h2><span>원피스</span><span class="sw"><i style="background:#ffcc33"></i>#ffcc33 <i style="background:#2eb3ff"></i>#2eb3ff</span></h2>
+    <div class="phone">
+      <div class="hdr"><div class="splat" style="width:110px;height:110px;right:-40px;top:-40px"></div><div class="splat dot" style="width:8px;height:8px;right:80px;top:28px"></div>
+        <div class="label">WORLD 04</div><div class="display" style="font-size:30px">원피스</div><div class="stroke"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px"><span style="color:var(--muted)">60종+ · 12명</span><span class="display" style="font-size:18px">도감 <span style="color:var(--theme)">8%</span></span></div></div>
+      <div class="body">
+        <div class="chips"><span class="chip on"><span>큐레이션</span></span><span class="chip"><span>캐릭터</span></span><span class="chip"><span>전체</span></span></div>
+        <div class="rings"><div class="ring t">루피</div><div class="ring t2">조로</div><div class="ring off">샹크스</div></div>
+        <div class="panel"><span>입문 추천</span><span class="brush">TOP 5</span></div>
+        <div class="cta"><span>쿠팡에서 보기</span></div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+    </div>
+  </section>
+
+  <section class="world" style="--theme:#c9b6ff;--theme2:#f2f0ea;--on:#000;--g:30%">
+    <h2><span>장송의 프리렌</span><span class="sw"><i style="background:#c9b6ff"></i>#c9b6ff <i style="background:#f2f0ea"></i>#f2f0ea</span></h2>
+    <div class="phone">
+      <div class="hdr"><div class="splat dot" style="width:6px;height:6px;right:60px;top:30px;opacity:.7"></div><div class="splat dot" style="width:4px;height:4px;right:40px;top:50px;opacity:.5"></div>
+        <div class="label">WORLD 05</div><div class="display" style="font-size:30px">장송의<br>프리렌</div><div class="stroke"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px"><span style="color:var(--muted)">12종 · 5명</span><span class="display" style="font-size:18px">도감 <span style="color:var(--theme)">25%</span></span></div></div>
+      <div class="body">
+        <div class="chips"><span class="chip on"><span>큐레이션</span></span><span class="chip"><span>캐릭터</span></span><span class="chip"><span>전체</span></span></div>
+        <div class="rings"><div class="ring t">프리렌</div><div class="ring t2">페른</div><div class="ring off">힘멜</div></div>
+        <div class="panel"><span>입문 추천</span><span class="brush">TOP 5</span></div>
+        <div class="cta"><span>쿠팡에서 보기</span></div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+    </div>
+  </section>
+
+  <section class="world" style="--theme:#1fb27a;--theme2:#ff8fb1;--on:#000;--g:40%">
+    <h2><span>스파이 패밀리</span><span class="sw"><i style="background:#1fb27a"></i>#1fb27a <i style="background:#ff8fb1"></i>#ff8fb1</span></h2>
+    <div class="phone">
+      <div class="hdr"><div class="splat" style="width:110px;height:110px;right:-40px;top:-40px"></div><div class="splat dot" style="width:8px;height:8px;right:80px;top:28px"></div>
+        <div class="label">WORLD 06</div><div class="display" style="font-size:30px">스파이<br>패밀리</div><div class="stroke"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px"><span style="color:var(--muted)">18종 · 5명</span><span class="display" style="font-size:18px">도감 <span style="color:var(--theme)">33%</span></span></div></div>
+      <div class="body">
+        <div class="chips"><span class="chip on"><span>큐레이션</span></span><span class="chip"><span>캐릭터</span></span><span class="chip"><span>전체</span></span></div>
+        <div class="rings"><div class="ring t">아냐</div><div class="ring t2">요르</div><div class="ring off">로이드</div></div>
+        <div class="panel"><span>입문 추천</span><span class="brush">TOP 5</span></div>
+        <div class="cta"><span>쿠팡에서 보기</span></div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
