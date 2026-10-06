@@ -1,86 +1,140 @@
-// 피규어 마스터 (샘플). 워드프레스에서는 CPT `figure`.
+// 피규어 마스터. 워드프레스에서는 CPT `figure`.
 // coupangUrl 은 파트너스 링크 발급 후 채운다. 비어 있으면 '쿠팡 링크 준비 중'.
-// img 는 쿠팡 제공 상품 이미지 슬롯 — AI 생성 이미지 사용 금지.
-window.MK_FIGURES = [
-  // 귀멸의 칼날
-  { id: 'kny-01', world: 'kny', char: '탄지로', name: '絆ノ装 카마도 탄지로', maker: '반프레스토', line: '絆ノ装', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
-    why: '프라이즈 중 가장 무난한 입문작. 물의 호흡 이펙트 포함, 책상 위에 두기 좋은 크기.', coupangUrl: '' },
-  { id: 'kny-02', world: 'kny', char: '네즈코', name: '絆ノ装 카마도 네즈코', maker: '반프레스토', line: '絆ノ装', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
-    why: '탄지로와 같은 라인. 나란히 두면 세트. 상자 안에 앉은 포즈 버전도 있음.', coupangUrl: '' },
-  { id: 'kny-03', world: 'kny', char: '렌고쿠', name: 'Vibration Stars 렌고쿠 쿄쥬로', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
-    why: '염의 호흡 이펙트가 크고 역동적. 재고가 자주 바뀌니 보이면 바로.', coupangUrl: '' },
-  { id: 'kny-04', world: 'kny', char: '탄지로', name: '넨도로이드 카마도 탄지로', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
-    why: '교체 표정·손·일륜도 포함. 포즈 바꾸는 재미. 홀로그램 씰로 정품 확인.', coupangUrl: '' },
-  { id: 'kny-05', world: 'kny', char: '젠이츠', name: '1/8 아가츠마 젠이츠 벽력일섬', maker: '애니플렉스', line: '스케일 1/8', size: '약 20cm', price: '20만 원대 이상', rarity: 'epic',
-    why: '번개 이펙트와 잔상 표현이 압도적. 귀멸 피규어 끝판왕으로 자주 꼽힘.', coupangUrl: '' },
-  { id: 'kny-06', world: 'kny', char: '네즈코', name: 'Q posket 카마도 네즈코', maker: '반프레스토', line: 'Q posket', size: '약 14cm', price: '2~3만 원대', rarity: 'common',
-    why: '큰 눈 데포르메. 귀여운 쪽을 원하면 이쪽.', coupangUrl: '' },
-  { id: 'kny-07', world: 'kny', char: '이노스케', name: 'Vibration Stars 하시비라 이노스케', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
-    why: '멧돼지 가면 + 쌍검 포즈. 렌고쿠와 같은 라인.', coupangUrl: '' },
-  { id: 'kny-08', world: 'kny', char: '기유', name: 'Vibration Stars 토미오카 기유', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
-    why: '물의 호흡 11형 이펙트. 조용한 팬층이 두터움.', coupangUrl: '' },
-  { id: 'kny-09', world: 'kny', char: '렌고쿠', name: '한정 렌고쿠 쿄쥬로 무한열차 Ver.', maker: '애니플렉스', line: '한정', size: '약 22cm', price: '시세 변동', rarity: 'legendary',
-    why: '재판 없음. 정가 구매는 사실상 불가. 중고 시세 확인 필수.', coupangUrl: '' },
+// img 는 쿠팡 제공 상품 이미지 URL — AI 생성 이미지 사용 금지.
+// 상품명·가격대는 작성 시점의 대략적 시세. 링크 발급 시 실제 판매 상품과 맞춘다.
+(function () {
+  const list = [];
+  let seq = {};
+  // F(world, char, name, maker, line, size, price, rarity, why)
+  const F = (world, char, name, maker, line, size, price, rarity, why) => {
+    seq[world] = (seq[world] || 0) + 1;
+    list.push({ id: `${world}-${String(seq[world]).padStart(2, '0')}`, world, char, name, maker, line, size, price, rarity, why, coupangUrl: '', img: '' });
+  };
 
-  // 주술회전
-  { id: 'jjk-01', world: 'jjk', char: '고죠', name: 'Jukon no Kata 고죠 사토루', maker: '반프레스토', line: '呪魂ノ型', size: '약 16cm', price: '2~3만 원대', rarity: 'common',
-    why: '주술회전 피규어 중 가장 많이 팔림. 육안 버전이 고죠다움이 더 삼.', coupangUrl: '' },
-  { id: 'jjk-02', world: 'jjk', char: '이타도리', name: 'Jukon no Kata 이타도리 유지', maker: '반프레스토', line: '呪魂ノ型', size: '약 16cm', price: '2~3만 원대', rarity: 'common',
-    why: '재고가 비교적 안정적. 고죠와 나란히 두면 구도가 잘 잡힘.', coupangUrl: '' },
-  { id: 'jjk-03', world: 'jjk', char: '스쿠나', name: 'King of Artist 료멘스쿠나', maker: '반프레스토', line: 'King of Artist', size: '약 20cm', price: '3~4만 원대', rarity: 'rare',
-    why: '상위 프라이즈 라인. 문신과 네 개의 눈 표현이 깔끔.', coupangUrl: '' },
-  { id: 'jjk-04', world: 'jjk', char: '고죠', name: '넨도로이드 고죠 사토루', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
-    why: '안대·육안·웃는 얼굴 교체 + 무량공처 손. 재판이 잦아 구하기 쉬움.', coupangUrl: '' },
-  { id: 'jjk-05', world: 'jjk', char: '메구미', name: 'POP UP PARADE 후시구로 메구미', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
-    why: '옥견 소환 포즈. 노바라·이타도리와 모으면 1학년 3인방.', coupangUrl: '' },
-  { id: 'jjk-06', world: 'jjk', char: '노바라', name: 'POP UP PARADE 쿠기사키 노바라', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
-    why: '망치와 못을 든 포즈.', coupangUrl: '' },
+  /* ── 귀멸의 칼날 (14) ── */
+  F('kny', '탄지로', '絆ノ装 카마도 탄지로', '반프레스토', '絆ノ装', '약 15cm', '2~3만 원대', 'common', '프라이즈 중 가장 무난한 입문작. 물의 호흡 이펙트 포함, 책상 위에 두기 좋은 크기.');
+  F('kny', '네즈코', '絆ノ装 카마도 네즈코', '반프레스토', '絆ノ装', '약 15cm', '2~3만 원대', 'common', '탄지로와 같은 라인. 나란히 두면 세트. 상자 안에 앉은 포즈 버전도 있음.');
+  F('kny', '렌고쿠', 'Vibration Stars 렌고쿠 쿄쥬로', '반프레스토', 'Vibration Stars', '약 15cm', '2~4만 원대', 'common', '염의 호흡 이펙트가 크고 역동적. 재고가 자주 바뀌니 보이면 바로.');
+  F('kny', '젠이츠', 'Vibration Stars 아가츠마 젠이츠', '반프레스토', 'Vibration Stars', '약 15cm', '2~4만 원대', 'common', '벽력일섬 자세. 프라이즈 중 젠이츠 조형이 가장 좋다는 평.');
+  F('kny', '이노스케', 'Vibration Stars 하시비라 이노스케', '반프레스토', 'Vibration Stars', '약 15cm', '2~4만 원대', 'common', '멧돼지 가면 + 쌍검 포즈. 렌고쿠·젠이츠와 같은 라인으로 3인 세트.');
+  F('kny', '기유', 'Vibration Stars 토미오카 기유', '반프레스토', 'Vibration Stars', '약 15cm', '2~4만 원대', 'common', '물의 호흡 11형 이펙트. 조용한 팬층이 두터움.');
+  F('kny', '네즈코', 'Q posket 카마도 네즈코', '반프레스토', 'Q posket', '약 14cm', '2~3만 원대', 'common', '큰 눈 데포르메. 귀여운 쪽을 원하면 이쪽. 색상 2종.');
+  F('kny', '탄지로', 'Grandista 카마도 탄지로', '반프레스토', 'Grandista', '약 25cm', '4~6만 원대', 'rare', '대형 사이즈. 하오리 체크 패턴 인쇄가 깔끔해 진열 존재감이 큼.');
+  F('kny', '탄지로', '넨도로이드 카마도 탄지로', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '교체 표정·손·일륜도 포함. 포즈 바꾸는 재미. 홀로그램 씰로 정품 확인.');
+  F('kny', '네즈코', '넨도로이드 카마도 네즈코', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '대나무 재갈 탈착, 혈귀술 이펙트 파츠. 탄지로 넨도와 세트 수요.');
+  F('kny', '렌고쿠', 'POP UP PARADE 렌고쿠 쿄쥬로', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '스케일 입문 라인. 불꽃 이펙트 없이 서 있는 포즈라 담백함.');
+  F('kny', '젠이츠', '1/8 아가츠마 젠이츠 벽력일섬', '애니플렉스', '스케일 1/8', '약 20cm', '20만 원대 이상', 'epic', '번개 이펙트와 잔상 표현이 압도적. 귀멸 피규어 끝판왕으로 자주 꼽힘.');
+  F('kny', '탄지로', '1/8 카마도 탄지로 히노카미 카구라', '애니플렉스', '스케일 1/8', '약 22cm', '20만 원대 이상', 'epic', '불꽃 이펙트가 피규어 전체를 감싸는 조형. 예약 판매 중심.');
+  F('kny', '렌고쿠', '한정 렌고쿠 쿄쥬로 무한열차 Ver.', '애니플렉스', '한정', '약 22cm', '시세 변동', 'legendary', '재판 없음. 정가 구매는 사실상 불가. 중고 시세 확인 필수.');
 
-  // 체인소맨
-  { id: 'csm-01', world: 'csm', char: '덴지', name: 'Chain Spirits 덴지 (체인소맨)', maker: '반프레스토', line: 'Chain Spirits', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
-    why: '체인소맨 피규어의 기본 중 기본. 변신 상태 역동 포즈.', coupangUrl: '' },
-  { id: 'csm-02', world: 'csm', char: '파워', name: 'Chain Spirits 파워', maker: '반프레스토', line: 'Chain Spirits', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
-    why: '작중 인기 1위. 재입고가 느려 보이면 먼저 담기.', coupangUrl: '' },
-  { id: 'csm-03', world: 'csm', char: '마키마', name: 'Vibration Stars 마키마', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
-    why: '정장 차림 스탠딩. 머리카락 그라데이션과 나선 눈동자 재현 좋음.', coupangUrl: '' },
-  { id: 'csm-04', world: 'csm', char: '덴지', name: '넨도로이드 덴지', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
-    why: '체인소 머리 교체 파츠 + 포치타 미니 피규어 동봉.', coupangUrl: '' },
-  { id: 'csm-05', world: 'csm', char: '레제', name: 'POP UP PARADE 레제', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
-    why: '극장판 레제편 이후 가장 많이 찾는 상품. 품절 시 프리미엄.', coupangUrl: '' },
+  /* ── 주술회전 (13) ── */
+  F('jjk', '고죠', 'Jukon no Kata 고죠 사토루 (육안)', '반프레스토', '呪魂ノ型', '약 16cm', '2~3만 원대', 'common', '주술회전 피규어 중 가장 많이 팔림. 안대 벗은 육안 버전이 고죠다움이 더 삼.');
+  F('jjk', '고죠', 'Jukon no Kata 고죠 사토루 (안대)', '반프레스토', '呪魂ノ型', '약 16cm', '2~3만 원대', 'common', '안대 버전. 육안 버전과 나란히 두는 팬이 많음.');
+  F('jjk', '이타도리', 'Jukon no Kata 이타도리 유지', '반프레스토', '呪魂ノ型', '약 16cm', '2~3만 원대', 'common', '재고가 비교적 안정적. 고죠와 나란히 두면 구도가 잘 잡힘.');
+  F('jjk', '메구미', 'Jukon no Kata 후시구로 메구미', '반프레스토', '呪魂ノ型', '약 16cm', '2~3만 원대', 'common', '옥견 없이 단독. 1학년 3인방 세트의 한 자리.');
+  F('jjk', '노바라', 'Jukon no Kata 쿠기사키 노바라', '반프레스토', '呪魂ノ型', '약 16cm', '2~3만 원대', 'common', '망치 든 포즈. 3인방 중 재고가 가장 오래 남는 편.');
+  F('jjk', '토지', 'Jukon no Kata 후시구로 토지', '반프레스토', '呪魂ノ型', '약 17cm', '2~3만 원대', 'common', '시즌 2 과거편 이후 수요 급증. 천역창 포즈.');
+  F('jjk', '스쿠나', 'King of Artist 료멘스쿠나', '반프레스토', 'King of Artist', '약 20cm', '3~4만 원대', 'rare', '상위 프라이즈 라인. 문신과 네 개의 눈 표현이 깔끔. 시부야 사변 이후 수요 급증.');
+  F('jjk', '고죠', 'King of Artist 고죠 사토루', '반프레스토', 'King of Artist', '약 20cm', '3~4만 원대', 'rare', '무량공처 직전 손 포즈. 프라이즈 고죠 중 최상급 조형.');
+  F('jjk', '고죠', '넨도로이드 고죠 사토루', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '안대·육안·웃는 얼굴 교체 + 무량공처 손. 재판이 잦아 구하기 쉬움. 짝퉁 주의.');
+  F('jjk', '이타도리', '넨도로이드 이타도리 유지', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '스쿠나 얼굴 교체 파츠 포함. 고죠 넨도와 세트.');
+  F('jjk', '메구미', 'POP UP PARADE 후시구로 메구미', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '옥견 소환 포즈. 노바라·이타도리와 모으면 1학년 3인방.');
+  F('jjk', '노바라', 'POP UP PARADE 쿠기사키 노바라', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '망치와 못을 든 포즈. 메구미와 같은 라인.');
+  F('jjk', '고죠', '1/7 고죠 사토루 무량공처', '굿스마일컴퍼니', '스케일 1/7', '약 29cm', '25만 원대 이상', 'epic', '영역전개 이펙트 베이스 포함. 주술회전 소장용 정점.');
 
-  // 원피스
-  { id: 'op-01', world: 'op', char: '루피', name: 'Grandista 몽키 D. 루피', maker: '반프레스토', line: 'Grandista', size: '약 27cm', price: '4~6만 원대', rarity: 'rare',
-    why: '쿠팡 피규어관 인기 상품. 원피스 피규어 하나만 산다면 이것.', coupangUrl: '' },
-  { id: 'op-02', world: 'op', char: '조로', name: 'DXF Grandline Men 롤로노아 조로 (와노쿠니)', maker: '반프레스토', line: 'DXF', size: '약 17cm', price: '2~4만 원대', rarity: 'common',
-    why: '기모노 + 삼도류 포즈. 같은 DXF 라인으로 크기 맞추기.', coupangUrl: '' },
-  { id: 'op-03', world: 'op', char: '샹크스', name: 'Battle Record Collection 샹크스', maker: '반프레스토', line: 'Battle Record', size: '약 18cm', price: '3~4만 원대', rarity: 'common',
-    why: '패왕색 패기 연출. 망토 휘날리는 조형이 압권.', coupangUrl: '' },
-  { id: 'op-04', world: 'op', char: '에이스', name: 'Master Stars Piece 포트거스 D. 에이스', maker: '반프레스토', line: 'MSP', size: '약 25cm', price: '5~7만 원대', rarity: 'rare',
-    why: '반프레스토 최상위 라인. 불꽃 이펙트와 디테일. 중고가 잘 유지.', coupangUrl: '' },
-  { id: 'op-05', world: 'op', char: '로빈', name: 'P.O.P 니코 로빈', maker: '메가하우스', line: 'Portrait.Of.Pirates', size: '약 23cm', price: '15~25만 원대', rarity: 'epic',
-    why: '원피스 피규어 끝판왕 브랜드. 정가 근처일 때 사는 것이 핵심.', coupangUrl: '' },
+  /* ── 체인소맨 (11) ── */
+  F('csm', '덴지', 'Chain Spirits 덴지 (체인소맨)', '반프레스토', 'Chain Spirits', '약 15cm', '2~3만 원대', 'common', '체인소맨 피규어의 기본 중 기본. 변신 상태 역동 포즈.');
+  F('csm', '파워', 'Chain Spirits 파워', '반프레스토', 'Chain Spirits', '약 15cm', '2~3만 원대', 'common', '작중 인기 1위. 재입고가 느려 보이면 먼저 담기.');
+  F('csm', '아키', 'Chain Spirits 하야카와 아키', '반프레스토', 'Chain Spirits', '약 16cm', '2~3만 원대', 'common', '일본도 + 담배. 덴지·파워와 3인 세트.');
+  F('csm', '마키마', 'Vibration Stars 마키마', '반프레스토', 'Vibration Stars', '약 15cm', '2~4만 원대', 'common', '정장 차림 스탠딩. 머리카락 그라데이션과 나선 눈동자 재현 좋음.');
+  F('csm', '포치타', '포치타 빅 플러시 인형', '반프레스토', '플러시', '약 30cm', '2~3만 원대', 'common', '피규어는 아니지만 체인소맨 굿즈 중 가장 많이 팔림. 짝퉁 최다 — 태그 확인.');
+  F('csm', '덴지', '넨도로이드 덴지', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '체인소 머리 교체 파츠 + 포치타 미니 피규어 동봉.');
+  F('csm', '파워', '넨도로이드 파워', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '피의 망치 파츠, 뾰족 이빨 웃는 얼굴. 냥코 파츠 포함.');
+  F('csm', '레제', 'POP UP PARADE 레제', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '극장판 레제편 이후 가장 많이 찾는 상품. 품절 시 프리미엄.');
+  F('csm', '마키마', 'POP UP PARADE 마키마', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '레제와 같은 라인. 둘을 나란히 두는 수요.');
+  F('csm', '덴지', '1/7 체인소맨', '굿스마일컴퍼니', '스케일 1/7', '약 27cm', '20만 원대 이상', 'epic', '체인소 디테일과 피 이펙트. 체인소맨 소장용 대표작.');
+  F('csm', '레제', '1/7 레제 (봄의 폭탄)', '굿스마일컴퍼니', '스케일 1/7', '약 24cm', '25만 원대 이상', 'epic', '극장판 기념 스케일. 예약 판매 중심. 재판 소식 확인.');
 
-  // 프리렌
-  { id: 'frn-01', world: 'frn', char: '프리렌', name: '프리렌 (지팡이 포즈)', maker: '반프레스토', line: '프라이즈', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
-    why: '프리렌 입문 기본형. 차분한 포즈가 작품 분위기와 맞음.', coupangUrl: '' },
-  { id: 'frn-02', world: 'frn', char: '페른', name: '페른', maker: '반프레스토', line: '프라이즈', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
-    why: '프리렌과 같은 라인. 사제 세트.', coupangUrl: '' },
-  { id: 'frn-03', world: 'frn', char: '프리렌', name: '넨도로이드 프리렌', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
-    why: '미미크 보고 들뜬 얼굴 + 마법 이펙트 파츠.', coupangUrl: '' },
-  { id: 'frn-04', world: 'frn', char: '힘멜', name: 'POP UP PARADE 힘멜', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
-    why: '젊은 시절 용사 모습. 힘멜이라면 그렇게 했을 거야.', coupangUrl: '' },
-  { id: 'frn-05', world: 'frn', char: '프리렌', name: '1/7 프리렌 꽃밭 Ver.', maker: '굿스마일컴퍼니', line: '스케일 1/7', size: '약 18cm', price: '20만 원대 이상', rarity: 'epic',
-    why: '프리렌 소장용 정점. 꽃밭 베이스. 예약 판매 중심.', coupangUrl: '' },
+  /* ── 원피스 (15) ── */
+  F('op', '루피', 'DXF Grandline Men 몽키 D. 루피 (와노쿠니)', '반프레스토', 'DXF', '약 17cm', '2~4만 원대', 'common', 'DXF는 원피스 프라이즈 기본 라인. 밀짚모자 일당을 모으려면 이 라인으로 통일.');
+  F('op', '조로', 'DXF Grandline Men 롤로노아 조로 (와노쿠니)', '반프레스토', 'DXF', '약 17cm', '2~4만 원대', 'common', '기모노 + 삼도류 포즈. 같은 DXF 라인으로 크기 맞추기.');
+  F('op', '나미', 'DXF Grandline Lady 나미 (와노쿠니)', '반프레스토', 'DXF', '약 17cm', '2~4만 원대', 'common', '기모노 버전. Lady 라인은 Men과 크기가 같아 세트 가능.');
+  F('op', '상디', 'DXF Grandline Men 상디 (와노쿠니)', '반프레스토', 'DXF', '약 17cm', '2~4만 원대', 'common', '정장 대신 기모노. 조로와 나란히 두는 조합 인기.');
+  F('op', '샹크스', 'Battle Record Collection 샹크스', '반프레스토', 'Battle Record', '약 18cm', '3~4만 원대', 'common', '패왕색 패기 연출. 망토 휘날리는 조형이 압권.');
+  F('op', '루피', 'Battle Record Collection 루피 기어 5', '반프레스토', 'Battle Record', '약 18cm', '3~4만 원대', 'common', '기어 5 흰색 버전. 에그헤드편 이후 품절 반복.');
+  F('op', '루피', 'Grandista 몽키 D. 루피', '반프레스토', 'Grandista', '약 27cm', '4~6만 원대', 'rare', '쿠팡 피규어관 인기 상품. 원피스 피규어 하나만 산다면 이것.');
+  F('op', '조로', 'Grandista 롤로노아 조로', '반프레스토', 'Grandista', '약 27cm', '4~6만 원대', 'rare', '루피 그랜디스타와 같은 크기. 둘을 세트로.');
+  F('op', '에이스', 'Master Stars Piece 포트거스 D. 에이스', '반프레스토', 'MSP', '약 25cm', '5~7만 원대', 'rare', '반프레스토 최상위 라인. 불꽃 이펙트와 디테일. 중고가 잘 유지.');
+  F('op', '루피', 'Master Stars Piece 몽키 D. 루피', '반프레스토', 'MSP', '약 25cm', '5~7만 원대', 'rare', '기본 복장 MSP. 그랜디스타보다 도색 밀도 높음.');
+  F('op', '초파', 'Q posket 토니토니 초파', '반프레스토', 'Q posket', '약 10cm', '2~3만 원대', 'common', '원피스 선물용 1순위. 어린이·입문자 모두 좋아함.');
+  F('op', '로빈', 'P.O.P 니코 로빈', '메가하우스', 'Portrait.Of.Pirates', '약 23cm', '15~25만 원대', 'epic', '원피스 피규어 끝판왕 브랜드. 정가 근처일 때 사는 것이 핵심.');
+  F('op', '나미', 'P.O.P 나미', '메가하우스', 'Portrait.Of.Pirates', '약 23cm', '15~25만 원대', 'epic', '재판 수요 높아 가격 변동 큼. 홀로그램 씰 확인.');
+  F('op', '샹크스', 'P.O.P 샹크스 (MAXIMUM)', '메가하우스', 'P.O.P MAXIMUM', '약 30cm', '30만 원대 이상', 'epic', 'P.O.P 중에서도 대형 라인. 영화 RED 이후 재판.');
+  F('op', '루피', 'P.O.P 루피 기어 5 (한정)', '메가하우스', '한정', '약 28cm', '시세 변동', 'legendary', '프리미엄 반다이 한정. 재판 없음. 중고 시세 확인.');
 
-  // 스파이 패밀리
-  { id: 'sxf-01', world: 'sxf', char: '아냐', name: '아냐 포저 (교복)', maker: '반프레스토', line: '프라이즈', size: '약 13cm', price: '2~3만 원대', rarity: 'common',
-    why: '가장 많이 팔리는 기본형. 선물 1순위.', coupangUrl: '' },
-  { id: 'sxf-02', world: 'sxf', char: '아냐', name: 'Q posket 아냐 포저', maker: '반프레스토', line: 'Q posket', size: '약 14cm', price: '2~3만 원대', rarity: 'common',
-    why: '데포르메와 궁합 최고. 피넛 든 버전 인기.', coupangUrl: '' },
-  { id: 'sxf-03', world: 'sxf', char: '요르', name: '요르 포저 (가시공주)', maker: '반프레스토', line: '프라이즈', size: '약 17cm', price: '2~4만 원대', rarity: 'common',
-    why: '어른 팬이 가장 많이 찾는 상품. 드레스 자락 조형 역동적.', coupangUrl: '' },
-  { id: 'sxf-04', world: 'sxf', char: '아냐', name: '넨도로이드 아냐 포저', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
-    why: '히죽·울상 표정 + 치미라·본드 파츠. 어른 선물용.', coupangUrl: '' },
-  { id: 'sxf-05', world: 'sxf', char: '요르', name: '1/7 요르 포저 가시공주 드레스', maker: '굿스마일컴퍼니', line: '스케일 1/7', size: '약 25cm', price: '20만 원대 이상', rarity: 'epic',
-    why: '레이스·바늘 무기 금속 질감·홀스터까지 재현.', coupangUrl: '' },
-];
+  /* ── 장송의 프리렌 (10) ── */
+  F('frn', '프리렌', '프리렌 (지팡이 포즈)', '반프레스토', '프라이즈', '약 15cm', '2~3만 원대', 'common', '프리렌 입문 기본형. 차분한 포즈가 작품 분위기와 맞음.');
+  F('frn', '페른', '페른', '반프레스토', '프라이즈', '약 15cm', '2~3만 원대', 'common', '프리렌과 같은 라인. 사제 세트.');
+  F('frn', '슈타르크', '슈타르크', '반프레스토', '프라이즈', '약 16cm', '2~3만 원대', 'common', '도끼 든 전사 포즈. 3인 세트의 마지막 자리.');
+  F('frn', '프리렌', 'Q posket 프리렌', '반프레스토', 'Q posket', '약 14cm', '2~3만 원대', 'common', '데포르메 프리렌. 미미크 장면 연상.');
+  F('frn', '프리렌', '넨도로이드 프리렌', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '미미크 보고 들뜬 얼굴 + 마법 이펙트 파츠. 재판 잦음.');
+  F('frn', '페른', '넨도로이드 페른', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '무표정·화난 얼굴. 프리렌 넨도와 세트.');
+  F('frn', '힘멜', 'POP UP PARADE 힘멜', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '젊은 시절 용사 모습. 힘멜이라면 그렇게 했을 거야.');
+  F('frn', '슈타르크', 'POP UP PARADE 슈타르크', '굿스마일컴퍼니', 'POP UP PARADE', '약 18cm', '5~7만 원대', 'rare', '힘멜과 같은 라인. 프리렌·페른 POP UP까지 모으면 일행 완성.');
+  F('frn', '프리렌', '1/7 프리렌 꽃밭 Ver.', '굿스마일컴퍼니', '스케일 1/7', '약 18cm', '20만 원대 이상', 'epic', '프리렌 소장용 정점. 꽃밭 베이스. 예약 판매 중심.');
+  F('frn', '페른', '1/7 페른', '굿스마일컴퍼니', '스케일 1/7', '약 24cm', '20만 원대 이상', 'epic', '로브 주름과 지팡이 디테일. 프리렌 꽃밭 Ver.과 세트 수요.');
+
+  /* ── 스파이 패밀리 (12) ── */
+  F('sxf', '아냐', '아냐 포저 (교복)', '반프레스토', '프라이즈', '약 13cm', '2~3만 원대', 'common', '가장 많이 팔리는 기본형. 선물 1순위.');
+  F('sxf', '아냐', 'Q posket 아냐 포저', '반프레스토', 'Q posket', '약 14cm', '2~3만 원대', 'common', '데포르메와 궁합 최고. 피넛 든 버전 인기.');
+  F('sxf', '아냐', '아냐 포저 (파자마)', '반프레스토', '프라이즈', '약 13cm', '2~3만 원대', 'common', '치미라 인형 안은 파자마 버전. 교복과 세트.');
+  F('sxf', '요르', '요르 포저 (가시공주)', '반프레스토', '프라이즈', '약 17cm', '2~4만 원대', 'common', '어른 팬이 가장 많이 찾는 상품. 드레스 자락 조형 역동적.');
+  F('sxf', '로이드', '로이드 포저', '반프레스토', '프라이즈', '약 18cm', '2~3만 원대', 'common', '정장 스탠딩. 가족 3인 세트의 한 자리. 재고 안정적.');
+  F('sxf', '본드', '본드 포저 빅 플러시', '반프레스토', '플러시', '약 30cm', '2~3만 원대', 'common', '피규어보다 인형 수요. 아이 선물용.');
+  F('sxf', '아냐', '넨도로이드 아냐 포저', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '히죽·울상 표정 + 치미라·본드 파츠. 어른 선물용.');
+  F('sxf', '요르', '넨도로이드 요르 포저', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '일상복·가시공주 교체. 바늘 무기 파츠.');
+  F('sxf', '로이드', '넨도로이드 로이드 포저', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '가족 넨도 3종 세트의 완성.');
+  F('sxf', '아냐', 'POP UP PARADE 아냐 포저', '굿스마일컴퍼니', 'POP UP PARADE', '약 13cm', '4~6만 원대', 'rare', '스케일 입문. 교복 + 와쿠와쿠 표정.');
+  F('sxf', '요르', '1/7 요르 포저 가시공주 드레스', '굿스마일컴퍼니', '스케일 1/7', '약 25cm', '20만 원대 이상', 'epic', '레이스·바늘 무기 금속 질감·홀스터까지 재현.');
+  F('sxf', '아냐', '1/7 아냐 포저 (스텔라 스타)', '굿스마일컴퍼니', '스케일 1/7', '약 16cm', '15만 원대 이상', 'epic', '스텔라 획득 장면. 아냐 스케일 중 가장 인기.');
+
+  /* ── 블리치 (10) ── */
+  F('blc', '이치고', 'Solid and Souls 쿠로사키 이치고', '반프레스토', 'Solid and Souls', '약 17cm', '2~4만 원대', 'common', '천년혈전 이후 재발매된 기본 라인. 참월 든 스탠딩.');
+  F('blc', '루키아', 'Solid and Souls 쿠치키 루키아', '반프레스토', 'Solid and Souls', '약 15cm', '2~4만 원대', 'common', '만해 백하벌 포즈. 이치고와 세트.');
+  F('blc', '뱌쿠야', 'Solid and Souls 쿠치키 뱌쿠야', '반프레스토', 'Solid and Souls', '약 17cm', '2~4만 원대', 'common', '천본앵 꽃잎 이펙트. 30대 팬층 수요.');
+  F('blc', '켄파치', 'Solid and Souls 자라키 켄파치', '반프레스토', 'Solid and Souls', '약 18cm', '2~4만 원대', 'common', '천년혈전 만해 등장 후 수요 급증.');
+  F('blc', '아이젠', 'Solid and Souls 아이젠 소스케', '반프레스토', 'Solid and Souls', '약 17cm', '2~4만 원대', 'common', '허 편 복장. 블리치 최고 인기 악역.');
+  F('blc', '이치고', 'Grandista 쿠로사키 이치고', '반프레스토', 'Grandista', '약 27cm', '4~6만 원대', 'rare', '대형 사이즈. 천년혈전 신 참월 버전.');
+  F('blc', '이치고', '넨도로이드 쿠로사키 이치고', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '호로 가면 교체 파츠. 재판 2024.');
+  F('blc', '루키아', 'POP UP PARADE 쿠치키 루키아', '굿스마일컴퍼니', 'POP UP PARADE', '약 16cm', '5~7만 원대', 'rare', '사신 대행 복장. 이치고 POP UP과 세트.');
+  F('blc', '우라하라', 'POP UP PARADE 우라하라 키스케', '굿스마일컴퍼니', 'POP UP PARADE', '약 18cm', '5~7만 원대', 'rare', '모자·게타 디테일. 어른 팬 선호.');
+  F('blc', '이치고', '1/8 쿠로사키 이치고 천년혈전 Ver.', '메가하우스', 'G.E.M.', '약 22cm', '20만 원대 이상', 'epic', 'G.E.M. 시리즈. 블리치 소장용 대표작.');
+
+  /* ── 최애의 아이 (10) ── */
+  F('onk', '아이', '호시노 아이 (무대의상)', '반프레스토', '프라이즈', '약 16cm', '2~3만 원대', 'common', '최애의 아이 피규어의 기본형. 별 눈동자 인쇄 확인.');
+  F('onk', '루비', '호시노 루비 (B코마치)', '반프레스토', '프라이즈', '약 16cm', '2~3만 원대', 'common', '신생 B코마치 의상. 카나·멤쵸와 3인 세트.');
+  F('onk', '카나', '아리마 카나 (B코마치)', '반프레스토', '프라이즈', '약 16cm', '2~3만 원대', 'common', '루비와 같은 라인. 재고 안정적.');
+  F('onk', '멤쵸', '멤쵸 (B코마치)', '반프레스토', '프라이즈', '약 16cm', '2~3만 원대', 'common', '3인 세트 완성. 가장 늦게 빠지는 편.');
+  F('onk', '아쿠아', '호시노 아쿠아', '반프레스토', '프라이즈', '약 17cm', '2~3만 원대', 'common', '배우 복장 스탠딩. 남성 캐릭터 중 유일한 프라이즈.');
+  F('onk', '아이', '넨도로이드 호시노 아이', '굿스마일컴퍼니', '넨도로이드', '약 10cm', '6~9만 원대', 'rare', '아이돌 표정 + 거짓말 손 포즈. 재판 잦음.');
+  F('onk', '루비', 'POP UP PARADE 호시노 루비', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '스케일 입문. 아이 POP UP과 세트.');
+  F('onk', '아이', 'POP UP PARADE 호시노 아이', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '무대의상. 가장 많이 팔린 POP UP 중 하나.');
+  F('onk', '아카네', 'POP UP PARADE 쿠로카와 아카네', '굿스마일컴퍼니', 'POP UP PARADE', '약 17cm', '5~7만 원대', 'rare', '시즌 2 이후 수요. 교복 버전.');
+  F('onk', '아이', '1/7 호시노 아이', '굿스마일컴퍼니', '스케일 1/7', '약 25cm', '20만 원대 이상', 'epic', '무대 조명 베이스. 최애의 아이 소장용 정점.');
+
+  /* ── 건담 (12) — 프라모델 ── */
+  F('gdm', 'RX-78-2', 'HG RX-78-2 건담 (BEYOND GLOBAL)', '반다이', 'HG 1/144', '약 13cm', '2~3만 원대', 'common', '건프라 입문 1순위. 접착제·도색 없이 조립. 쿠팡 프라모델관 인기.');
+  F('gdm', '에어리얼', 'HG 건담 에어리얼', '반다이', 'HG 1/144', '약 13cm', '2~3만 원대', 'common', '수성의 마녀 주역기. 신규 팬 입문용.');
+  F('gdm', '바르바토스', 'HG 건담 바르바토스 루프스 렉스', '반다이', 'HG 1/144', '약 14cm', '2~3만 원대', 'common', '철혈의 오펀스. 긴 손톱 가동 재미.');
+  F('gdm', '스트라이크 프리덤', 'HG 스트라이크 프리덤 건담', '반다이', 'HG 1/144', '약 13cm', '2~3만 원대', 'common', 'SEED FREEDOM 이후 재인기. 날개 전개.');
+  F('gdm', '유니콘', 'HG 유니콘 건담 (디스트로이 모드)', '반다이', 'HG 1/144', '약 15cm', '2~3만 원대', 'common', '사이코 프레임 클리어 파츠. 입문자 선호.');
+  F('gdm', '스트라이크 프리덤', 'RG 스트라이크 프리덤 건담', '반다이', 'RG 1/144', '약 13cm', '3~5만 원대', 'rare', '쿠팡 프라모델관 인기 1위. 금색 프레임. 디테일 대비 가격 최고.');
+  F('gdm', '뉴 건담', 'RG 뉴 건담', '반다이', 'RG 1/144', '약 14cm', '4~5만 원대', 'rare', '핀 판넬 전개. RG 중 완성도 최상급 평가.');
+  F('gdm', 'RX-78-2', 'RG RX-78-2 건담 Ver.2.0', '반다이', 'RG 1/144', '약 13cm', '3~4만 원대', 'rare', '2024 신금형. 내부 프레임 가동.');
+  F('gdm', '유니콘', 'MG 유니콘 건담 Ver.Ka', '반다이', 'MG 1/100', '약 22cm', '7~9만 원대', 'rare', '변신 기믹 완전 재현. MG 입문으로 인기.');
+  F('gdm', '뉴 건담', 'MG 뉴 건담 Ver.Ka', '반다이', 'MG 1/100', '약 23cm', '8~10만 원대', 'rare', 'MG 대표작. 판넬 전개 스탠드 포함.');
+  F('gdm', '바르바토스', 'MG 건담 바르바토스', '반다이', 'MG 1/100', '약 19cm', '6~8만 원대', 'rare', '내부 프레임 노출 디자인. 도색 없이도 정보량 많음.');
+  F('gdm', '스트라이크 프리덤', 'PG 스트라이크 프리덤 건담', '반다이', 'PG 1/60', '약 32cm', '30만 원대 이상', 'epic', '퍼펙트 그레이드. LED 유닛 별매. 건프라 소장용 정점.');
+
+  window.MK_FIGURES = list;
+})();

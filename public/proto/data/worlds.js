@@ -8,7 +8,7 @@ window.MK_WORLDS = [
   { id: 'csm', no: 3, title: '체인소맨', en: 'Chainsaw Man', theme: '#ff6a00', theme2: '#f2f0ea', on: '#000', g: 45, img: 'IMG-W03-HERO',
     chars: ['덴지', '파워', '마키마', '레제', '아키', '포치타'], post: 'chainsaw-man-figure-top5' },
   { id: 'op',  no: 4, title: '원피스', en: 'One Piece', theme: '#ffcc33', theme2: '#2eb3ff', on: '#000', g: 35, img: 'IMG-W04-HERO',
-    chars: ['루피', '조로', '샹크스', '에이스', '나미', '로빈'], post: 'one-piece-figure-top5' },
+    chars: ['루피', '조로', '나미', '상디', '초파', '로빈', '에이스', '샹크스'], post: 'one-piece-figure-top5' },
   { id: 'frn', no: 5, title: '장송의 프리렌', en: 'Frieren', theme: '#c9b6ff', theme2: '#f2f0ea', on: '#000', g: 30, img: 'IMG-W05-HERO',
     chars: ['프리렌', '페른', '슈타르크', '힘멜', '하이터', '아이젠'], post: 'frieren-figure-top5' },
   { id: 'sxf', no: 6, title: '스파이 패밀리', en: 'Spy x Family', theme: '#1fb27a', theme2: '#ff8fb1', on: '#000', g: 40, img: 'IMG-W06-HERO',
