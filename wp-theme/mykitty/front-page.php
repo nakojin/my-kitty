@@ -1,66 +1,67 @@
 <?php
 /**
- * 1단계 프론트: 토큰·컴포넌트가 프로토타입과 같게 보이는지 확인하는 "스타일 체크" 페이지.
- * 2단계(월드)·4단계(홈)에서 실제 홈 레이아웃으로 교체한다.
+ * 홈 (S2). 서버: 신시대 TOP 3, 재입고·신상 피드, 월드 데이터. 클라이언트(app.js): 체크인·레벨·뽑기·내 월드 타일.
+ * 온보딩 전 사용자는 app.js 가 /onboarding/ 으로 보낸다.
  */
 get_header();
-$worlds = get_terms( [ 'taxonomy' => 'world', 'hide_empty' => false, 'meta_key' => 'world_no', 'orderby' => 'meta_value_num' ] );
-$main   = $worlds && ! is_wp_error( $worlds ) ? $worlds[0] : null;
+$feed = get_posts( [ 'post_type' => 'figure', 'posts_per_page' => 3, 'meta_key' => 'rarity', 'meta_value' => 'rare', 'orderby' => 'date', 'order' => 'DESC' ] );
+$top3 = get_posts( [ 'post_type' => 'ranking_entry', 'posts_per_page' => 3, 'meta_key' => 'rank', 'orderby' => 'meta_value_num', 'order' => 'ASC',
+	'tax_query' => [ [ 'taxonomy' => 'ranking_board', 'field' => 'slug', 'terms' => 'newera-kr' ] ] ] );
+$days = [ '월', '화', '수', '목', '금', '토', '일' ];
 ?>
-<div class="hero" style="<?php echo $main ? mykitty_world_style( $main ) : ''; ?>">
-	<?php if ( $main ) { mykitty_img_slot( get_term_meta( $main->term_id, 'hero_slot', true ), '', '', ' ' ); } ?>
-	<div class="splat" style="width:120px;height:120px;right:-40px;top:-40px"></div>
-	<div class="label" style="color:var(--fg);opacity:.7">MY KITTY · 테마 1단계</div>
-	<div class="display" style="font-size:34px">스타일<br><span class="brush">체크</span></div>
-	<p class="muted small" style="margin:10px 0 0">프로토타입과 같은 토큰·컴포넌트가 로드되는지 확인하는 페이지.</p>
-</div>
+<div class="view" data-screen="home">
+	<div class="hero" data-main-world>
+		<div class="img-slot" data-hero-slot style="position:absolute;inset:0;border:0;color:transparent;opacity:.35"></div>
+		<div class="splat" style="width:120px;height:120px;right:-40px;top:-40px"></div>
+		<div class="splat ink" style="width:8px;height:8px;right:84px;top:30px"></div>
+		<div style="display:flex;justify-content:space-between;align-items:flex-end">
+			<div><div class="label" style="color:var(--fg);opacity:.7">🔥 연속 체크인</div><div class="display" style="font-size:34px"><span data-streak>0</span>일째</div></div>
+			<div style="text-align:right"><div class="label" style="color:var(--fg);opacity:.7">LEVEL</div><div class="display" style="font-size:26px;color:var(--theme)" data-level>1</div></div>
+		</div>
+		<div class="chips" style="margin-top:10px" data-days>
+			<?php foreach ( $days as $i => $d ) : ?><span class="chip" data-day="<?php echo $i; ?>"><span><?php echo $d; ?></span></span><?php endforeach; ?>
+			<button type="button" class="chip on" data-checkin><span>체크인 +10XP</span></button>
+		</div>
+	</div>
 
-<div class="pad" style="display:flex;flex-direction:column;gap:16px">
+	<div class="pad" style="display:flex;flex-direction:column;gap:14px">
 
-	<section>
-		<div class="label" style="margin-bottom:6px">월드 (taxonomy world)</div>
-		<div class="grid3">
-		<?php foreach ( (array) $worlds as $w ) : if ( is_wp_error( $w ) ) continue; ?>
-			<a class="poster wide" href="<?php echo esc_url( get_term_link( $w ) ); ?>" style="<?php echo mykitty_world_style( $w ); ?>">
-				<?php mykitty_img_slot( get_term_meta( $w->term_id, 'hero_slot', true ), '', '', ' ' ); ?>
-				<span class="cap"><?php echo esc_html( $w->name ); ?><br><span style="color:var(--theme)"><?php echo (int) $w->count; ?>종</span></span>
+		<div class="panel" style="display:flex;gap:14px;align-items:center;padding:14px" data-gacha-panel>
+			<div class="gacha idle" data-gacha style="width:92px;height:122px;flex:none">
+				<div class="card"><div class="face front">?</div><div class="face back" data-gacha-back></div></div>
+			</div>
+			<div style="flex:1;min-width:0" data-gacha-text>
+				<div class="label">오늘의 뽑기 · 1/1</div>
+				<div class="t" style="font-size:15px;margin:2px 0 8px">오늘의 추천 피규어가<br>기다리고 있어</div>
+				<button type="button" class="cta theme" data-gacha-go style="width:auto;padding:8px 16px;font-size:12px"><span>탭해서 공개</span></button>
+			</div>
+		</div>
+
+		<section>
+			<div class="label" style="margin-bottom:6px">내 월드</div>
+			<div class="grid3" data-my-worlds></div>
+		</section>
+
+		<?php if ( $top3 ) : ?>
+		<section>
+			<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><div class="label">신시대 랭킹</div><a class="small" style="color:var(--theme)" href="<?php echo esc_url( get_term_link( 'newera-kr', 'ranking_board' ) ); ?>">전체 ›</a></div>
+			<?php foreach ( $top3 as $p ) { mykitty_rank_row( $p->ID, true ); } ?>
+		</section>
+		<?php endif; ?>
+
+		<?php if ( $feed ) : ?>
+		<section>
+			<div class="label" style="margin-bottom:4px">재입고 · 신상</div>
+			<?php foreach ( $feed as $i => $p ) : $slug = $p->post_name; $r = mykitty_rarity_map()[ get_post_meta( $p->ID, 'rarity', true ) ?: 'common' ]; ?>
+			<a class="row" href="<?php echo esc_url( get_permalink( $p ) ); ?>" data-sheet>
+				<div class="thumb"><?php mykitty_img_slot( 'COUPANG-' . $slug, 'product', get_post_meta( $p->ID, 'product_image', true ), ' ' ); ?></div>
+				<div class="body"><div class="t"><?php echo esc_html( $p->post_title ); ?></div><div class="muted small"><?php echo esc_html( $r['label'] . ' · ' . get_post_meta( $p->ID, 'price', true ) ); ?></div></div>
+				<?php if ( $i === 0 ) : ?><span class="brush" style="font-size:10px;padding:1px 8px;--theme:var(--theme2)">재입고</span><?php else : ?><span class="chip"><span>신상</span></span><?php endif; ?>
 			</a>
-		<?php endforeach; ?>
-		</div>
-	</section>
-
-	<section>
-		<div class="label" style="margin-bottom:6px">칩 · 레어리티</div>
-		<div class="chips">
-			<?php mykitty_chip( '전체', true ); foreach ( mykitty_rarity_map() as $k => $r ) { mykitty_chip( $r['label'], false, 'r-' . $k ); } ?>
-		</div>
-	</section>
-
-	<section>
-		<div class="label" style="margin-bottom:6px">피규어 (CPT figure) · 최근 6건</div>
-		<?php $figs = new WP_Query( [ 'post_type' => 'figure', 'posts_per_page' => 6 ] ); ?>
-		<?php if ( $figs->have_posts() ) : ?>
-			<div class="grid3"><?php while ( $figs->have_posts() ) : $figs->the_post(); mykitty_figure_card( get_the_ID() ); endwhile; wp_reset_postdata(); ?></div>
-		<?php else : ?>
-			<div class="panel flat muted small">피규어가 아직 없어요. 관리자 → 피규어 → 추가, 또는 <code>wp-theme/import/</code> 의 CSV를 가져오세요.</div>
+			<?php endforeach; ?>
+		</section>
 		<?php endif; ?>
-	</section>
 
-	<section>
-		<div class="label" style="margin-bottom:6px">랭킹 행 (CPT ranking_entry) · 신시대 한국 TOP 3</div>
-		<?php $rk = new WP_Query( [ 'post_type' => 'ranking_entry', 'posts_per_page' => 3, 'meta_key' => 'rank', 'orderby' => 'meta_value_num', 'order' => 'ASC', 'tax_query' => [ [ 'taxonomy' => 'ranking_board', 'field' => 'slug', 'terms' => 'newera-kr' ] ] ] ); ?>
-		<?php if ( $rk->have_posts() ) : while ( $rk->have_posts() ) : $rk->the_post(); mykitty_rank_row( get_the_ID(), true ); endwhile; wp_reset_postdata(); else : ?>
-			<div class="panel flat muted small">랭킹 항목이 아직 없어요.</div>
-		<?php endif; ?>
-	</section>
-
-	<section class="panel">
-		<div class="label">쿠팡 CTA · 모든 월드에서 동일</div>
-		<div style="display:flex;gap:8px;margin-top:8px">
-			<span class="cta sub" style="flex:0 0 118px"><span>♡ 도감 담기</span></span>
-			<?php mykitty_coupang_cta( '' ); ?>
-		</div>
-	</section>
-
+	</div>
 </div>
 <?php get_footer(); ?>

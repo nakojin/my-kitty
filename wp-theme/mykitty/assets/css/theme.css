@@ -4,6 +4,13 @@
 .admin-bar .device { margin-top: 56px; }
 @media (max-width: 480px) { .admin-bar .device { height: calc(100dvh - 46px); margin-top: 46px; } }
 
+/* 블로그 글 안의 상품 블록 (import 시 생성되는 .product) */
+.entry-content .product { margin: 16px 0; }
+.entry-content .product h3 { margin: 0 0 4px; font-size: 1.05rem; }
+.entry-content .product .price { color: var(--theme); font-weight: 800; margin: 0 0 6px; }
+.entry-content .product .cta { margin-top: 10px; }
+.entry-content .product .cta.pending { display: block; text-align: center; }
+
 /* 블로그 글 본문 (index/single) */
 .entry-content { font-size: 15px; line-height: 1.75; }
 .entry-content h2 { font-size: 1.25rem; margin-top: 2rem; }

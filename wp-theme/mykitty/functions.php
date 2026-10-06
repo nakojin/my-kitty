@@ -12,6 +12,9 @@ define( 'MYKITTY_URI', get_template_directory_uri() );
 
 require MYKITTY_DIR . '/inc/post-types.php';
 require MYKITTY_DIR . '/inc/template-tags.php';
+require MYKITTY_DIR . '/inc/pages.php';
+require MYKITTY_DIR . '/inc/rest-state.php';
+require MYKITTY_DIR . '/inc/seo.php';
 
 add_action( 'after_setup_theme', function () {
 	load_theme_textdomain( 'mykitty', MYKITTY_DIR . '/languages' );
@@ -32,9 +35,15 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_script( 'mykitty-store', MYKITTY_URI . '/assets/js/store.js', [], MYKITTY_VERSION, true );
 	wp_enqueue_script( 'mykitty-app', MYKITTY_URI . '/assets/js/app.js', [ 'mykitty-store' ], MYKITTY_VERSION, true );
 	wp_localize_script( 'mykitty-store', 'MK_ENV', [
-		'rest'   => esc_url_raw( rest_url( 'mk/v1/' ) ),
-		'nonce'  => wp_create_nonce( 'wp_rest' ),
-		'logged' => is_user_logged_in(),
+		'rest'       => esc_url_raw( rest_url( 'mk/v1/' ) ),
+		'nonce'      => wp_create_nonce( 'wp_rest' ),
+		'logged'     => is_user_logged_in(),
+		'home'       => home_url( '/' ),
+		'onboarding' => home_url( '/onboarding/' ),
+		'collection' => home_url( '/collection/' ),
+		'imgBase'    => MYKITTY_URI . '/assets/img/',
+		'siteName'   => get_bloginfo( 'name' ),
+		'shareHost'  => wp_parse_url( home_url(), PHP_URL_HOST ),
 	] );
 } );
 

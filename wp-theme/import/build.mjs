@@ -34,4 +34,65 @@ writeFileSync(join(here, 'rankings.csv'), csv(rank.map(e => ({
   board: e.board, rank: e.r, post_title: e.t, year: e.y, kind: e.k, decade: e.d || '', note: e.note || '', fig: e.fig, world: e.world || '',
 })), ['board', 'rank', 'post_title', 'year', 'kind', 'decade', 'note', 'fig', 'world']));
 
-console.log(`worlds ${MK_WORLDS.length} · figures ${MK_FIGURES.length} · rankings ${rank.length}`);
+/* ── 블로그 글 (src/content/posts/*.md) → posts.json (HTML 본문) ── */
+import { readdirSync } from 'node:fs';
+const postsDir = join(root, 'src/content/posts');
+const POST_WORLD = { 'demon-slayer': 'kny', 'jujutsu-kaisen': 'jjk', 'chainsaw-man': 'csm', 'one-piece': 'op', 'frieren': 'frn', 'spy-family': 'sxf' };
+
+function parseFrontmatter(src) {
+  const m = src.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/); if (!m) return { data: {}, body: src };
+  const data = {}; const lines = m[1].split('\n'); let i = 0;
+  const unq = (v) => v.trim().replace(/^"(.*)"$/, '$1');
+  while (i < lines.length) {
+    const line = lines[i];
+    const kv = line.match(/^(\w+):\s*(.*)$/);
+    if (kv && kv[1] === 'products') {
+      const arr = []; i++;
+      while (i < lines.length && /^\s+(-|\w+:)/.test(lines[i])) {
+        if (/^\s+-\s+\w+:/.test(lines[i])) arr.push({});
+        const f = lines[i].match(/^\s+-?\s*(\w+):\s*(.*)$/); if (f) arr[arr.length - 1][f[1]] = unq(f[2]);
+        i++;
+      }
+      data.products = arr; continue;
+    }
+    if (kv) data[kv[1]] = unq(kv[2]);
+    i++;
+  }
+  return { data, body: m[2] };
+}
+const esc = (s) => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const inline = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>').replace(/`(.+?)`/g, '<code>$1</code>');
+function md(src) {
+  const out = []; const lines = src.split('\n'); let list = null, para = [];
+  const flushP = () => { if (para.length) { out.push(`<p>${inline(para.join(' '))}</p>`); para = []; } };
+  const flushL = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  for (const raw of lines) {
+    const l = raw.trimEnd();
+    if (!l.trim()) { flushP(); flushL(); continue; }
+    const hm = l.match(/^(#{1,6})\s+(.*)$/); if (hm) { flushP(); flushL(); out.push(`<h${hm[1].length}>${inline(hm[2])}</h${hm[1].length}>`); continue; }
+    // 한 줄 전체가 굵은 글씨면 소제목처럼 단독 문단으로
+    if (/^\*\*[^*]+\*\*$/.test(l.trim())) { flushP(); flushL(); out.push(`<p class="lead">${inline(l.trim())}</p>`); continue; }
+    const ul = l.match(/^[-*]\s+(.*)$/); const ol = l.match(/^\d+\.\s+(.*)$/);
+    if (ul || ol) { flushP(); const t = ul ? 'ul' : 'ol'; if (list !== t) { flushL(); out.push(`<${t}>`); list = t; } out.push(`<li>${inline((ul || ol)[1])}</li>`); continue; }
+    flushL(); para.push(l.trim());
+  }
+  flushP(); flushL(); return out.join('\n');
+}
+function productsHtml(products = []) {
+  return products.map((p, i) => `
+<section class="product panel flat">
+  <h3>${i + 1}. ${esc(p.name || '')}</h3>
+  ${p.price ? `<p class="price">${esc(p.price)}</p>` : ''}
+  ${p.note ? `<p>${esc(p.note)}</p>` : ''}
+  ${p.coupangUrl ? `<a class="cta" href="${esc(p.coupangUrl)}" target="_blank" rel="sponsored nofollow noopener"><span>쿠팡에서 최저가 확인하기</span></a>` : `<span class="cta pending"><span>쿠팡 링크 준비 중</span></span>`}
+</section>`).join('\n');
+}
+const posts = readdirSync(postsDir).filter(f => f.endsWith('.md')).map(file => {
+  const { data, body } = parseFrontmatter(readFileSync(join(postsDir, file), 'utf8'));
+  const slug = file.replace(/\.md$/, '');
+  const world = Object.entries(POST_WORLD).find(([k]) => slug.startsWith(k))?.[1] || '';
+  return { slug, title: data.title || slug, excerpt: data.description || '', date: data.date || '', world, html: md(body) + '\n<h2>추천 피규어</h2>\n' + productsHtml(data.products) };
+});
+writeFileSync(join(here, 'posts.json'), JSON.stringify(posts, null, 1));
+
+console.log(`worlds ${MK_WORLDS.length} · figures ${MK_FIGURES.length} · rankings ${rank.length} · posts ${posts.length}`);

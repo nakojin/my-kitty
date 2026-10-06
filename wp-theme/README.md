@@ -44,9 +44,23 @@ wp eval-file wp-theme/import/import.php
 |---|---|---|
 | 1 | 뼈대 — 토큰·컴포넌트·콘텐츠 모델·CSV 가져오기 | ✅ |
 | 2 | **월드 + 피규어 상세** — `taxonomy-world.php`(탭·필터), `single-figure.php`, `template-parts/figure-detail.php`, `assets/js/app.js`(바텀시트 로더·도감 상태 칠하기) | ✅ |
-| 3 | 홈 + 도감 + 마이 — `front-page.php` 실제 홈(체크인·뽑기), `page-collection.php`, `page-my.php` | 예정 |
-| 4 | 랭킹 + 온보딩 + 공유 카드 — `taxonomy-ranking_board.php`, `page-onboarding.php`, `page-share.php` | 예정 |
-| 5 | 콘텐츠·배포·검증 — 블로그 글 6편 가져오기, OG·sitemap, 캐시, 실제 설치 QA | 예정 |
+| 3 | **홈 + 도감 + 마이** — `front-page.php` 실제 홈(체크인·뽑기·내 월드·피드), `page-collection.php`, `page-my.php`, `inc/rest-state.php`(로그인 동기화) | ✅ |
+| 4 | **랭킹 + 온보딩 + 공유 카드** — `taxonomy-ranking_board.php`, `page-onboarding.php`, `page-share.php`(캔버스 PNG·Web Share) | ✅ |
+| 5 | **콘텐츠·배포·검증** — 블로그 글 6편 `import/posts.json`, `single.php`/`page.php`, `inc/seo.php`(OG·canonical·noindex), `inc/pages.php`(페이지 자동 생성), `QA.md` | ✅ 코드 / ⏳ 실제 설치 QA |
+
+### 3~5단계 동작 방식
+
+- 페이지 템플릿 4개(도감·마이·온보딩·공유)는 **활성화 시 자동 생성**된다(`inc/pages.php`). 소개·랭킹 근거 페이지와 홈/글 목록 설정도 함께.
+- 홈·도감·마이·온보딩·공유는 서버가 틀을 그리고 `app.js` 가 상태를 채운다. 첫 방문(온보딩 전)에 홈을 열면 `/onboarding/` 으로 보낸다.
+- 로그인 사용자는 상태가 `user_meta mk_state` 에 저장되고 `/wp-json/mk/v1/state` 로 동기화된다. 비로그인은 localStorage.
+- 랭킹 보드 5개는 taxonomy term. `/ranking/newera-kr/` 처럼 열고, 레전드는 `?decade=90s`.
+- 공유 카드 "이미지 저장"은 `<canvas>` 로 1080×1920 PNG 를 만든다(상품 이미지는 CORS 로 제외). "공유"는 Web Share API, 미지원 시 링크 복사.
+- 블로그 글은 `node wp-theme/import/build.mjs` 가 Markdown → HTML(`posts.json`)로 바꾸고 `import.php` 가 `post` 로 넣으며, 월드의 `curation_post` 를 연결한다.
+- SEO: `inc/seo.php` 가 OG·canonical·`<title>` 을 넣는다. Yoast/Rank Math 를 쓰면 `functions.php` 에서 `require 'inc/seo.php'` 한 줄만 지우면 된다.
+
+## 설치 후 확인
+
+`QA.md` 체크리스트를 따라 확인한다. 이 저장소 환경에는 워드프레스가 없어 실제 활성화 테스트는 하지 못했고, PHP 문법 검사와 `app.js` 정적 하네스 테스트(도감 필터·마이 집계·공유 카드 렌더·PNG 생성)만 통과한 상태다.
 
 ### 2단계 동작 방식
 

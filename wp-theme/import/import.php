@@ -58,3 +58,22 @@ foreach ( $read( 'rankings.csv' ) as $r ) {
 	$n++;
 }
 WP_CLI::success( "rankings: $n" );
+
+/* posts (블로그 글 6편) + 월드의 curation_post 연결 */
+$n = 0;
+foreach ( json_decode( file_get_contents( "$dir/posts.json" ), true ) ?: [] as $p ) {
+	$existing = get_page_by_path( $p['slug'], OBJECT, 'post' );
+	$post_id  = wp_insert_post( [
+		'ID' => $existing ? $existing->ID : 0, 'post_type' => 'post', 'post_status' => 'publish',
+		'post_name' => $p['slug'], 'post_title' => $p['title'], 'post_excerpt' => $p['excerpt'],
+		'post_content' => $p['html'], 'post_date' => $p['date'] ? $p['date'] . ' 09:00:00' : current_time( 'mysql' ),
+	], true );
+	if ( is_wp_error( $post_id ) ) { WP_CLI::warning( "post {$p['slug']}: " . $post_id->get_error_message() ); continue; }
+	if ( $p['world'] ) {
+		wp_set_object_terms( $post_id, $p['world'], 'world' );
+		$term = get_term_by( 'slug', $p['world'], 'world' );
+		if ( $term ) { update_term_meta( $term->term_id, 'curation_post', $post_id ); }
+	}
+	$n++;
+}
+WP_CLI::success( "posts: $n" );

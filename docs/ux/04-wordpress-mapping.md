@@ -63,9 +63,9 @@
 
 1. **뼈대** — 토큰·컴포넌트·`#rough` 필터·콘텐츠 모델(world/figure/ranking)·CSV 가져오기 ✅
 2. **월드 + 피규어 상세** — `taxonomy-world.php`(S3), `single-figure.php` + `figure-detail.php` 파트(S4), `app.js` 시트 로더 ✅
-3. **홈 + 도감 + 마이** — `front-page.php` 실제 홈(S2: 체크인·뽑기·내 월드·피드), `page-collection.php`(S5), `page-my.php`(S7)
-4. **랭킹 + 온보딩 + 공유** — `taxonomy-ranking_board.php`(S6), `page-onboarding.php`(S1), `page-share.php`(S8)
-5. **콘텐츠·배포·검증** — 블로그 글 6편(Markdown → post), OG·sitemap, 캐시 설정, 실제 설치 QA, GitHub Pages → 워드프레스 리다이렉트
+3. **홈 + 도감 + 마이** — `front-page.php` 실제 홈(S2), `page-collection.php`(S5), `page-my.php`(S7), REST 상태 동기화 ✅
+4. **랭킹 + 온보딩 + 공유** — `taxonomy-ranking_board.php`(S6), `page-onboarding.php`(S1), `page-share.php`(S8) ✅
+5. **콘텐츠·배포·검증** — 블로그 글 6편(Markdown → post), `single.php`/`page.php`, OG·canonical, 페이지 자동 생성, `wp-theme/QA.md` ✅ 코드 완료 · 실제 설치 QA 는 호스팅 후
 
 ## 6. 지켜야 할 것
 
