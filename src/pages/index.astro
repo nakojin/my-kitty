@@ -2,30 +2,61 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
+const base = import.meta.env.BASE_URL;
 const posts = (await getCollection('posts')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---
 
-<Base title="홈" description="애니메이션 피규어 추천과 리뷰">
-  <h1>애니메이션 피규어 추천</h1>
+<Base title="애니메이션 피규어 추천" description="귀멸의 칼날, 주술회전, 원피스 등 인기 애니메이션 피규어를 가격대별로 골라 드립니다. 입문용부터 소장용까지 실패 없는 선택.">
+  <section class="hero">
+    <h1>애니메이션 피규어, 뭘 사야 할지 모르겠다면</h1>
+    <p>작품별로 <strong>입문용부터 소장용까지</strong> 실패 없는 피규어만 골라 정리합니다. 정품 확인법과 가격대도 함께.</p>
+  </section>
+
   <ul class="posts">
     {posts.map((post) => (
       <li>
-        <a href={`${import.meta.env.BASE_URL}/posts/${post.id}/`}>{post.data.title}</a>
-        <p>{post.data.description}</p>
-        <time datetime={post.data.date.toISOString()}>
-          {post.data.date.toLocaleDateString('ko-KR')}
-        </time>
+        <a href={`${base}/posts/${post.id}/`}>
+          <h2>{post.data.title}</h2>
+          <p>{post.data.description}</p>
+          <div class="meta">
+            <span>상품 {post.data.products.length}개</span>
+            <time datetime={post.data.date.toISOString()}>
+              {post.data.date.toLocaleDateString('ko-KR')}
+            </time>
+          </div>
+        </a>
       </li>
     ))}
   </ul>
 </Base>
 
 <style>
-  .posts { list-style: none; padding: 0; }
-  .posts li { padding: 1rem 0; border-bottom: 1px solid #eee; }
-  .posts a { font-size: 1.125rem; font-weight: 600; color: inherit; }
-  .posts p { margin: 0.25rem 0; color: #555; }
-  time { font-size: 0.875rem; color: #888; }
+  .hero { margin-bottom: 2rem; }
+  .hero h1 { margin-bottom: 0.5rem; }
+  .hero p { color: var(--muted); margin: 0; }
+  .posts { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+  .posts a {
+    display: block;
+    padding: 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .posts a:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+  .posts h2 { margin: 0 0 0.5rem; font-size: 1.125rem; }
+  .posts p { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.9375rem; }
+  .meta {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
 </style>

@@ -24,12 +24,13 @@ const { rank, name, price, note, coupangUrl } = Astro.props;
 
 <style>
   .product {
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     padding: 1.25rem;
-    border: 1px solid #eee;
-    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
   }
-  .product h3 { margin-top: 0; }
-  .price { font-weight: 700; color: #e5322d; }
-  .pending { color: #999; font-size: 0.875rem; text-align: center; }
+  .product h3 { margin-top: 0; font-size: 1.0625rem; }
+  .price { font-weight: 700; color: var(--accent); margin: 0.25rem 0; }
+  .pending { color: var(--muted); font-size: 0.875rem; text-align: center; margin-bottom: 0; }
 </style>
