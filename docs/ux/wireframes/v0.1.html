@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>마이키티 와이어프레임 v0.1</title>
+<style>
+  :root {
+    --bg: #111; --panel: #1c1c1c; --line: #3a3a3a; --fg: #e8e8e8; --muted: #8a8a8a;
+    --theme: #4ade80;      /* 작품 테마 색 자리 (예: 귀멸 녹색) */
+    --cta: #e5322d;        /* 쿠팡 빨강 */
+    --ph: repeating-linear-gradient(45deg, #2a2a2a 0 6px, #242424 6px 12px);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0a0a0a; color: var(--fg); font: 13px/1.4 system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; padding: 24px; }
+  h1 { font-size: 16px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin-bottom: 20px; }
+  .row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  .screen { width: 360px; }
+  .screen > h2 { font-size: 13px; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+  .phone { width: 360px; height: 760px; background: var(--bg); border: 2px solid var(--line); border-radius: 28px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .body { flex: 1; overflow: hidden; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .box { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+  .ph { background: var(--ph); border: 1px dashed #555; border-radius: 8px; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 11px; line-height: 1.3; }
+  .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+  .t { font-weight: 700; }
+  .muted { color: var(--muted); }
+  .chips { display: flex; gap: 6px; overflow: hidden; }
+  .chip { border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; font-size: 11px; white-space: nowrap; color: var(--muted); }
+  .chip.on { border-color: var(--theme); color: var(--theme); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .tabbar { height: 56px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); align-items: center; text-align: center; font-size: 11px; color: var(--muted); background: var(--bg); }
+  .tabbar .on { color: var(--fg); font-weight: 700; }
+  .cta { background: var(--cta); color: #fff; font-weight: 700; text-align: center; border-radius: 10px; padding: 12px; }
+  .cta.sub { background: transparent; border: 1px solid var(--line); color: var(--fg); font-weight: 600; }
+  .disclosure { font-size: 9px; color: #666; text-align: center; padding: 4px 12px; border-top: 1px solid #222; }
+  .hdr { margin: -12px -12px 0; padding: 14px 12px 12px; background: linear-gradient(180deg, color-mix(in srgb, var(--theme) 35%, #111), var(--bg)); }
+  .ring { width: 56px; height: 56px; border-radius: 50%; background: conic-gradient(var(--theme) var(--p, 40%), #2a2a2a 0); display: grid; place-items: center; }
+  .ring > span { width: 44px; height: 44px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+  .tile { aspect-ratio: 3/4; border-radius: 8px; position: relative; overflow: hidden; }
+  .tile .badge { position: absolute; top: 4px; left: 4px; font-size: 9px; padding: 1px 5px; border-radius: 4px; background: #000a; }
+  .tile.owned { background: var(--ph); border: 1px solid var(--theme); }
+  .tile.wish  { background: var(--ph); border: 1px dashed #777; }
+  .tile.none  { background: #161616; border: 1px solid #262626; opacity: .55; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; top: 64px; background: var(--bg); border-radius: 20px 20px 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; }
+  .sheet .handle { width: 36px; height: 4px; border-radius: 2px; background: #444; margin: 8px auto 0; }
+  .dim { position: absolute; inset: 0; background: #0008; }
+  .annot { margin-top: 10px; font-size: 12px; color: var(--muted); }
+  .annot b { color: var(--fg); }
+  .annot li { margin-bottom: 3px; }
+  .key { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: var(--theme); color: #000; font-size: 11px; font-weight: 800; display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<h1>마이키티 — 로우파이 와이어프레임 v0.1</h1>
+<div class="sub">S2 홈 · S4 피규어 상세 · S5 도감 — 다크 기본, 작품 테마 색(초록은 예시), 쿠팡 빨강은 CTA 전용. 빗금 영역은 이미지 자리(쿠팡 제공 이미지).</div>
+
+<div class="row">
+
+  <!-- S2 HOME -->
+  <section class="screen">
+    <h2>S2 홈</h2>
+    <div class="phone">
+      <div class="body">
+        <div class="box hdr" style="position:relative">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div class="label">🔥 연속 체크인</div><div class="t" style="font-size:22px">7일째</div></div>
+            <div class="ring" style="--p:30%"><span>Lv 3</span></div>
+          </div>
+          <div style="display:flex;gap:4px;margin-top:8px">
+            <div class="chip on">월</div><div class="chip on">화</div><div class="chip on">수</div><div class="chip">목</div><div class="chip">금</div><div class="chip">토</div><div class="chip">일</div>
+          </div>
+          <span class="key" style="right:-6px;top:-6px">1</span>
+        </div>
+
+        <div class="box" style="position:relative;text-align:center;padding:16px">
+          <div class="label">오늘의 뽑기 · 1/1</div>
+          <div class="ph" style="width:110px;height:146px;margin:8px auto;font-size:28px;color:var(--theme);border-color:var(--theme)">?</div>
+          <div class="muted">탭해서 오늘의 추천 피규어 공개</div>
+          <span class="key" style="right:-6px;top:-6px">2</span>
+        </div>
+
+        <div class="box" style="position:relative">
+          <div class="label">내 월드</div>
+          <div class="grid3">
+            <div class="ph" style="height:64px">귀멸<br><small>도감 40%</small></div>
+            <div class="ph" style="height:64px">주술회전<br><small>도감 15%</small></div>
+            <div class="ph" style="height:64px">체인소맨<br><small>도감 0%</small></div>
+          </div>
+          <span class="key" style="right:-6px;top:-6px">3</span>
+        </div>
+
+        <div class="box" style="position:relative;flex:1">
+          <div class="label">재입고 · 신상</div>
+          <div style="display:flex;gap:8px;margin-bottom:8px"><div class="ph" style="width:48px;height:48px"></div><div><div class="t">넨도로이드 고죠 사토루</div><div class="muted">재입고 · 레어 · 6~9만</div></div></div>
+          <div style="display:flex;gap:8px"><div class="ph" style="width:48px;height:48px"></div><div><div class="t">POP UP PARADE 레제</div><div class="muted">신상 · 레어 · 5~7만</div></div></div>
+          <span class="key" style="right:-6px;top:-6px">4</span>
+        </div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+      <div class="tabbar"><div class="on">홈</div><div>탐색</div><div>도감</div><div>마이</div></div>
+    </div>
+    <ol class="annot">
+      <li><b>테마 헤더</b> — 스트릭 숫자 + 7일 칩 + 레벨 링. 배경은 대표 월드 색. (Life Reset)</li>
+      <li><b>오늘의 뽑기</b> — "?" 카드 탭 → 뒤집히며 실제 피규어 카드 → S4로. 하루 1회. (Alan)</li>
+      <li><b>내 월드</b> — 온보딩에서 고른 작품. 타일에 도감 % 표시. 탭 → S3.</li>
+      <li><b>피드</b> — 재입고를 최상단. 행 탭 → S4 바텀시트.</li>
+    </ol>
+  </section>
+
+  <!-- S4 DETAIL (bottom sheet over S3) -->
+  <section class="screen">
+    <h2>S4 피규어 상세 (바텀시트)</h2>
+    <div class="phone">
+      <div class="body" style="opacity:.5">
+        <div class="box hdr"><div class="t">귀멸의 칼날 월드</div><div class="muted">도감 12/30 · 40%</div></div>
+        <div class="grid3"><div class="tile owned"></div><div class="tile wish"></div><div class="tile none"></div></div>
+      </div>
+      <div class="dim"></div>
+      <div class="sheet">
+        <div class="handle"></div>
+        <div class="body" style="padding-top:8px">
+          <div class="ph" style="height:200px;position:relative">상품 이미지 캐러셀 (쿠팡 제공)<span class="key" style="right:-6px;top:-6px">1</span></div>
+          <div style="position:relative">
+            <div class="muted">반프레스토 · 絆ノ装</div>
+            <div class="t" style="font-size:16px">카마도 탄지로</div>
+            <div class="chips" style="margin-top:6px"><span class="chip on">일반</span><span class="chip">프라이즈</span><span class="chip">약 15cm</span><span class="chip">2~3만 원대</span></div>
+            <span class="key" style="right:-6px;top:0">2</span>
+          </div>
+          <div class="box" style="position:relative">
+            <div class="label">추천 이유</div>
+            <div class="muted">프라이즈 중 가장 무난한 입문작. 물의 호흡 이펙트 포함, 책상 위에 두기 좋은 크기.</div>
+          </div>
+          <div class="box" style="position:relative">
+            <div style="display:flex;justify-content:space-between"><div class="label" style="margin:0">정품 체크포인트</div><div class="muted">▾</div></div>
+            <span class="key" style="right:-6px;top:-6px">3</span>
+          </div>
+          <div style="position:relative">
+            <div class="label">같은 라인 다른 캐릭터 · 크기 맞추기</div>
+            <div style="display:flex;gap:8px"><div class="ph" style="width:72px;height:72px">네즈코</div><div class="ph" style="width:72px;height:72px">젠이츠</div><div class="ph" style="width:72px;height:72px">이노스케</div></div>
+            <span class="key" style="right:-6px;top:-6px">4</span>
+          </div>
+          <div style="flex:1"></div>
+          <div style="display:flex;gap:8px;position:relative">
+            <div class="cta sub" style="flex:0 0 112px;white-space:nowrap">♡ 도감 담기</div>
+            <div class="cta" style="flex:1">쿠팡에서 보기</div>
+            <span class="key" style="right:-6px;top:-6px">5</span>
+          </div>
+        </div>
+        <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+      </div>
+    </div>
+    <ol class="annot">
+      <li><b>이미지 캐러셀</b> — 쿠팡 제공 이미지만. 상세는 어느 탭에서든 바텀시트로 열림. (Uber Eats)</li>
+      <li><b>이름 + 칩</b> — 레어리티 / 라인 / 크기 / 가격대. 가격은 "대략"으로. (Vivino)</li>
+      <li><b>정품 체크포인트</b> — 접이식. 저작권 표기·홀로그램 씰·시세 경고.</li>
+      <li><b>같은 라인</b> — 세트 구매 유도. 원피스 글의 "크기 통일" 조언을 UI로.</li>
+      <li><b>하단 고정 CTA</b> — 쿠팡(주) + 도감 담기(부). 연출 없이 즉시 반응.</li>
+    </ol>
+  </section>
+
+  <!-- S5 COLLECTION -->
+  <section class="screen">
+    <h2>S5 도감</h2>
+    <div class="phone">
+      <div class="body">
+        <div style="display:flex;justify-content:space-between;align-items:center;position:relative">
+          <div class="t" style="font-size:16px">도감</div>
+          <div class="chip">공유 카드 ↗</div>
+          <span class="key" style="right:-6px;top:-6px">1</span>
+        </div>
+        <div class="chips" style="position:relative"><span class="chip on">귀멸의 칼날</span><span class="chip">주술회전</span><span class="chip">체인소맨</span><span class="chip">+3</span></div>
+
+        <div class="box" style="display:flex;gap:12px;align-items:center;position:relative">
+          <div class="ring" style="--p:40%;width:64px;height:64px"><span style="width:50px;height:50px">40%</span></div>
+          <div>
+            <div class="t">귀멸의 칼날</div>
+            <div class="muted">보유 12 · 위시 5 · 미보유 13</div>
+            <div class="muted" style="font-size:11px">일반 8 · 레어 3 · 에픽 1 · 전설 0</div>
+          </div>
+          <span class="key" style="right:-6px;top:-6px">2</span>
+        </div>
+
+        <div class="chips" style="position:relative"><span class="chip on">전체</span><span class="chip">보유</span><span class="chip">위시</span><span class="chip">미보유</span><span class="chip">레어리티 ▾</span><span class="key" style="right:-6px;top:-6px">3</span></div>
+
+        <div class="grid3" style="position:relative;flex:1;align-content:start">
+          <div class="tile owned"><span class="badge">✓ 보유</span></div>
+          <div class="tile owned"><span class="badge">✓ 보유</span></div>
+          <div class="tile wish"><span class="badge">♡ 위시</span></div>
+          <div class="tile none"><span class="badge">레어</span></div>
+          <div class="tile owned"><span class="badge">✓ 보유</span></div>
+          <div class="tile none"><span class="badge">에픽</span></div>
+          <div class="tile wish"><span class="badge">♡ 위시</span></div>
+          <div class="tile none"><span class="badge">일반</span></div>
+          <div class="tile none"><span class="badge">전설</span></div>
+          <span class="key" style="right:-6px;top:-6px">4</span>
+        </div>
+      </div>
+      <div class="disclosure">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+      <div class="tabbar"><div>홈</div><div>탐색</div><div class="on">도감</div><div>마이</div></div>
+    </div>
+    <ol class="annot">
+      <li><b>공유 카드</b> 진입점 — 우상단. 탭 → S8.</li>
+      <li><b>완성도 카드</b> — 원형 게이지 + 상태별·레어리티별 집계. 게이지 색 = 작품 테마 색. (Letterboxd)</li>
+      <li><b>상태 필터</b> — 전체/보유/위시/미보유 + 레어리티. (bless.)</li>
+      <li><b>3열 그리드</b> — 보유=테마색 테두리, 위시=점선, 미보유=반투명 실루엣. 길게 누르면 상태 변경, 탭하면 S4. (Apple Games)</li>
+    </ol>
+  </section>
+
+</div>
+</body>
+</html>
