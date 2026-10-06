@@ -1,0 +1,158 @@
+/* ── 기본 ───────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: #070708; color: var(--fg); font: 14px/1.5 var(--font); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+img { max-width: 100%; display: block; }
+
+/* 데스크톱에서는 폰 프레임 안에, 모바일에서는 풀스크린 */
+.device { position: relative; width: 390px; height: 844px; margin: 24px auto; background: var(--bg); border: 2px solid var(--line); border-radius: 36px; overflow: hidden; display: flex; flex-direction: column; }
+@media (max-width: 480px) { .device { width: 100%; height: 100dvh; margin: 0; border: 0; border-radius: 0; } }
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scrollbar-width: none; }
+.screen::-webkit-scrollbar { display: none; }
+.pad { padding: 14px; }
+
+/* ── 타이포 ─────────────────────────────────────────────── */
+.display { font-weight: 900; letter-spacing: -.02em; line-height: .95; transform: skew(-6deg) rotate(-1.5deg); display: inline-block; transform-origin: left bottom; }
+.label { font-size: 10px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+.t { font-weight: 800; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+
+/* ── 붓칠 / 잉크 / 스큐 ────────────────────────────────── */
+.brush { position: relative; display: inline-block; padding: 2px 12px; color: var(--on-theme); font-weight: 900; isolation: isolate; }
+.brush::before { content: ""; position: absolute; inset: -2px -6px; background: var(--theme); filter: url(#rough); transform: skew(var(--skew-brush)) rotate(-1deg); z-index: -1; }
+.brush.paper { color: #000; } .brush.paper::before { background: var(--fg); }
+.stroke { height: 8px; background: var(--fg); filter: url(#rough); transform: skew(-20deg) rotate(-1deg); opacity: .9; }
+.stroke.theme { background: var(--theme); }
+.splat { position: absolute; border-radius: 50%; background: var(--theme2); filter: url(#rough); opacity: .65; pointer-events: none; }
+.splat.ink { background: var(--fg); opacity: .4; }
+.panel { background: var(--panel); border: 1px solid var(--line); padding: 12px; transform: skew(var(--skew)); }
+.panel > * { transform: skew(calc(var(--skew) * -1)); }
+.panel.flat { transform: none; } .panel.flat > * { transform: none; }
+
+/* ── 헤더 (월드 테마) ──────────────────────────────────── */
+.hero { position: relative; padding: 18px 14px 14px; overflow: hidden; background: linear-gradient(180deg, color-mix(in srgb, var(--theme) var(--g), #000), var(--bg)); }
+.hero .img-slot { position: absolute; inset: 0; z-index: 0; opacity: .35; border: 0; color: transparent; }
+.hero .img-slot::after { content: attr(data-slot); position: absolute; right: 8px; bottom: 6px; color: #6b6b70; font-size: 9px; }
+.hero > *:not(.img-slot):not(.splat) { position: relative; z-index: 1; }
+
+/* 이미지 슬롯: 아르(ChatGPT)가 만든 이미지가 들어갈 자리. data-slot 이 브리프 ID */
+.img-slot { background: var(--ph); border: 1px dashed #4a4a4f; display: grid; place-items: center; color: #6b6b70; font-size: 10px; letter-spacing: .06em; text-align: center; overflow: hidden; }
+.img-slot { position: relative; }
+.img-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.img-slot.product { border-color: #3a3a40; } /* 쿠팡 제공 상품 이미지 전용 */
+
+/* ── 칩 / 탭 ───────────────────────────────────────────── */
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1px solid var(--line); padding: 5px 11px; font-size: 12px; white-space: nowrap; color: var(--muted); transform: skew(var(--skew-chip)); transition: all var(--t-fast); }
+.chip > span { display: inline-block; transform: skew(calc(var(--skew-chip) * -1)); }
+.chip.on, .chip[aria-selected="true"] { border-color: var(--theme); color: var(--theme); background: color-mix(in srgb, var(--theme) 12%, transparent); }
+.chip.r-common { border-color: var(--r-common); color: var(--r-common); }
+.chip.r-rare { border-color: var(--r-rare); color: var(--r-rare); }
+.chip.r-epic { border-color: var(--r-epic); color: var(--r-epic); }
+.chip.r-legendary { border-color: var(--r-legendary); color: var(--r-legendary); }
+
+.segtabs { display: flex; border-bottom: 1px solid var(--line); margin: 0 -14px; padding: 0 14px; }
+.segtabs button { padding: 10px 0; margin-right: 18px; font-weight: 800; color: var(--muted); border-bottom: 3px solid transparent; }
+.segtabs button.on { color: var(--fg); border-color: var(--theme); }
+
+/* ── 버튼 ───────────────────────────────────────────────── */
+.cta { display: block; width: 100%; background: var(--cta); color: #fff; font-weight: 800; text-align: center; padding: 13px; transform: skew(var(--skew-chip)); transition: background var(--t-fast); }
+.cta > span { display: inline-block; transform: skew(calc(var(--skew-chip) * -1)); }
+.cta:hover { background: var(--cta-dark); }
+.cta.sub { background: transparent; border: 1px solid var(--line); color: var(--fg); font-weight: 700; }
+.cta.theme { background: var(--theme); color: var(--on-theme); }
+.cta.theme:hover { filter: brightness(.92); background: var(--theme); }
+.cta[disabled] { opacity: .35; pointer-events: none; }
+.cta.pending { background: var(--panel-2); color: var(--muted); border: 1px dashed var(--line); font-weight: 600; }
+
+/* ── 포스터 타일 ───────────────────────────────────────── */
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.poster { aspect-ratio: 3/4; position: relative; overflow: hidden; background: var(--ph); border: 1px solid #3a3a40; transform: skew(-4deg); transition: transform var(--t-fast), border-color var(--t-fast); }
+.poster:active { transform: skew(-4deg) scale(.97); }
+.poster .img-slot { position: absolute; inset: 0; border: 0; }
+.poster .cap { position: absolute; left: 7px; right: 7px; bottom: 7px; font-weight: 800; font-size: 11px; line-height: 1.25; transform: skew(4deg); text-shadow: 0 1px 2px #000; }
+.poster .tag { position: absolute; top: 6px; left: 6px; font-size: 9px; padding: 1px 6px; background: #000c; color: var(--muted); transform: skew(4deg); }
+.poster.on { border: 2px solid var(--theme); box-shadow: 0 0 0 2px #000, 0 0 0 4px color-mix(in srgb, var(--theme) 50%, transparent); }
+.poster.on::after { content: "✓"; position: absolute; top: -2px; right: -2px; width: 26px; height: 26px; background: var(--theme); color: var(--on-theme); font-weight: 900; display: grid; place-items: center; filter: url(#rough); z-index: 2; }
+.poster.wish { border: 1px dashed #8a8a8a; }
+.poster.wish::after { content: "♡"; position: absolute; top: 4px; right: 6px; color: var(--fg); font-size: 14px; z-index: 2; }
+.poster.none { opacity: .5; }
+.poster.wide { aspect-ratio: 4/3; }
+
+/* ── 링 / 게이지 ───────────────────────────────────────── */
+.ring { --p: 40; width: 68px; height: 68px; border-radius: 50%; background: conic-gradient(var(--theme) calc(var(--p) * 1%), #2a2a2e 0); display: grid; place-items: center; filter: url(#rough); flex: none; }
+.ring > span { width: 54px; height: 54px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; font-weight: 900; font-size: 14px; }
+.charring { width: 60px; height: 60px; border-radius: 50%; background: var(--ph); border: 3px solid var(--fg); filter: url(#rough); display: grid; place-items: center; font-size: 10px; font-weight: 700; margin: 0 auto; }
+.charring.t { border-color: var(--theme); } .charring.t2 { border-color: var(--theme2); } .charring.off { border-color: #555; color: var(--muted); }
+.xp { height: 12px; background: #222; position: relative; transform: skew(-20deg); overflow: hidden; }
+.xp > i { position: absolute; inset: 0; width: var(--w, 50%); background: var(--theme); filter: url(#rough); transition: width var(--t-slow) var(--ease); }
+
+/* ── 리스트 행 ─────────────────────────────────────────── */
+.row { display: flex; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid #222; }
+.row:last-child { border-bottom: 0; }
+.row .thumb { width: 44px; height: 44px; flex: none; transform: skew(-4deg); }
+.row .body { flex: 1; min-width: 0; }
+.row .body .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 랭킹 행 */
+.rank { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid #1f1f23; }
+.rank .no { width: 34px; flex: none; font-weight: 900; font-size: 20px; letter-spacing: -.03em; transform: skew(-8deg); color: var(--muted); }
+.rank.top3 .no { color: var(--theme); font-size: 24px; }
+.rank .no small { font-size: 9px; vertical-align: top; }
+.rank .body { flex: 1; min-width: 0; }
+.rank .body .t { font-size: 14px; }
+.rank .body .meta { font-size: 11px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; }
+.rank .fig { flex: none; display: flex; gap: 2px; }
+.rank .fig i { width: 6px; height: 14px; background: #2a2a2e; transform: skew(-12deg); }
+.rank .fig i.on { background: var(--theme); }
+.rank .go { flex: none; font-size: 11px; color: var(--theme); }
+
+/* ── 뱃지(젬) ──────────────────────────────────────────── */
+.gem { width: 46px; height: 46px; background: var(--ph); clip-path: polygon(50% 0, 100% 30%, 82% 100%, 18% 100%, 0 30%); display: grid; place-items: center; font-size: 9px; color: var(--muted); text-align: center; line-height: 1.1; flex: none; }
+.gem.on { background: linear-gradient(160deg, var(--theme), #0a0a0a 120%); color: var(--on-theme); font-weight: 800; }
+
+/* ── 하단 탭바 ─────────────────────────────────────────── */
+.tabbar { height: 60px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); background: var(--bg); flex: none; }
+.tabbar button { font-size: 11px; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+.tabbar button .ico { font-size: 18px; line-height: 1; }
+.tabbar button.on { color: var(--fg); font-weight: 800; }
+.tabbar button.on .ico { color: var(--theme); }
+.disclosure { font-size: 9px; color: #666; text-align: center; padding: 4px 12px; border-top: 1px solid #1a1a1a; flex: none; background: var(--bg); }
+
+/* ── 바텀시트 ──────────────────────────────────────────── */
+.sheet-wrap { position: absolute; inset: 0; z-index: 20; display: none; }
+.sheet-wrap.open { display: block; }
+.sheet-wrap .dim { position: absolute; inset: 0; background: #000a; animation: fade var(--t-med) both; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; top: 56px; background: var(--bg); border-radius: 20px 20px 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; animation: up var(--t-med) var(--ease) both; }
+.sheet .handle { width: 36px; height: 4px; border-radius: 2px; background: #444; margin: 8px auto 0; flex: none; }
+.sheet .body { flex: 1; overflow-y: auto; padding: 10px 14px 14px; scrollbar-width: none; }
+.sheet .foot { flex: none; padding: 10px 14px; border-top: 1px solid var(--line); display: flex; gap: 8px; background: var(--bg); }
+@keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── 뽑기 카드 ─────────────────────────────────────────── */
+.gacha { perspective: 900px; width: 150px; height: 200px; margin: 0 auto; cursor: pointer; }
+.gacha .card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .9s var(--ease); transform: rotate(-3deg); }
+.gacha.flipped .card { transform: rotateY(180deg) rotate(3deg); }
+.gacha .face { position: absolute; inset: 0; backface-visibility: hidden; border: 2px solid var(--theme); background: #111; display: grid; place-items: center; }
+.gacha .front { font-size: 64px; font-weight: 900; color: var(--theme); background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--theme) 25%, #111), #0d0d0f 70%); }
+.gacha .front::after { content: ""; position: absolute; inset: 8px; border: 1px dashed color-mix(in srgb, var(--theme) 50%, transparent); }
+.gacha .back { transform: rotateY(180deg); padding: 10px; align-content: end; grid-template-rows: 1fr auto; }
+.gacha .back .img-slot { width: 100%; height: 100%; }
+.gacha .back .cap { font-size: 12px; font-weight: 800; margin-top: 8px; text-align: center; }
+.gacha.idle .card { animation: breathe 2.4s ease-in-out infinite; }
+@keyframes breathe { 0%,100% { transform: rotate(-3deg) translateY(0); } 50% { transform: rotate(-3deg) translateY(-6px); } }
+
+/* ── 토스트 / 팝업 ────────────────────────────────────── */
+.toast { position: absolute; left: 14px; right: 14px; bottom: 76px; z-index: 30; background: var(--panel-2); border: 1px solid var(--theme); padding: 10px 12px; font-weight: 700; transform: skew(-6deg); animation: up var(--t-med) both; }
+.toast > span { display: inline-block; transform: skew(6deg); }
+.toast.gone { animation: fadeout var(--t-med) both; }
+@keyframes fadeout { to { opacity: 0; transform: skew(-6deg) translateY(10px); } }
+
+/* ── 화면 전환 ─────────────────────────────────────────── */
+.view { animation: fade var(--t-med) both; }

@@ -1,0 +1,22 @@
+/* 워드프레스 전용 보정. 프로토타입 components.css 위에 얹는다. */
+
+/* 관리자 바가 있을 때 폰 프레임 높이 보정 */
+.admin-bar .device { margin-top: 56px; }
+@media (max-width: 480px) { .admin-bar .device { height: calc(100dvh - 46px); margin-top: 46px; } }
+
+/* 블로그 글 본문 (index/single) */
+.entry-content { font-size: 15px; line-height: 1.75; }
+.entry-content h2 { font-size: 1.25rem; margin-top: 2rem; }
+.entry-content a { color: var(--theme); }
+.entry-content img { border: 1px solid var(--line); }
+
+/* 페이지네이션 */
+.pagination .nav-links { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.pagination .page-numbers { border: 1px solid var(--line); padding: 5px 11px; color: var(--muted); transform: skew(-8deg); }
+.pagination .page-numbers.current { border-color: var(--theme); color: var(--theme); }
+
+/* 탭바가 <a> 라서 */
+.tabbar a { font-size: 11px; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+.tabbar a .ico { font-size: 18px; line-height: 1; }
+.tabbar a.on { color: var(--fg); font-weight: 800; }
+.tabbar a.on .ico { color: var(--theme); }

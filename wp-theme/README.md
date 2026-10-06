@@ -1,0 +1,49 @@
+# My Kitty 워드프레스 테마 — 이식 1단계
+
+프로토타입(`public/proto`)과 **같은 토큰·컴포넌트·데이터 구조**를 쓰는 워드프레스 테마. 매핑 설계는 `docs/ux/04-wordpress-mapping.md`.
+
+## 1단계에 들어 있는 것
+
+| 항목 | 파일 |
+|---|---|
+| 디자인 토큰 | `mykitty/assets/css/tokens.css` (프로토타입과 동일), `theme.json` |
+| 컴포넌트 CSS | `mykitty/assets/css/components.css` (동일) + `theme.css` (WP 보정) |
+| 콘텐츠 모델 | `inc/post-types.php` — taxonomy `world`, CPT `figure`, CPT `ranking_entry`, taxonomy `ranking_board` + 메타 등록 |
+| 템플릿 파트 | `template-parts/{img-slot,chip,figure-card,rank-row}.php` ← `js/views.js` 헬퍼 1:1 |
+| 템플릿 태그 | `inc/template-tags.php` — `mykitty_world_style()`, `mykitty_coupang_cta()`, JS 전역 직렬화 |
+| 뼈대 | `header.php`(폰 프레임 + `#rough` 필터), `footer.php`(고지 문구 + 탭바 + 시트 컨테이너) |
+| 스타일 체크 | `front-page.php` — 월드 타일·칩·피규어 카드·랭킹 행·CTA가 프로토타입과 같게 보이는지 |
+| 데이터 가져오기 | `import/worlds.csv`, `import/figures.csv`, `import/rankings.csv` |
+| 상태 로직 | `assets/js/store.js` (프로토타입 그대로) |
+
+## 설치
+
+1. `wp-theme/mykitty` 폴더를 zip 으로 묶어 **외모 → 테마 → 새로 추가 → 테마 업로드**, 또는 서버 `wp-content/themes/mykitty` 에 복사.
+2. 테마 활성화 → 월드 9개 term 과 랭킹 보드 5개 term 이 자동 생성된다.
+3. **설정 → 고유주소**를 "글 이름"으로 저장(한 번 저장해야 `figure`, `world`, `ranking` 주소가 열린다).
+4. 데이터 가져오기 (아래).
+5. 홈(`/`)을 열어 스타일 체크 페이지가 프로토타입과 같은 톤으로 보이는지 확인.
+
+## 데이터 가져오기
+
+CSV 3개는 프로토타입 `public/proto/data/*.js` 에서 생성한 것이라 **내용이 항상 같다**. 데이터를 바꿀 때는 프로토타입 JS를 고치고 `node wp-theme/import/build.mjs` 로 다시 만든다.
+
+### WP-CLI 가 있으면
+
+```bash
+wp eval-file wp-theme/import/import.php
+```
+
+### 플러그인으로
+
+**WP All Import**(무료)로 `figures.csv` → 포스트 타입 `figure`, 컬럼을 같은 이름의 커스텀 필드에 매핑하고 `world` 컬럼은 taxonomy `world` 에. `rankings.csv` 도 같은 방식(`ranking_entry`, `board` → taxonomy `ranking_board`).
+
+## 2단계 이후 (예정)
+
+2. `taxonomy-world.php` (월드 S3) → 3. `single-figure.php` + 시트 로더 (S4) → 4. `front-page.php` 실제 홈 (S2) → 5. 도감·마이 페이지 → 6. `taxonomy-ranking_board.php` → 7. 온보딩·공유 카드 → 8. 블로그 글 6편 가져오기.
+
+## 지켜야 할 것
+
+- 쿠팡 링크는 `mykitty_coupang_cta()` 로만 출력. 본문 안의 쿠팡 링크는 필터가 `rel="sponsored nofollow noopener"` 를 강제한다.
+- 상품 이미지는 `product_image` 메타(쿠팡 제공 URL). AI 이미지 금지.
+- 월드 색은 term meta → 인라인 CSS 변수. `theme.json` 팔레트에는 넣지 않는다.

@@ -1,0 +1,13 @@
+/*
+Theme Name: My Kitty
+Theme URI: https://github.com/nakojin/my-kitty
+Author: nakojin
+Description: 애니메이션 피규어 도감·추천 서비스 테마. 프로토타입(public/proto)과 같은 디자인 토큰·컴포넌트를 사용한다. 쿠팡 파트너스 제휴.
+Version: 0.1.0
+Requires at least: 6.4
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+Text Domain: mykitty
+*/
+
+/* 실제 스타일은 assets/css/ 에서 로드한다 (functions.php mykitty_enqueue). */

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": false,
+    "color": {
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "palette": [
+        { "slug": "bg", "name": "배경", "color": "#0d0d0f" },
+        { "slug": "panel", "name": "패널", "color": "#17171a" },
+        { "slug": "panel-2", "name": "패널 2", "color": "#1f1f23" },
+        { "slug": "line", "name": "테두리", "color": "#333333" },
+        { "slug": "fg", "name": "글자·종이", "color": "#f2f0ea" },
+        { "slug": "muted", "name": "보조 글자", "color": "#8e8b84" },
+        { "slug": "cta", "name": "쿠팡 CTA", "color": "#e5322d" }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        { "slug": "system", "name": "System", "fontFamily": "system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif" }
+      ]
+    },
+    "custom": {
+      "skew": "-6deg",
+      "skewChip": "-8deg",
+      "skewBrush": "-10deg",
+      "radius": "10px"
+    },
+    "layout": { "contentSize": "390px", "wideSize": "760px" }
+  },
+  "styles": {
+    "color": { "background": "var(--wp--preset--color--bg)", "text": "var(--wp--preset--color--fg)" },
+    "typography": { "fontFamily": "var(--wp--preset--font-family--system)", "fontSize": "14px", "lineHeight": "1.5" }
+  }
+}
