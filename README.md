@@ -29,6 +29,11 @@ products:
 본문(Markdown). 상품 카드는 본문 아래에 순서대로 붙습니다.
 ```
 
+## 앱·웹 서비스 프로토타입
+
+`public/proto/` — 클릭 가능한 프로토타입. 배포 후 https://nakojin.github.io/my-kitty/proto/ 에서 열립니다.
+설계 문서는 `docs/ux/` (화면·흐름 → 레퍼런스 → 팔레트 → 워드프레스 매핑 → 이미지 브리프 → 랭킹 출처).
+
 ## 구조
 
 - `src/layouts/Base.astro` — 공통 레이아웃, 쿠팡 파트너스 고지 문구

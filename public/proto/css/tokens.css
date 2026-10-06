@@ -1,0 +1,28 @@
+/* ── 디자인 토큰 ─────────────────────────────────────────────
+   워드프레스 이식: theme.json settings.color.palette / custom 으로 1:1 매핑.
+   작품 테마색은 .world[data-world] 또는 인라인 --theme/--theme2 로 주입. */
+:root {
+  --bg: #0d0d0f;
+  --panel: #17171a;
+  --panel-2: #1f1f23;
+  --line: #333;
+  --fg: #f2f0ea;         /* 글자 + 붓칠 기본(종이색) */
+  --muted: #8e8b84;
+  --cta: #e5322d;        /* 쿠팡 전용. 월드와 무관하게 고정 */
+  --cta-dark: #c9281f;
+
+  --theme: #2fd36f;      /* 기본 월드 = 귀멸 */
+  --theme2: #ff7a1a;
+  --on-theme: #000;
+  --g: 40%;
+
+  --r-common: #9aa0a6; --r-rare: #4fc3f7; --r-epic: #b06cff; --r-legendary: #ffcc33;
+
+  --skew: -6deg; --skew-chip: -8deg; --skew-brush: -10deg;
+  --radius: 10px;
+  --font: system-ui, -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif;
+  --ph: repeating-linear-gradient(45deg, #26262a 0 6px, #202024 6px 12px);
+
+  --t-fast: 160ms; --t-med: 320ms; --t-slow: 600ms;
+  --ease: cubic-bezier(.2,.8,.2,1);
+}

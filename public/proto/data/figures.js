@@ -1,0 +1,86 @@
+// 피규어 마스터 (샘플). 워드프레스에서는 CPT `figure`.
+// coupangUrl 은 파트너스 링크 발급 후 채운다. 비어 있으면 '쿠팡 링크 준비 중'.
+// img 는 쿠팡 제공 상품 이미지 슬롯 — AI 생성 이미지 사용 금지.
+window.MK_FIGURES = [
+  // 귀멸의 칼날
+  { id: 'kny-01', world: 'kny', char: '탄지로', name: '絆ノ装 카마도 탄지로', maker: '반프레스토', line: '絆ノ装', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
+    why: '프라이즈 중 가장 무난한 입문작. 물의 호흡 이펙트 포함, 책상 위에 두기 좋은 크기.', coupangUrl: '' },
+  { id: 'kny-02', world: 'kny', char: '네즈코', name: '絆ノ装 카마도 네즈코', maker: '반프레스토', line: '絆ノ装', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
+    why: '탄지로와 같은 라인. 나란히 두면 세트. 상자 안에 앉은 포즈 버전도 있음.', coupangUrl: '' },
+  { id: 'kny-03', world: 'kny', char: '렌고쿠', name: 'Vibration Stars 렌고쿠 쿄쥬로', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
+    why: '염의 호흡 이펙트가 크고 역동적. 재고가 자주 바뀌니 보이면 바로.', coupangUrl: '' },
+  { id: 'kny-04', world: 'kny', char: '탄지로', name: '넨도로이드 카마도 탄지로', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
+    why: '교체 표정·손·일륜도 포함. 포즈 바꾸는 재미. 홀로그램 씰로 정품 확인.', coupangUrl: '' },
+  { id: 'kny-05', world: 'kny', char: '젠이츠', name: '1/8 아가츠마 젠이츠 벽력일섬', maker: '애니플렉스', line: '스케일 1/8', size: '약 20cm', price: '20만 원대 이상', rarity: 'epic',
+    why: '번개 이펙트와 잔상 표현이 압도적. 귀멸 피규어 끝판왕으로 자주 꼽힘.', coupangUrl: '' },
+  { id: 'kny-06', world: 'kny', char: '네즈코', name: 'Q posket 카마도 네즈코', maker: '반프레스토', line: 'Q posket', size: '약 14cm', price: '2~3만 원대', rarity: 'common',
+    why: '큰 눈 데포르메. 귀여운 쪽을 원하면 이쪽.', coupangUrl: '' },
+  { id: 'kny-07', world: 'kny', char: '이노스케', name: 'Vibration Stars 하시비라 이노스케', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
+    why: '멧돼지 가면 + 쌍검 포즈. 렌고쿠와 같은 라인.', coupangUrl: '' },
+  { id: 'kny-08', world: 'kny', char: '기유', name: 'Vibration Stars 토미오카 기유', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
+    why: '물의 호흡 11형 이펙트. 조용한 팬층이 두터움.', coupangUrl: '' },
+  { id: 'kny-09', world: 'kny', char: '렌고쿠', name: '한정 렌고쿠 쿄쥬로 무한열차 Ver.', maker: '애니플렉스', line: '한정', size: '약 22cm', price: '시세 변동', rarity: 'legendary',
+    why: '재판 없음. 정가 구매는 사실상 불가. 중고 시세 확인 필수.', coupangUrl: '' },
+
+  // 주술회전
+  { id: 'jjk-01', world: 'jjk', char: '고죠', name: 'Jukon no Kata 고죠 사토루', maker: '반프레스토', line: '呪魂ノ型', size: '약 16cm', price: '2~3만 원대', rarity: 'common',
+    why: '주술회전 피규어 중 가장 많이 팔림. 육안 버전이 고죠다움이 더 삼.', coupangUrl: '' },
+  { id: 'jjk-02', world: 'jjk', char: '이타도리', name: 'Jukon no Kata 이타도리 유지', maker: '반프레스토', line: '呪魂ノ型', size: '약 16cm', price: '2~3만 원대', rarity: 'common',
+    why: '재고가 비교적 안정적. 고죠와 나란히 두면 구도가 잘 잡힘.', coupangUrl: '' },
+  { id: 'jjk-03', world: 'jjk', char: '스쿠나', name: 'King of Artist 료멘스쿠나', maker: '반프레스토', line: 'King of Artist', size: '약 20cm', price: '3~4만 원대', rarity: 'rare',
+    why: '상위 프라이즈 라인. 문신과 네 개의 눈 표현이 깔끔.', coupangUrl: '' },
+  { id: 'jjk-04', world: 'jjk', char: '고죠', name: '넨도로이드 고죠 사토루', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
+    why: '안대·육안·웃는 얼굴 교체 + 무량공처 손. 재판이 잦아 구하기 쉬움.', coupangUrl: '' },
+  { id: 'jjk-05', world: 'jjk', char: '메구미', name: 'POP UP PARADE 후시구로 메구미', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
+    why: '옥견 소환 포즈. 노바라·이타도리와 모으면 1학년 3인방.', coupangUrl: '' },
+  { id: 'jjk-06', world: 'jjk', char: '노바라', name: 'POP UP PARADE 쿠기사키 노바라', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
+    why: '망치와 못을 든 포즈.', coupangUrl: '' },
+
+  // 체인소맨
+  { id: 'csm-01', world: 'csm', char: '덴지', name: 'Chain Spirits 덴지 (체인소맨)', maker: '반프레스토', line: 'Chain Spirits', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
+    why: '체인소맨 피규어의 기본 중 기본. 변신 상태 역동 포즈.', coupangUrl: '' },
+  { id: 'csm-02', world: 'csm', char: '파워', name: 'Chain Spirits 파워', maker: '반프레스토', line: 'Chain Spirits', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
+    why: '작중 인기 1위. 재입고가 느려 보이면 먼저 담기.', coupangUrl: '' },
+  { id: 'csm-03', world: 'csm', char: '마키마', name: 'Vibration Stars 마키마', maker: '반프레스토', line: 'Vibration Stars', size: '약 15cm', price: '2~4만 원대', rarity: 'common',
+    why: '정장 차림 스탠딩. 머리카락 그라데이션과 나선 눈동자 재현 좋음.', coupangUrl: '' },
+  { id: 'csm-04', world: 'csm', char: '덴지', name: '넨도로이드 덴지', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
+    why: '체인소 머리 교체 파츠 + 포치타 미니 피규어 동봉.', coupangUrl: '' },
+  { id: 'csm-05', world: 'csm', char: '레제', name: 'POP UP PARADE 레제', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
+    why: '극장판 레제편 이후 가장 많이 찾는 상품. 품절 시 프리미엄.', coupangUrl: '' },
+
+  // 원피스
+  { id: 'op-01', world: 'op', char: '루피', name: 'Grandista 몽키 D. 루피', maker: '반프레스토', line: 'Grandista', size: '약 27cm', price: '4~6만 원대', rarity: 'rare',
+    why: '쿠팡 피규어관 인기 상품. 원피스 피규어 하나만 산다면 이것.', coupangUrl: '' },
+  { id: 'op-02', world: 'op', char: '조로', name: 'DXF Grandline Men 롤로노아 조로 (와노쿠니)', maker: '반프레스토', line: 'DXF', size: '약 17cm', price: '2~4만 원대', rarity: 'common',
+    why: '기모노 + 삼도류 포즈. 같은 DXF 라인으로 크기 맞추기.', coupangUrl: '' },
+  { id: 'op-03', world: 'op', char: '샹크스', name: 'Battle Record Collection 샹크스', maker: '반프레스토', line: 'Battle Record', size: '약 18cm', price: '3~4만 원대', rarity: 'common',
+    why: '패왕색 패기 연출. 망토 휘날리는 조형이 압권.', coupangUrl: '' },
+  { id: 'op-04', world: 'op', char: '에이스', name: 'Master Stars Piece 포트거스 D. 에이스', maker: '반프레스토', line: 'MSP', size: '약 25cm', price: '5~7만 원대', rarity: 'rare',
+    why: '반프레스토 최상위 라인. 불꽃 이펙트와 디테일. 중고가 잘 유지.', coupangUrl: '' },
+  { id: 'op-05', world: 'op', char: '로빈', name: 'P.O.P 니코 로빈', maker: '메가하우스', line: 'Portrait.Of.Pirates', size: '약 23cm', price: '15~25만 원대', rarity: 'epic',
+    why: '원피스 피규어 끝판왕 브랜드. 정가 근처일 때 사는 것이 핵심.', coupangUrl: '' },
+
+  // 프리렌
+  { id: 'frn-01', world: 'frn', char: '프리렌', name: '프리렌 (지팡이 포즈)', maker: '반프레스토', line: '프라이즈', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
+    why: '프리렌 입문 기본형. 차분한 포즈가 작품 분위기와 맞음.', coupangUrl: '' },
+  { id: 'frn-02', world: 'frn', char: '페른', name: '페른', maker: '반프레스토', line: '프라이즈', size: '약 15cm', price: '2~3만 원대', rarity: 'common',
+    why: '프리렌과 같은 라인. 사제 세트.', coupangUrl: '' },
+  { id: 'frn-03', world: 'frn', char: '프리렌', name: '넨도로이드 프리렌', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
+    why: '미미크 보고 들뜬 얼굴 + 마법 이펙트 파츠.', coupangUrl: '' },
+  { id: 'frn-04', world: 'frn', char: '힘멜', name: 'POP UP PARADE 힘멜', maker: '굿스마일컴퍼니', line: 'POP UP PARADE', size: '약 17cm', price: '5~7만 원대', rarity: 'rare',
+    why: '젊은 시절 용사 모습. 힘멜이라면 그렇게 했을 거야.', coupangUrl: '' },
+  { id: 'frn-05', world: 'frn', char: '프리렌', name: '1/7 프리렌 꽃밭 Ver.', maker: '굿스마일컴퍼니', line: '스케일 1/7', size: '약 18cm', price: '20만 원대 이상', rarity: 'epic',
+    why: '프리렌 소장용 정점. 꽃밭 베이스. 예약 판매 중심.', coupangUrl: '' },
+
+  // 스파이 패밀리
+  { id: 'sxf-01', world: 'sxf', char: '아냐', name: '아냐 포저 (교복)', maker: '반프레스토', line: '프라이즈', size: '약 13cm', price: '2~3만 원대', rarity: 'common',
+    why: '가장 많이 팔리는 기본형. 선물 1순위.', coupangUrl: '' },
+  { id: 'sxf-02', world: 'sxf', char: '아냐', name: 'Q posket 아냐 포저', maker: '반프레스토', line: 'Q posket', size: '약 14cm', price: '2~3만 원대', rarity: 'common',
+    why: '데포르메와 궁합 최고. 피넛 든 버전 인기.', coupangUrl: '' },
+  { id: 'sxf-03', world: 'sxf', char: '요르', name: '요르 포저 (가시공주)', maker: '반프레스토', line: '프라이즈', size: '약 17cm', price: '2~4만 원대', rarity: 'common',
+    why: '어른 팬이 가장 많이 찾는 상품. 드레스 자락 조형 역동적.', coupangUrl: '' },
+  { id: 'sxf-04', world: 'sxf', char: '아냐', name: '넨도로이드 아냐 포저', maker: '굿스마일컴퍼니', line: '넨도로이드', size: '약 10cm', price: '6~9만 원대', rarity: 'rare',
+    why: '히죽·울상 표정 + 치미라·본드 파츠. 어른 선물용.', coupangUrl: '' },
+  { id: 'sxf-05', world: 'sxf', char: '요르', name: '1/7 요르 포저 가시공주 드레스', maker: '굿스마일컴퍼니', line: '스케일 1/7', size: '약 25cm', price: '20만 원대 이상', rarity: 'epic',
+    why: '레이스·바늘 무기 금속 질감·홀스터까지 재현.', coupangUrl: '' },
+];
