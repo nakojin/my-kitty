@@ -18,5 +18,5 @@ $tag     = $world ? 'a' : 'div';
 		<div class="meta"><span><?php echo esc_html( $year ); ?></span><span><?php echo esc_html( $kind ); ?></span><?php if ( ! $compact && $note ) : ?><span>· <?php echo esc_html( $note ); ?></span><?php endif; ?></div>
 	</div>
 	<div class="fig" title="피규어 시장"><?php for ( $i = 1; $i <= 3; $i++ ) : ?><i class="<?php echo $i <= $fig ? 'on' : ''; ?>"></i><?php endfor; ?></div>
-	<?php if ( $world ) : ?><span class="go">월드 ›</span><?php endif; ?>
+	<?php if ( $world ) : ?><span class="go">월드 <?php echo mykitty_icon( 'chevron-right' ); ?></span><?php endif; ?>
 </<?php echo $tag; ?>>

@@ -14,6 +14,11 @@ function mykitty_rarity_map(): array {
 	];
 }
 
+/** Lucide 아이콘 (footer 에서 인라인한 스프라이트 참조). 장식용이라 aria-hidden. */
+function mykitty_icon( string $name, string $class = '' ): string {
+	return sprintf( '<svg class="ic %s" aria-hidden="true"><use href="#i-%s"/></svg>', esc_attr( $class ), esc_attr( $name ) );
+}
+
 /** get_term_link 가 WP_Error 를 돌려줄 때 빈 문자열로. PHP 8 에서 esc_url(WP_Error) 는 TypeError 다. */
 function mykitty_term_url( $term, string $taxonomy = '' ): string {
 	$u = get_term_link( $term, $taxonomy );

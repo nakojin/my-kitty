@@ -40,7 +40,7 @@ $coupang = get_post_meta( $id, 'coupang_url', true );
 	<?php endif; ?>
 
 	<details class="panel flat" style="margin-top:10px;padding:10px 12px">
-		<summary class="label" style="cursor:pointer;list-style:none;display:flex;justify-content:space-between">정품 체크포인트 3 <span>▾</span></summary>
+		<summary class="label" style="cursor:pointer;list-style:none;display:flex;justify-content:space-between">정품 체크포인트 3 <?php echo mykitty_icon( 'chevron-down' ); ?></summary>
 		<ol class="small muted" style="margin:8px 0 0;padding-left:18px">
 			<li>상자에 저작권 표기(ⓒ 원작자／출판사·제작위원회)와 제조사 로고</li>
 			<li>굿스마일·메가하우스는 홀로그램 정품 씰</li>
@@ -58,6 +58,6 @@ $coupang = get_post_meta( $id, 'coupang_url', true );
 	<p class="muted" style="font-size:10px;margin-top:14px">가격대는 작성 시점의 대략적 시세입니다. 실제 가격은 쿠팡에서 확인하세요.</p>
 </div>
 <div class="foot" style="<?php echo $world ? mykitty_world_style( $world ) : ''; ?>">
-	<button type="button" class="cta sub" data-coll="<?php echo esc_attr( $slug ); ?>" style="flex:0 0 118px"><span>♡ 도감 담기</span></button>
+	<button type="button" class="cta sub" data-coll="<?php echo esc_attr( $slug ); ?>" style="flex:0 0 118px"><span><?php echo mykitty_icon( 'heart' ); ?>도감 담기</span></button>
 	<?php mykitty_coupang_cta( $coupang ); ?>
 </div>

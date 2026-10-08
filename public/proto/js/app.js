@@ -5,7 +5,7 @@
   const stack = [];          // 화면 이력 (시트는 쌓지 않음)
   let viaBack = false;       // go('back') 로 인한 해시 변경인지
 
-  const TABS = [['home', '홈', '⌂'], ['ranking', '랭킹', '▲'], ['collection', '도감', '▦'], ['my', '마이', '◉']];
+  const TABS = [['home', '홈', 'house'], ['ranking', '랭킹', 'trophy'], ['collection', '도감', 'book-open'], ['my', '마이', 'user']];
   const dec = (s) => { try { return decodeURIComponent(s || ''); } catch { return ''; } };
 
   function route() {
@@ -45,7 +45,7 @@
     screen.scrollTop = 0;
     applyThemes(screen);
     tabbar.style.display = name === 'onboarding' || name === 'share' ? 'none' : '';
-    tabbar.innerHTML = TABS.map(([k, l, i]) => `<button class="${name === k || (name === 'world' && k === 'home') ? 'on' : ''}" data-go="${k}"><span class="ico">${i}</span>${l}</button>`).join('');
+    tabbar.innerHTML = TABS.map(([k, l, i]) => `<button class="${name === k || (name === 'world' && k === 'home') ? 'on' : ''}" data-go="${k}">${V.ic(i, 'ico')}${l}</button>`).join('');
     bind(name);
   }
 
@@ -70,8 +70,8 @@
       const cur = MK.state.coll[id];
       const next = !cur ? 'wish' : cur === 'wish' ? 'own' : null;
       MK.setColl(id, next);
-      toast(next === 'wish' ? '♡ 위시에 담았어요' + (MK.state.xpColl[id] ? ' +20 XP' : '') : next === 'own' ? '✓ 보유로 등록!' : '도감에서 뺐어요');
-      btn.querySelector('span').textContent = next === 'own' ? '✓ 보유 중' : next === 'wish' ? '♡ 위시' : '♡ 도감 담기';
+      toast(next === 'wish' ? V.ic('heart', 'fill') + '위시에 담았어요' + (MK.state.xpColl[id] ? ' +20 XP' : '') : next === 'own' ? V.ic('check') + '보유로 등록!' : '도감에서 뺐어요');
+      btn.querySelector('span').innerHTML = V.collLabel(next);
       announceBadges();
     });
   }
@@ -104,7 +104,7 @@
     t.className = 'toast'; t.innerHTML = `<span>${msg}</span>`;
     toastTimer = setTimeout(() => { t.classList.add('gone'); toastRemove = setTimeout(() => t.remove(), 350); }, 1800);
   }
-  const announceBadges = () => MK.takeBadges().forEach((b, i) => setTimeout(() => toast(`🏅 뱃지 획득 — ${b.name}`), 900 + i * 700));
+  const announceBadges = () => MK.takeBadges().forEach((b, i) => setTimeout(() => toast(`${V.ic('award')}뱃지 획득 — ${b.name}`), 900 + i * 700));
 
   /* 화면별 바인딩 */
   function bind(name) {
@@ -116,12 +116,12 @@
       }));
       const next = $('#ob-next');
       next && next.addEventListener('click', () => {
-        if (!MK.state.onboarded) { MK.state.onboarded = true; MK.state.nick = '컬렉터'; MK.save(); MK.checkin(); toast('🔥 첫 체크인! +10 XP'); }
+        if (!MK.state.onboarded) { MK.state.onboarded = true; MK.state.nick = '컬렉터'; MK.save(); MK.checkin(); toast(V.ic('flame') + '첫 체크인! +10 XP'); }
         stack.length = 0; go('home');
       });
     }
     if (name === 'home') {
-      const ci = $('#checkin'); ci && ci.addEventListener('click', () => { if (MK.checkin()) { toast('🔥 체크인 완료 +10 XP'); route(); announceBadges(); } });
+      const ci = $('#checkin'); ci && ci.addEventListener('click', () => { if (MK.checkin()) { toast(V.ic('flame') + '체크인 완료 +10 XP'); route(); announceBadges(); } });
       const g = $('#gacha'), gb = $('#gacha-go');
       const doGacha = () => {
         if (!MK.canGacha()) return;
@@ -130,7 +130,7 @@
         g.querySelector('.back').innerHTML = `<div class="img-slot product" data-slot="COUPANG-${pick.id}">${pick.img ? `<img src="${pick.img}" alt="">` : ''}</div><div class="cap" style="font-size:10px">${pick.char}</div>`;
         g.classList.add('flipped');
         setTimeout(() => {
-          toast(`✨ ${pick.name}`); announceBadges();
+          toast(`${V.ic('sparkles')}${pick.name}`); announceBadges();
           setTimeout(() => { if ((location.hash || '#home') === '#home') go('detail:' + pick.id); }, 700);
         }, 950);
       };

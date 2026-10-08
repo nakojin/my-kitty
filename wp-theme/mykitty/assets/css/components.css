@@ -14,11 +14,17 @@ img { max-width: 100%; display: block; }
 .pad { padding: 14px; }
 
 /* ── 타이포 ─────────────────────────────────────────────── */
-.display { font-weight: 900; letter-spacing: -.02em; line-height: .95; transform: skew(-6deg) rotate(-1.5deg); display: inline-block; transform-origin: left bottom; }
+.display { font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em; line-height: .95; transform: skew(-6deg) rotate(-1.5deg); display: inline-block; transform-origin: left bottom; }
 .label { font-size: 10px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
 .t { font-weight: 800; }
 .muted { color: var(--muted); }
 .small { font-size: 12px; }
+
+/* ── 아이콘 (Lucide 스프라이트) ── */
+.ic { width: 1.1em; height: 1.1em; flex: none; display: inline-block; vertical-align: -0.18em; fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.ic.fill { fill: currentColor; }
+button.small, .rank .go, .row .go { display: inline-flex; align-items: center; gap: .2em; }
+.label .ic { width: 1.2em; height: 1.2em; margin-right: .25em; color: var(--theme2); }
 
 /* ── 붓칠 / 잉크 / 스큐 ────────────────────────────────── */
 .brush { position: relative; display: inline-block; padding: 2px 12px; color: var(--on-theme); font-weight: 900; isolation: isolate; }
@@ -48,7 +54,7 @@ img { max-width: 100%; display: block; }
 .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
 .chips::-webkit-scrollbar { display: none; }
 .chip { flex: none; border: 1px solid var(--line); padding: 5px 11px; font-size: 12px; white-space: nowrap; color: var(--muted); transform: skew(var(--skew-chip)); transition: all var(--t-fast); }
-.chip > span { display: inline-block; transform: skew(calc(var(--skew-chip) * -1)); }
+.chip > span { display: inline-flex; align-items: center; gap: .3em; transform: skew(calc(var(--skew-chip) * -1)); }
 .chip.on, .chip[aria-selected="true"] { border-color: var(--theme); color: var(--theme); background: color-mix(in srgb, var(--theme) 12%, transparent); }
 .chip.r-common { border-color: var(--r-common); color: var(--r-common); }
 .chip.r-rare { border-color: var(--r-rare); color: var(--r-rare); }
@@ -61,7 +67,7 @@ img { max-width: 100%; display: block; }
 
 /* ── 버튼 ───────────────────────────────────────────────── */
 .cta { display: block; width: 100%; background: var(--cta); color: #fff; font-weight: 800; text-align: center; padding: 13px; transform: skew(var(--skew-chip)); transition: background var(--t-fast); }
-.cta > span { display: inline-block; transform: skew(calc(var(--skew-chip) * -1)); }
+.cta > span { display: inline-flex; align-items: center; justify-content: center; gap: .35em; transform: skew(calc(var(--skew-chip) * -1)); }
 .cta:hover { background: var(--cta-dark); }
 .cta.sub { background: transparent; border: 1px solid var(--line); color: var(--fg); font-weight: 700; }
 .cta.theme { background: var(--theme); color: var(--on-theme); }
@@ -74,7 +80,7 @@ img { max-width: 100%; display: block; }
 .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .poster { aspect-ratio: 3/4; position: relative; overflow: hidden; background: var(--ph); border: 1px solid #3a3a40; transform: skew(-4deg); transition: transform var(--t-fast), border-color var(--t-fast); }
 .poster:active { transform: skew(-4deg) scale(.97); }
-.poster .img-slot { position: absolute; inset: 0; border: 0; }
+.poster .img-slot { position: absolute; inset: 0; border: 0; z-index: 0; } /* 캡션·태그가 이미지 위에 오도록 스태킹 컨텍스트 격리 */
 .poster .cap { position: absolute; left: 7px; right: 7px; bottom: 7px; font-weight: 800; font-size: 11px; line-height: 1.25; transform: skew(4deg); text-shadow: 0 1px 2px #000; }
 .poster .tag { position: absolute; top: 6px; left: 6px; font-size: 9px; padding: 1px 6px; background: #000c; color: var(--muted); transform: skew(4deg); }
 .poster.on { border: 2px solid var(--theme); box-shadow: 0 0 0 2px #000, 0 0 0 4px color-mix(in srgb, var(--theme) 50%, transparent); }
@@ -101,7 +107,7 @@ img { max-width: 100%; display: block; }
 
 /* 랭킹 행 */
 .rank { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid #1f1f23; }
-.rank .no { width: 34px; flex: none; font-weight: 900; font-size: 20px; letter-spacing: -.03em; transform: skew(-8deg); color: var(--muted); }
+.rank .no { width: 34px; flex: none; font-family: var(--font-display); font-weight: 400; font-size: 20px; letter-spacing: -.03em; transform: skew(-8deg); color: var(--muted); }
 .rank.top3 .no { color: var(--theme); font-size: 24px; }
 .rank .no small { font-size: 9px; vertical-align: top; }
 .rank .body { flex: 1; min-width: 0; }
@@ -119,7 +125,7 @@ img { max-width: 100%; display: block; }
 /* ── 하단 탭바 ─────────────────────────────────────────── */
 .tabbar { height: 60px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); background: var(--bg); flex: none; }
 .tabbar button { font-size: 11px; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
-.tabbar button .ico { font-size: 18px; line-height: 1; }
+.tabbar button .ico { width: 22px; height: 22px; stroke-width: 2; }
 .tabbar button.on { color: var(--fg); font-weight: 800; }
 .tabbar button.on .ico { color: var(--theme); }
 .disclosure { font-size: 9px; color: #666; text-align: center; padding: 4px 12px; border-top: 1px solid #1a1a1a; flex: none; background: var(--bg); }
@@ -140,7 +146,7 @@ img { max-width: 100%; display: block; }
 .gacha .card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .9s var(--ease); transform: rotate(-3deg); }
 .gacha.flipped .card { transform: rotateY(180deg) rotate(3deg); }
 .gacha .face { position: absolute; inset: 0; backface-visibility: hidden; border: 2px solid var(--theme); background: #111; display: grid; place-items: center; }
-.gacha .front { font-size: 64px; font-weight: 900; color: var(--theme); background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--theme) 25%, #111), #0d0d0f 70%); }
+.gacha .front { font-size: 64px; font-family: var(--font-display); font-weight: 400; color: var(--theme); background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--theme) 25%, #111), #0d0d0f 70%); }
 .gacha .front::after { content: ""; position: absolute; inset: 8px; border: 1px dashed color-mix(in srgb, var(--theme) 50%, transparent); }
 .gacha .back { transform: rotateY(180deg); padding: 10px; align-content: end; grid-template-rows: 1fr auto; }
 .gacha .back .img-slot { width: 100%; height: 100%; }
@@ -150,9 +156,16 @@ img { max-width: 100%; display: block; }
 
 /* ── 토스트 / 팝업 ────────────────────────────────────── */
 .toast { position: absolute; left: 14px; right: 14px; bottom: 76px; z-index: 30; background: var(--panel-2); border: 1px solid var(--theme); padding: 10px 12px; font-weight: 700; transform: skew(-6deg); animation: up var(--t-med) both; }
-.toast > span { display: inline-block; transform: skew(6deg); }
+.toast > span { display: inline-flex; align-items: center; gap: .4em; transform: skew(6deg); }
 .toast.gone { animation: fadeout var(--t-med) both; }
 @keyframes fadeout { to { opacity: 0; transform: skew(-6deg) translateY(10px); } }
 
 /* ── 화면 전환 ─────────────────────────────────────────── */
 .view { animation: fade var(--t-med) both; }
+
+/* 퀘스트 체크 표시 */
+.ic.done { color: var(--theme); }
+.ic.todo { color: var(--muted); }
+[data-quest-mark] { font-style: normal; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] > summary .ic { transform: rotate(180deg); }

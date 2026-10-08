@@ -15,7 +15,7 @@ $ids    = array_map( fn( $p ) => $p->post_name, $figs );
 	<div class="splat ink" style="width:60px;height:60px;left:-26px;top:120px;opacity:.1"></div>
 	<div style="display:flex;justify-content:space-between;align-items:center">
 		<h1 class="display" style="font-size:26px;margin:0">도감</h1>
-		<a class="chip" href="<?php echo esc_url( home_url( '/share/' ) ); ?>"><span>공유 카드 ↗</span></a>
+		<a class="chip" href="<?php echo esc_url( home_url( '/share/' ) ); ?>"><span>공유 카드 <?php echo mykitty_icon( 'arrow-up-right' ); ?></span></a>
 	</div>
 
 	<!-- 월드 칩: 사용자가 고른 월드만 보이게 app.js 가 data-my-world 로 숨김/표시 -->

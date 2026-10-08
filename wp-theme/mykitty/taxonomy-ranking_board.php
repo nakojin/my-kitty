@@ -45,7 +45,7 @@ $legend_url = mykitty_term_url( 'legend', 'ranking_board' );
 			<div class="panel flat muted small">이 보드에 항목이 없어요. <code>wp eval-file wp-theme/import/import.php</code> 로 가져오세요.</div>
 		<?php endif; ?>
 
-		<div class="panel flat muted" style="font-size:11px">막대 3칸 = 피규어 시장 규모(많음·보통·적음). "월드 ›"가 있는 작품은 피규어 도감이 열려 있어요.</div>
+		<div class="panel flat muted" style="font-size:11px">막대 3칸 = 피규어 시장 규모(많음·보통·적음). "월드" 링크가 있는 작품은 피규어 도감이 열려 있어요.</div>
 	</div>
 </div>
 <?php get_footer(); ?>

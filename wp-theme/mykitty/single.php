@@ -7,7 +7,7 @@ while ( have_posts() ) : the_post();
 	<div class="hero">
 		<?php if ( $w ) { mykitty_img_slot( get_term_meta( $w->term_id, 'hero_slot', true ), '', get_the_post_thumbnail_url( null, 'large' ) ?: '', ' ' ); } ?>
 		<div class="splat" style="width:110px;height:110px;right:-40px;top:-40px"></div>
-		<a href="<?php echo esc_url( $w ? mykitty_term_url( $w ) : get_permalink( get_option( 'page_for_posts' ) ) ); ?>" class="small" style="color:var(--fg);opacity:.8">‹ <?php echo $w ? esc_html( $w->name ) : '글 목록'; ?></a>
+		<a href="<?php echo esc_url( $w ? mykitty_term_url( $w ) : get_permalink( get_option( 'page_for_posts' ) ) ); ?>" class="small" style="color:var(--fg);opacity:.8"><?php echo mykitty_icon( 'chevron-left' ); ?><?php echo $w ? esc_html( $w->name ) : '글 목록'; ?></a>
 		<div class="label" style="color:var(--fg);opacity:.7;margin-top:8px">큐레이션</div>
 		<h1 class="display" style="font-size:24px;margin:4px 0 0;line-height:1.1"><?php the_title(); ?></h1>
 		<div class="muted small" style="margin-top:10px"><?php echo get_the_date(); ?></div>
@@ -15,7 +15,7 @@ while ( have_posts() ) : the_post();
 	<div class="pad entry-content"><?php the_content(); ?></div>
 	<?php if ( $w ) : ?>
 	<div class="pad" style="padding-top:0">
-		<a class="panel" href="<?php echo esc_url( mykitty_term_url( $w ) ); ?>" style="display:flex;justify-content:space-between;align-items:center"><span><span class="label">월드</span><br><span class="t"><?php echo esc_html( $w->name ); ?> 도감 열기</span></span><span class="muted">›</span></a>
+		<a class="panel" href="<?php echo esc_url( mykitty_term_url( $w ) ); ?>" style="display:flex;justify-content:space-between;align-items:center"><span><span class="label">월드</span><br><span class="t"><?php echo esc_html( $w->name ); ?> 도감 열기</span></span><span class="muted"><?php echo mykitty_icon( 'chevron-right' ); ?></span></a>
 	</div>
 	<?php endif; ?>
 </article>

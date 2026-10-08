@@ -15,7 +15,7 @@ $days = [ '월', '화', '수', '목', '금', '토', '일' ];
 		<div class="splat" style="width:120px;height:120px;right:-40px;top:-40px"></div>
 		<div class="splat ink" style="width:8px;height:8px;right:84px;top:30px"></div>
 		<div style="display:flex;justify-content:space-between;align-items:flex-end">
-			<div><div class="label" style="color:var(--fg);opacity:.7">🔥 연속 체크인</div><div class="display" style="font-size:34px"><span data-streak>0</span>일째</div></div>
+			<div><div class="label" style="color:var(--fg);opacity:.7"><?php echo mykitty_icon( 'flame' ); ?>연속 체크인</div><div class="display" style="font-size:34px"><span data-streak>0</span>일째</div></div>
 			<div style="text-align:right"><div class="label" style="color:var(--fg);opacity:.7">LEVEL</div><div class="display" style="font-size:26px;color:var(--theme)" data-level>1</div></div>
 		</div>
 		<div class="chips" style="margin-top:10px" data-days>
@@ -44,7 +44,7 @@ $days = [ '월', '화', '수', '목', '금', '토', '일' ];
 
 		<?php if ( $top3 ) : ?>
 		<section>
-			<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><div class="label">신시대 랭킹</div><a class="small" style="color:var(--theme)" href="<?php echo esc_url( mykitty_term_url( 'newera-kr', 'ranking_board' ) ); ?>">전체 ›</a></div>
+			<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><div class="label">신시대 랭킹</div><a class="small" style="color:var(--theme)" href="<?php echo esc_url( mykitty_term_url( 'newera-kr', 'ranking_board' ) ); ?>">전체 <?php echo mykitty_icon( 'chevron-right' ); ?></a></div>
 			<?php foreach ( $top3 as $p ) { mykitty_rank_row( $p->ID, true ); } ?>
 		</section>
 		<?php endif; ?>

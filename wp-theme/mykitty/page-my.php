@@ -35,7 +35,7 @@ $quests = [ 'checkin' => [ '데일리 체크인', '+10 XP' ], 'gacha' => [ '오�
 	<section class="panel flat">
 		<div class="label">오늘의 퀘스트</div>
 		<?php foreach ( $quests as $id => [ $label, $reward ] ) : ?>
-			<div class="row" data-quest="<?php echo esc_attr( $id ); ?>"><span style="flex:1"><i data-quest-mark>☐</i> <?php echo esc_html( $label ); ?></span><span class="muted small"><?php echo esc_html( $reward ); ?></span></div>
+			<div class="row" data-quest="<?php echo esc_attr( $id ); ?>"><span style="flex:1"><i data-quest-mark><?php echo mykitty_icon( 'circle' ); ?></i> <?php echo esc_html( $label ); ?></span><span class="muted small"><?php echo esc_html( $reward ); ?></span></div>
 		<?php endforeach; ?>
 	</section>
 

@@ -7,6 +7,8 @@
   const sheetWrap = $('#sheet'), sheetInner = $('#sheet-inner');
   if (!window.MK) return;
   const today = () => MK.today();
+  const ic = (name, cls = '') => `<svg class="ic ${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const collLabel = (s) => s === 'own' ? `${ic('check')}보유 중` : s === 'wish' ? `${ic('heart', 'fill')}위시` : `${ic('heart')}도감 담기`;
   const h = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   /* ── 공통: 상태 칠하기 ── */
@@ -26,7 +28,7 @@
     });
     $$('[data-coll]', root).forEach(btn => {
       const s = MK.state.coll[btn.dataset.coll];
-      btn.querySelector('span').textContent = s === 'own' ? '✓ 보유 중' : s === 'wish' ? '♡ 위시' : '♡ 도감 담기';
+      btn.querySelector('span').innerHTML = collLabel(s);
     });
     $$('[data-level]', root).forEach(el => el.textContent = MK.level());
     $$('[data-streak]', root).forEach(el => el.textContent = MK.effectiveStreak());
@@ -41,7 +43,7 @@
     t.className = 'toast'; t.innerHTML = `<span>${msg}</span>`;
     toastTimer = setTimeout(() => { t.classList.add('gone'); toastRemove = setTimeout(() => t.remove(), 350); }, 1800);
   }
-  const announceBadges = () => MK.takeBadges().forEach((b, i) => setTimeout(() => toast(`🏅 뱃지 획득 — ${b.name}`), 900 + i * 600));
+  const announceBadges = () => MK.takeBadges().forEach((b, i) => setTimeout(() => toast(`${ic('award')}뱃지 획득 — ${h(b.name)}`), 900 + i * 600));
 
   /* ── 바텀시트 ── */
   async function openSheet(url) {
@@ -97,7 +99,7 @@
     const checked = MK.checkedToday(); const idx = (new Date().getDay() + 6) % 7; const st = MK.effectiveStreak();
     $$('[data-day]').forEach(el => { const back = checked ? idx - +el.dataset.day : idx - 1 - +el.dataset.day; el.classList.toggle('on', back >= 0 && back < st); });
     $$('[data-streak]').forEach(el => el.textContent = st);
-    const ci = $('[data-checkin]'); if (ci) { ci.disabled = checked; ci.classList.toggle('on', !checked); ci.querySelector('span').textContent = checked ? '오늘 완료 ✓' : '체크인 +10XP'; }
+    const ci = $('[data-checkin]'); if (ci) { ci.disabled = checked; ci.classList.toggle('on', !checked); ci.querySelector('span').innerHTML = checked ? `오늘 완료 ${ic('check')}` : '체크인 +10XP'; }
 
     const can = MK.canGacha(); const g = $('[data-gacha]'); const txt = $('[data-gacha-text]'); const result = s.gachaResult ? MK.figure(s.gachaResult) : null;
     if (g) {
@@ -108,11 +110,11 @@
 
     const mw = $('[data-my-worlds]');
     if (mw) mw.innerHTML = s.worlds.map(id => { const w = MK.world(id); if (!w) return ''; return `<a class="poster wide" href="${h(w.url)}" style="--theme:${w.theme};--on-theme:${w.on}"><div class="img-slot" data-slot="${w.img}"><img src="${ENV.imgBase}${w.img}.webp" alt="" onerror="this.remove()"> </div><span class="cap">${h(w.title)}<br><span style="color:var(--theme)">${MK.completion(id)}%</span></span></a>`; }).join('')
-      + (s.worlds.length < 5 ? `<a class="poster wide none" href="${ENV.onboarding}"><span class="cap" style="text-align:center;left:0;right:0;bottom:40%">+ 월드 추가</span></a>` : '');
+      + (s.worlds.length < 5 ? `<a class="poster wide none" href="${ENV.onboarding}"><span class="cap" style="text-align:center;left:0;right:0;bottom:40%">${ic('plus')} 월드 추가</span></a>` : '');
   }
   function bindHome() {
     const root = $('[data-screen="home"]'); if (!root) return;
-    $('[data-checkin]')?.addEventListener('click', () => { if (MK.checkin()) { toast('🔥 체크인 완료 +10 XP'); renderHome(); paint(); announceBadges(); } });
+    $('[data-checkin]')?.addEventListener('click', () => { if (MK.checkin()) { toast(ic('flame') + '체크인 완료 +10 XP'); renderHome(); paint(); announceBadges(); } });
     const doGacha = () => {
       if (!MK.canGacha()) return;
       const pick = MK.gacha(); if (!pick) { toast('뽑을 피규어가 없어요'); return; }
@@ -120,7 +122,7 @@
       g.classList.remove('idle');
       $('[data-gacha-back]').innerHTML = `<div class="img-slot product" data-slot="COUPANG-${pick.id}">${pick.img ? `<img src="${h(pick.img)}" alt="">` : ''}</div><div class="cap" style="font-size:10px">${h(pick.char)}</div>`;
       g.classList.add('flipped');
-      setTimeout(() => { toast(`✨ ${h(pick.name)}`); renderHome(); setTimeout(() => pick.url && openSheet(pick.url), 700); }, 950);
+      setTimeout(() => { toast(`${ic('sparkles')}${h(pick.name)}`); renderHome(); setTimeout(() => pick.url && openSheet(pick.url), 700); }, 950);
     };
     $('[data-gacha]')?.addEventListener('click', doGacha); $('[data-gacha-go]')?.addEventListener('click', doGacha);
   }
@@ -160,7 +162,7 @@
     $('[data-own-total]').textContent = c.own; $('[data-world-total]').textContent = s.worlds.length;
     $$('[data-badge]').forEach(el => el.classList.toggle('on', s.badges.includes(el.dataset.badge)));
     $('[data-badge-count]').textContent = `${s.badges.length}/${MK.BADGES.length}`;
-    $$('[data-quest]').forEach(el => { const q = el.dataset.quest; const done = q === 'half' ? s.badges.includes('half') : s.quests[q] === today(); el.querySelector('[data-quest-mark]').textContent = done ? '✅' : '☐'; });
+    $$('[data-quest]').forEach(el => { const q = el.dataset.quest; const done = q === 'half' ? s.badges.includes('half') : s.quests[q] === today(); el.querySelector('[data-quest-mark]').innerHTML = done ? ic('circle-check', 'done') : ic('circle', 'todo'); });
   }
   function bindMy() { $('[data-reset]')?.addEventListener('click', () => { if (confirm('이 기기의 도감·레벨 데이터를 초기화할까요?')) { MK.reset(); location.href = ENV.onboarding; } }); }
 
@@ -257,7 +259,7 @@
     const coll = e.target.closest('[data-coll]');
     if (coll) {
       const id = coll.dataset.coll; const cur = MK.state.coll[id]; const next = !cur ? 'wish' : cur === 'wish' ? 'own' : null;
-      const first = !MK.state.xpColl[id]; MK.setColl(id, next); toast(next === 'wish' ? '♡ 위시에 담았어요' + (first ? ' +20 XP' : '') : next === 'own' ? '✓ 보유로 등록!' : '도감에서 뺐어요');
+      const first = !MK.state.xpColl[id]; MK.setColl(id, next); toast(next === 'wish' ? ic('heart', 'fill') + '위시에 담았어요' + (first ? ' +20 XP' : '') : next === 'own' ? ic('check') + '보유로 등록!' : '도감에서 뺐어요');
       paint(); renderScreen(); announceBadges(); return;
     }
     if (e.target.closest('#sheet .dim')) closeSheet(false);

@@ -3,13 +3,13 @@
 	<nav class="tabbar" id="tabbar" aria-label="주요 메뉴">
 		<?php
 		$tabs = [
-			[ home_url( '/' ), '홈', '⌂', is_front_page() || is_tax( 'world' ) ],
-			[ home_url( '/ranking/newera-kr/' ), '랭킹', '▲', is_tax( 'ranking_board' ) ],
-			[ home_url( '/collection/' ), '도감', '▦', is_page( 'collection' ) ],
-			[ home_url( '/my/' ), '마이', '◉', is_page( 'my' ) ],
+			[ home_url( '/' ), '홈', 'house', is_front_page() || is_tax( 'world' ) ],
+			[ home_url( '/ranking/newera-kr/' ), '랭킹', 'trophy', is_tax( 'ranking_board' ) ],
+			[ home_url( '/collection/' ), '도감', 'book-open', is_page( 'collection' ) ],
+			[ home_url( '/my/' ), '마이', 'user', is_page( 'my' ) ],
 		];
 		foreach ( $tabs as [ $url, $label, $icon, $on ] ) {
-			printf( '<a href="%s" class="%s"><span class="ico">%s</span>%s</a>', esc_url( $url ), $on ? 'on' : '', $icon, esc_html( $label ) );
+			printf( '<a href="%s" class="%s"%s>%s%s</a>', esc_url( $url ), $on ? 'on' : '', $on ? ' aria-current="page"' : '', mykitty_icon( $icon, 'ico' ), esc_html( $label ) );
 		}
 		?>
 	</nav>

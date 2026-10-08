@@ -31,8 +31,22 @@ add_action( 'after_setup_theme', function () {
 	add_image_size( 'mk-hero', 1536, 2048, false );  // 월드 히어로
 } );
 
+// 폰트: 본문 Pretendard, 디스플레이 Black Han Sans (둘 다 OFL). 자체 호스팅으로 바꾸려면 이 두 줄만 교체.
+define( 'MYKITTY_FONT_PRETENDARD', 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css' );
+define( 'MYKITTY_FONT_DISPLAY', 'https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap' );
+
+add_filter( 'wp_resource_hints', function ( $urls, $type ) {
+	if ( 'preconnect' === $type ) {
+		$urls[] = [ 'href' => 'https://cdn.jsdelivr.net', 'crossorigin' ];
+		$urls[] = [ 'href' => 'https://fonts.gstatic.com', 'crossorigin' ];
+	}
+	return $urls;
+}, 10, 2 );
+
 add_action( 'wp_enqueue_scripts', function () {
-	wp_enqueue_style( 'mykitty-tokens', MYKITTY_URI . '/assets/css/tokens.css', [], MYKITTY_VERSION );
+	wp_enqueue_style( 'mykitty-font-pretendard', MYKITTY_FONT_PRETENDARD, [], null );
+	wp_enqueue_style( 'mykitty-font-display', MYKITTY_FONT_DISPLAY, [], null );
+	wp_enqueue_style( 'mykitty-tokens', MYKITTY_URI . '/assets/css/tokens.css', [ 'mykitty-font-pretendard', 'mykitty-font-display' ], MYKITTY_VERSION );
 	wp_enqueue_style( 'mykitty-components', MYKITTY_URI . '/assets/css/components.css', [ 'mykitty-tokens' ], MYKITTY_VERSION );
 	wp_enqueue_style( 'mykitty-theme', MYKITTY_URI . '/assets/css/theme.css', [ 'mykitty-components' ], MYKITTY_VERSION );
 
@@ -66,6 +80,8 @@ add_action( 'wp_head', function () {
 
 // 붓칠·잉크 거친 가장자리 필터. 모든 페이지에 한 번.
 add_action( 'wp_body_open', function () {
+	// 아이콘 스프라이트 (Lucide, ISC). npm run icons 로 생성.
+	if ( is_readable( MYKITTY_DIR . '/assets/icons.svg' ) ) { readfile( MYKITTY_DIR . '/assets/icons.svg' ); }
 	echo '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="rough" x="-10%" y="-20%" width="120%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="3" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></svg>' . "\n";
 } );
 
